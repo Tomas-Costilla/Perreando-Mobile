@@ -1,17 +1,23 @@
 import {} from "react"
 import { StyleSheet, View } from "react-native"
-import { Text, TextInput } from "react-native-paper"
+import { HelperText, Text, TextInput } from "react-native-paper"
 
-export default function InputView({label,editable,value,placeholder}){
+export default function InputView({label,editable,value,placeholder,disabled,typeInput,inputStyles,icon,nameField,handleData,validateMessage}){
     return <View style={myStyles.container}>
         <Text>{label}</Text>
         <TextInput 
             mode="outlined"
             editable={editable}
             outlineStyle={myStyles.input}
-            value={value}
+            value={typeInput === 'numeric' && value ? value.toString() : value}
             placeholder={placeholder}
+            inputMode={typeInput !== "" ? typeInput : 'text'}
+            disabled={disabled}
+            style={inputStyles !== "" && inputStyles}
+            right={icon !== "" ? <TextInput.Icon icon={icon}/> : <></>}
+            onChangeText={val=>handleData(nameField,val)}
         />
+        {validateMessage && <HelperText type="error" visible>{validateMessage}</HelperText>}
     </View>
 }
 

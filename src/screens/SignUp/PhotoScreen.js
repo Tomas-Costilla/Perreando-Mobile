@@ -114,7 +114,7 @@ const PhotoScreen = ({route,navigation}) =>{
                 <Button
                     icon="chevron-right"
                     mode="contained"
-                    onPress={()=>navigation.navigate("SignUp",{photo: image,profile: profile })}
+                    onPress={()=>navigation.navigate("UbicationSelect",{photo: image,profile: profile })}
                     labelStyle={{fontSize:20}}
                     contentStyle={{flexDirection:"row-reverse"}}
                 >Siguiente</Button>

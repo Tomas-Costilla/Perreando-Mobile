@@ -1,40 +1,46 @@
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import { FlatList, ScrollView, StyleSheet, View } from "react-native"
-import { Text } from "react-native-paper"
+import { ActivityIndicator, Text } from "react-native-paper"
 import { Colors } from "../tools/constant"
 import UbicationItem from "../components/UbicationItem"
+import { server } from "../api/server"
 
-const loalidades = [
-    {
-        id:1,
-        name:"Banfield"
-    },
-    {
-        id:2,
-        name:"Lomas de Zamora"
-    },
-    {
-        id:3,
-        name:"La matanza"
-    },
-    {
-        id:4,
-        name:"Lanus"
-    }
-]
 
-export default function UbicationsScreen({navigation}){
+export default function UbicationsScreen({navigation,route}){
+
+    const [towns,setTowns] = useState([])
+    const [loading, setLoading] = useState(false)
 
     const handleUbicationPreference = (value) => {
-        navigation.navigate("SearchHost",{ubi: value})
+        navigation.navigate(route.params.screenBack,{...route.params,ubication: value})
     }
+
+    const getAllTowns = async () =>{
+        setLoading(true)
+        try {
+            const response = await server.get("/user/ubications")
+            setTowns(response.data.resultado)
+        } catch (error) {
+            console.log(error);
+        }
+        setLoading(false)
+    }
+
+    useEffect(()=>{
+        getAllTowns()
+    },[])
+
+    if(loading) return <View style={myStyles.loadingContainer}>
+        <ActivityIndicator animating={true} size={50}/>
+    </View>
 
     return <View style={myStyles.container}>
         <Text style={myStyles.title}>Selecciona una localidad</Text>
         <FlatList 
-            data={loalidades}
-            renderItem={({item})=> <UbicationItem name={item.name} handleData={handleUbicationPreference} navigation={navigation}/>}
+            data={towns}
+            renderItem={({item})=> <UbicationItem name={item.nombre} handleData={handleUbicationPreference} navigation={navigation}/>}
             keyExtractor={item=>item.id}
+            initialNumToRender={10}
         />
     </View>
 }
@@ -49,5 +55,11 @@ const myStyles = StyleSheet.create({
         textAlign:"center",
         marginTop:10,
         marginBottom:10
+    },
+    loadingContainer:{
+        flex:1,
+        backgroundColor:Colors.backgroundColor,
+        justifyContent:"center",
+        padding:10
     }
 })

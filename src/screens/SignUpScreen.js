@@ -13,20 +13,19 @@ import { signIn } from "../store/slices/userSlice";
 import { useDispatch } from "react-redux";
 import ErrorMessage from "../components/ErrorMessage";
 import HostInputs from "../components/HostInputs";
-import UbicationInput from "../components/UbicationInput";
 import { ValidateUserData } from "../tools/validators";
 import InputSignUp from "../components/InputSignUp";
 import GuestInputs from "../components/GuestInputs";
 
 const SignUpScreen = ({ route, navigation }) => {
-  const { photo, profile } = route.params;
+  const { photo, profile, ubication } = route.params;
   const dispatch = useDispatch();
   const [userData, setUserData] = useState({
     userFullName: "",
     userEmail: "",
     userPhone: 0,
     userPassword: "",
-    userUbication: "CABA",
+    userUbication: ubication,
     userAddressStreet: "",
     userAddressNumber: 0,
     userAddressBetwStreet: "",
@@ -70,6 +69,7 @@ const SignUpScreen = ({ route, navigation }) => {
         return
     }
 
+  
     /* prepare object to send backend */
     const formData = new FormData();
     formData.append("userFullName", userData.userFullName);
@@ -95,7 +95,6 @@ const SignUpScreen = ({ route, navigation }) => {
     formData.append("userHostAnimalWeightTo",userData.userHostAnimalWeightTo)
     formData.append("userHostAnimalAgeFrom",userData.userHostAnimalAgeFrom)
     formData.append("userHostAnimalAgeTo",userData.userHostAnimalAgeTo)
-    console.log(formData);
     setLoading(true);
     try {
             await server.post("/user",formData,{
@@ -147,9 +146,7 @@ const SignUpScreen = ({ route, navigation }) => {
           handleData={handleUserData}
           validMessage={validMessage.phone}
         />
-
-        <UbicationInput userUbication={userData.userUbication} navigation={navigation} userProfile={userData.userProfile} />
-
+        
         <InputSignUp
           textLabel="Tu Direccion*"
           type="text"

@@ -1,9 +1,9 @@
-import {} from "react"
+import { memo } from "react"
 import { StyleSheet, View } from "react-native"
 import { List } from "react-native-paper"
 
 
-export default function UbicationItem({name,handleData,navigation}){
+const UbicationItem = ({name,handleData,navigation}) =>{
 
     return <View>
         <List.Item 
@@ -20,3 +20,5 @@ const myStyles = StyleSheet.create({
 
     }
 })
+
+export default memo(UbicationItem)

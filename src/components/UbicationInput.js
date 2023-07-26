@@ -5,7 +5,7 @@ import InputView from "./InputView"
 import { PROFILE_TYPES } from "../tools/constant"
 
 
-export default function UbicationInput({userUbication,navigation,userProfile}){
+export default function UbicationInput({handleUbication,navigation,userProfile,ubicationSelected}){
     const [visible,setVisible] = useState(false)
 
     const handleModalInfo = () => setVisible(!visible)
@@ -25,7 +25,7 @@ export default function UbicationInput({userUbication,navigation,userProfile}){
                 label="Provincia"
                 mode="outlined"
                 disabled
-                value={userUbication}
+                value="CABA"
                 style={myStyle.inputStyle}
                 />
             <Button 
@@ -40,13 +40,14 @@ export default function UbicationInput({userUbication,navigation,userProfile}){
                          <InputView 
                              editable={false}
                              label="Selecciona una localidad"
+                             value={typeof ubicationSelected !== 'undefined' ? ubicationSelected : ""}
                              placeholder="Aun no has seleccionado ningun valor..."
                          />
          
                          <View style={myStyle.btnUbications}>
                                  <Button
                                      mode="outlined"
-                                     onPress={()=>navigation.navigate("UbicationSearch")}
+                                     onPress={()=>navigation.navigate("UbicationSearch",{screenBack: "SignUp"})}
                                      icon="map-marker-outline"
                                  >
                                      Ver Localidades

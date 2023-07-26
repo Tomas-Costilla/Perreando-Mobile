@@ -6,6 +6,7 @@ import { Colors } from "../tools/constant";
 import { useSelector } from "react-redux";
 import {server} from "../api/server"
 import ErrorMessage from "../components/ErrorMessage";
+import InputView from "../components/InputView";
 
 export default function CreateHostScreen({navigation}){
 
@@ -17,7 +18,9 @@ export default function CreateHostScreen({navigation}){
         description:"",
         capacity:"",
         price:"",
-        location:""
+        location:"",
+        weight:"",
+        age:""
     })
     const [hostData,setHostData] = useState({
         hostOwnerId:user._id,
@@ -26,6 +29,10 @@ export default function CreateHostScreen({navigation}){
         hostOwnerCapacity:0,
         hostPrice:0,
         hostTypeAnimals:typeAnimal,
+        hostAnimalWeightFrom:0,
+        hostAnimalWeightTo:0,
+        hostAnimalAgeFrom:0,
+        hostAnimalAgeTo:0,
         hostGuests:[],
     })
  
@@ -33,7 +40,7 @@ export default function CreateHostScreen({navigation}){
 
 
    const validateDataHost = () =>{
-       const messages = {description:"",location:"",capacity:"",price:""}
+       const messages = {description:"",location:"",capacity:"",price:"",weight:"",age:""}
        let isValid = true
        
        if(hostData.hostDescription === ""){
@@ -55,11 +62,22 @@ export default function CreateHostScreen({navigation}){
             isValid = false
        }
 
+       if(hostData.hostAnimalWeightTo == 0 || hostData.hostAnimalWeightFrom == 0){
+        messages.weight = "Debes ingresar el peso en KG que permites"
+        isValid = false
+       }
+
+       if(hostData.hostAnimalAgeFrom == 0 || hostData.hostAnimalWeightTo == 0){
+        messages.age = "Debes ingresar el rango de edades que permites"
+       }
+
        if(!isValid){
             setValidateMsg({...validateMsg,
                 capacity: messages.capacity,
                 description: messages.description,
-                price: messages.price
+                price: messages.price,
+                weight: messages.weight,
+                age:messages.age
             })
        }
        return isValid;
@@ -77,6 +95,7 @@ export default function CreateHostScreen({navigation}){
         else setValidateMsg({...validateMsg,description:"",capacity:"",price:""})
         try {
             await server.post("/host",hostData)
+            navigation.navigate("ViewHostData")
         } catch (error) {
             setError(error.response.data)
         }
@@ -84,42 +103,78 @@ export default function CreateHostScreen({navigation}){
     }
 
     return <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={myStyles.container}>
-                    <Text>Crear Hospedaje</Text>
-                   
-                    <TextInput 
-                        label="Ingresa un nombre descriptivo"
-                        mode="outlined"
-                        inputMode="numeric"
-                        onChangeText={val=>handleHostData("hostDescription",val)}
+            <ScrollView>
+                    <Text style={myStyles.title}>Completá los datos para crear el hospedaje</Text>
+
+                    <InputView 
+                        nameField="hostDescription"
+                        label="Ingresá un nombre descriptivo"
+                        editable={true}
+                        handleData={handleHostData}
+                        validateMessage={validateMsg.description}
+
                     />
-                    {validateMsg.description && <HelperText type="error" visible>{validateMsg.description}</HelperText>}
+                   {/*  {validateMsg.description && <HelperText type="error" visible>{validateMsg.description}</HelperText>} */}
 
-                    <TextInput 
-                        label="Localidad de tu cuenta"
-                        mode="outlined"
-                        onChangeText={val=>handleHostData("hostLocation",val)}
+                    <InputView 
+                        nameField="hostOwnerCapacity"
+                        label="Ingresá tu capacidad maxima de huespedes"
+                        editable={true}
+                        handleData={handleHostData}
+                        typeInput="numeric"
+                        inputStyles={myStyles.numberInput}
+                        validateMessage={validateMsg.capacity}
                     />
+                    {/* {validateMsg.capacity && <HelperText type="error" visible>{validateMsg.capacity}</HelperText>} */}
 
-
-                    {/* <HelperText type="info">Ingresa un limite de capacidad</HelperText> */}
-                    <TextInput 
-                        label="Ingresa una capacidad a hospedar"
-                        mode="outlined"
-                        inputMode="numeric"
-                        onChangeText={val=>handleHostData("hostOwnerCapacity",val)}
+                    <InputView 
+                        nameField="hostPrice"
+                        label="Ingresá el costo total por la estadia"
+                        editable={true}
+                        handleData={handleHostData}
+                        typeInput="numeric"
+                        inputStyles={myStyles.numberInput}
+                        icon="currency-usd"
+                        validateMessage={validateMsg.price}
                     />
-                    {validateMsg.capacity && <HelperText type="error" visible>{validateMsg.capacity}</HelperText>}
+                     {/* {validateMsg.price && <HelperText type="error" visible>{validateMsg.price}</HelperText>} */}
 
-                    {/* <HelperText type="info">Ingresa el costo de estadia</HelperText> */}
-                    <TextInput 
-                        label="Precio de estadia..."
-                        mode="outlined"
-                        inputMode="numeric"
-                        style={myStyles.inputPrice}
-                        onChangeText={val=>handleHostData("hostPrice",val)}
-                    />
-                     {validateMsg.price && <HelperText type="error" visible>{validateMsg.price}</HelperText>}
 
+                    <View style={myStyles.specification}>
+                        <InputView 
+                            nameField="hostAnimalWeightFrom"
+                            label="Peso en KG desde"
+                            editable={true}
+                            handleData={handleHostData}
+                            typeInput="numeric"
+                        />
+                        <InputView 
+                            nameField="hostAnimalWeightTo"
+                            label="Peso en KG hasta"
+                            editable={true}
+                            handleData={handleHostData}
+                            typeInput="numeric"
+                        />
+                    </View>
+                    {validateMsg.weight && <HelperText type="error" visible>{validateMsg.weight}</HelperText>}
+
+                    <View style={myStyles.specification}>
+                        <InputView 
+                                nameField="hostAnimalAgeFrom"
+                                label="Edad desde"
+                                editable={true}
+                                handleData={handleHostData}
+                                typeInput="numeric"
+                            />
+                            <InputView 
+                                nameField="hostAnimalAgeTo"
+                                label="Edad hasta"
+                                editable={true}
+                                handleData={handleHostData}
+                                typeInput="numeric"
+                            />
+                    </View>
+                    {validateMsg.age && <HelperText type="error" visible>{validateMsg.age}</HelperText>}
                     
              
                     <Text>Selecciona el tipo de animal a hospedar</Text>
@@ -144,14 +199,14 @@ export default function CreateHostScreen({navigation}){
                     <Button
                         mode="contained"
                         style={myStyles.btnStyles}
-                        onPress={()=>navigation.navigate("ViewHostData")}
+                        onPress={()=>createHost()}
                         loading={loading}
                     >
                         Crear Hospedaje
                     </Button>
                     <ErrorMessage errorMessage="Esto es un error" isError={error}/>
                
-
+                    </ScrollView>        
     </KeyboardAvoidingView>
 }
 
@@ -164,6 +219,20 @@ const myStyles = StyleSheet.create({
         flexDirection:"column",
         justifyContent:"flex-start",
         gap:10
+    },
+    title:{
+        textAlign:"center",
+        marginTop:10,
+        marginBottom:10
+    },
+    specification:{
+        display:"flex",
+        flexDirection:"row",
+        justifyContent:"flex-start",
+        alignItems:"center",
+        gap:10,
+        marginTop:10,
+        marginBottom:10
     },
     switchContainer:{
         display:"flex",
@@ -181,7 +250,7 @@ const myStyles = StyleSheet.create({
     btnStyles:{
         
     },
-    inputPrice:{
+    numberInput:{
         width:150
     }
 })
