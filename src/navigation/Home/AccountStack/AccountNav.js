@@ -14,6 +14,7 @@ import ViewHostRatingScreen from "../../../screens/ViewHostRatingScreen"
 import SearchHostScreen from "../../../screens/SearchHostScreen"
 import UbicationsScreen from "../../../screens/UbicationsScreen"
 import SearchResultScreen from "../../../screens/SearchResultScreen"
+import UpdateAccountScreen from "../../../screens/UpdateAccountScreen"
 
 const StackNavigation = createStackNavigator()
 const AccountNav = () =>{
@@ -31,6 +32,11 @@ const AccountNav = () =>{
             <StackNavigation.Screen 
                 name="AccountData"
                 component={AccountDataScreen}
+            />
+
+            <StackNavigation.Screen 
+                name="UpdateAccount"
+                component={UpdateAccountScreen}
             />
             
             <StackNavigation.Screen 

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, KeyboardAvoidingView, Platform  } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { Button, HelperText, RadioButton, Switch, Text, TextInput } from "react-native-paper";
+import { ActivityIndicator, Button, HelperText, RadioButton, Switch, Text, TextInput } from "react-native-paper";
 import { Colors } from "../tools/constant";
 import { useSelector } from "react-redux";
 import {server} from "../api/server"
@@ -13,6 +13,8 @@ export default function CreateHostScreen({navigation}){
     const user = useSelector(state=>state.user.user)
     const [typeAnimal,setTypeAnimal] = useState('Perros')
     const [loading,setLoading] = useState(false)
+    const [loadingResponse,setLoadingResponse] = useState(false)
+    const [existHost,setExistHost] = useState(false)
     const [error,setError] = useState("")
     const [validateMsg,setValidateMsg] = useState({
         description:"",
@@ -38,6 +40,16 @@ export default function CreateHostScreen({navigation}){
  
    const handleHostData = (camp,value) => setHostData({...hostData,[camp]:value}) 
 
+   const checkIfAnyHostCreated = async () =>{
+    setLoadingResponse(true)
+        try {
+            const {data} = await server.get(`/host/check/${hostData.hostOwnerId}`)
+            if(data.result) setExistHost(true)
+        } catch (error) {
+            setError(error.response.data)
+        }
+    setLoadingResponse(false)
+   }
 
    const validateDataHost = () =>{
        const messages = {description:"",location:"",capacity:"",price:"",weight:"",age:""}
@@ -101,6 +113,18 @@ export default function CreateHostScreen({navigation}){
         }
         setLoading(false)
     }
+
+    useEffect(()=>{
+        checkIfAnyHostCreated()
+    },[])
+
+    if(loadingResponse) return <View style={myStyles.responseContainer}>
+        <ActivityIndicator animating size={40}/>
+    </View>
+
+    if(existHost) return <View style={myStyles.responseContainer}>
+        <Text style={myStyles.messageResponse}>Ya tienes creado un host actualmente!</Text>
+    </View>
 
     return <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={myStyles.container}>
             <ScrollView>
@@ -219,6 +243,17 @@ const myStyles = StyleSheet.create({
         flexDirection:"column",
         justifyContent:"flex-start",
         gap:10
+    },
+   responseContainer:{
+        flex:1,
+        backgroundColor:Colors.backgroundColor,
+        padding:10,
+        justifyContent:"center",
+        alignItems:"center"
+    },
+    messageResponse:{
+        textAlign:"justify",
+        fontSize:15
     },
     title:{
         textAlign:"center",

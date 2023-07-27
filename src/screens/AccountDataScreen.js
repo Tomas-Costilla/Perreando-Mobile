@@ -67,7 +67,7 @@ const AccountDataScreen = ({navigation}) =>{
         <View style={myStyles.btnContainer}>
                 <Button
                     mode="contained"
-                    onPress={()=>console.log("Pantalla de modificar datos")}
+                    onPress={()=>navigation.navigate("UpdateAccount")}
                 >
                     Modificar Datos
                 </Button>
