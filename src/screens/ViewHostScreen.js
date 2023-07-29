@@ -130,6 +130,7 @@ export default function ViewHostScreen({ navigation }) {
         navigation={navigation}
         visible={deleteModal}
         hideModal={handleDeleteModal}
+        hostOwnerId={user._id}
       />
       {/* </ScrollView> */}
     </ScrollView>

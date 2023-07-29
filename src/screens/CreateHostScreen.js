@@ -239,10 +239,10 @@ const myStyles = StyleSheet.create({
         backgroundColor:Colors.backgroundColor,
         padding:10,
         flex:1,
-        display:"flex",
+        /* display:"flex",
         flexDirection:"column",
         justifyContent:"flex-start",
-        gap:10
+        gap:10 */
     },
    responseContainer:{
         flex:1,

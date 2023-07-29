@@ -16,6 +16,7 @@ import HostInputs from "../components/HostInputs";
 import { ValidateUserData } from "../tools/validators";
 import InputSignUp from "../components/InputSignUp";
 import GuestInputs from "../components/GuestInputs";
+import InputView from "../components/InputView";
 
 const SignUpScreen = ({ route, navigation }) => {
   const { photo, profile, ubication } = route.params;
@@ -25,6 +26,7 @@ const SignUpScreen = ({ route, navigation }) => {
     userEmail: "",
     userPhone: 0,
     userPassword: "",
+    userRepeatPassword:"",
     userUbication: ubication,
     userAddressStreet: "",
     userAddressNumber: 0,
@@ -123,85 +125,150 @@ const SignUpScreen = ({ route, navigation }) => {
         </Text>
         <HelperText type="error" visible>(*) campos requeridos</HelperText>
 
-        <InputSignUp
+      <InputView 
+        nameField="userFullName"
+        label="Nombre Completo *"
+        editable={true}
+        handleData={handleUserData}
+        validateMessage={validMessage.name}
+      />
+
+        {/* <InputSignUp
           textLabel="Nombre Completo"
           type="text"
           name="userFullName"
           handleData={handleUserData}
           validMessage={validMessage.name}
-        />
+        /> */}
 
-        <InputSignUp
+        <InputView 
+          nameField="userEmail"
+          label="Tu email"
+          editable={true}
+          handleData={handleUserData}
+          validateMessage={validMessage.email}
+        />
+        {/* <InputSignUp
           textLabel="Email*"
           type="text"
           name="userEmail"
           handleData={handleUserData}
           validMessage={validMessage.email}
-        />
+        /> */}
 
-        <InputSignUp
+        {/* <InputSignUp
           textLabel="Tu celular*"
           type="numeric"
           name="userPhone"
           handleData={handleUserData}
           validMessage={validMessage.phone}
-        />
+        /> */}
         
-        <InputSignUp
+        <InputView 
+          nameField="userPhone"
+          label="Tu numero de celular"
+          handleData={handleUserData}
+          editable={true}
+          typeInput='numeric'
+          validateMessage={validMessage.phone}
+        />
+
+        <InputView 
+          nameField="userAddressStreet"
+          label="Tu direccion"
+          handleData={handleUserData}
+          editable={true}
+          validateMessage={validMessage.address}
+        />
+
+        {/* <InputSignUp
           textLabel="Tu Direccion*"
           type="text"
           name="userAddressStreet"
           handleData={handleUserData}
           validMessage={validMessage.address}
-        />
+        /> */}
 
-        <InputSignUp
+        <InputView 
+          nameField="userAddressNumber"
+          label="Altura"
+          editable={true}
+          typeInput='numeric'
+          handleData={handleUserData}
+          validateMessage={validMessage.addressNumber}
+        />
+        {/* <InputSignUp
           textLabel="Altura"
           type="numeric"
           name="userAddressNumber"
           handleData={handleUserData}
           validMessage={validMessage.addressNumber}
-        />
+        /> */}
 
-        <InputSignUp
+        {/* <InputSignUp
           textLabel="Entre Calles"
           type="text"
           name="userAddressBetwStreet"
           handleData={handleUserData}
           validMessage={validMessage.addressBetwStreet}
+        /> */}
+        <InputView 
+          nameField="userAddressBetwStreet"
+          label="Entre Calles"
+          editable={true}
+          handleData={handleUserData}
+          validateMessage={validMessage.addressBetwStreet}
         />
 
-        <InputSignUp
+        {/* <InputSignUp
           textLabel="Informacion extra, Ej: Depto 5B, etc"
           type="text"
           name="userAddressExtraInfo"
           handleData={handleUserData}
           validMessage={validMessage.addressExtrainf}
+        /> */}
+        <InputView 
+          nameField="userAddressExtraInfo"
+          label="Informacion extra, Ej: Depto, etc"
+          editable={true}
+          handleData={handleUserData}
+          validateMessage={validMessage.addressExtrainf}
         />
 
-        {profile === PROFILE_TYPES.ANFITRION ? (
-          <HostInputs
-            handleHostData={handleUserData}
-            validMessage={validMessage}
-          />
-        ): <GuestInputs handleGuestData={handleUserData} validationMessage={validMessage}/>}
+        {profile === PROFILE_TYPES.HUESPED && <GuestInputs handleGuestData={handleUserData} validationMessage={validMessage}/>}
 
-        <InputSignUp
+        {/* <InputSignUp
           textLabel="Contraseña*"
           type="text"
           name="userPassword"
           handleData={handleUserData}
           validMessage={validMessage.password}
           secure={visible}
+        /> */}
+        <InputView 
+          nameField="userPassword"
+          label="Crear Contraseña*"
+          editable={true}
+          isPrivate={visible}
+          handleData={handleUserData}
+          validateMessage={validMessage.password}
         />
 
-        <InputSignUp
+        {/* <InputSignUp
           textLabel="Repetir contraseña*"
           type="text"
           handleData={handleRepeatPassword}
           validMessage={validMessage.passwordRepeat}
           secure={visible}
           typeInput="password"
+        /> */}
+        <InputView 
+          nameField="userRepeatPassword"
+          label="Repite la contraseña"
+          editable={true}
+          isPrivate={visible}
+          handleData={handleUserData}
+          validateMessage={validMessage.passwordRepeat}
         />
         <Checkbox.Item
           style={myStyles.checkContainer}
@@ -222,7 +289,7 @@ const SignUpScreen = ({ route, navigation }) => {
             onPress={signUpUser}
             loading={loading}
           >
-            {!loading && "Crear Cuenta"}
+            Registrarme
           </Button>
         </View>
       </View>

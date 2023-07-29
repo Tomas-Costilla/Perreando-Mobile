@@ -19,7 +19,7 @@ return <ScrollView style={myStyles.container}>
 
             {user.userProfile === PROFILE_TYPES.HUESPED
             ? <>
-                <UserOptions iconname="database" text="Mi Reserva" nav={navigation} link="nameScreen 1"/>
+                <UserOptions iconname="database" text="Mi Reserva" nav={navigation} link="GuestHost"/>
                 <UserOptions iconname="magnify" text="Buscar hospedajes" nav={navigation} link="SearchHost"/>
             </>
             : <>

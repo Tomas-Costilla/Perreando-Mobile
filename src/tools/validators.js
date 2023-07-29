@@ -67,7 +67,7 @@ export const ValidateUserData = (userObject,passRpt) =>{
         isValid = false
     }
 
-    if(userObject.userPassword !== passRpt){
+    if(userObject.userPassword !== userObject.userRepeatPassword){
         validationMessage.passwordRepeat = "Las contraseñas no coinciden"
         isValid = false
     }

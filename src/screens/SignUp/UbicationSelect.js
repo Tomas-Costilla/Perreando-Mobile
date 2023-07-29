@@ -16,7 +16,7 @@ export default function UbicationSelect({navigation,route}){
         <InputView 
             editable={false}
             label="Provincia"
-            value="CABA"     
+            value="Buenos Aires"     
             disabled={true}       
         />
         <HelperText type="info">Por el momento solo estamos disponibles en "CABA"</HelperText>

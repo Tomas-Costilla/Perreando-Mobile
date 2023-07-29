@@ -49,7 +49,7 @@ const AccountDataScreen = ({navigation}) =>{
         <InputView editable={false} label="Informacion extra..." value={userData.userAddressExtraInfo} icon="information-outline"/>
         <InputView editable={false} label="Tipo de perfil" value={userData.userProfile} icon="account-box" />
         {/* <InputView editable={false} label="Tu nombre completo" value={userData.userGuestAnimalName} /> */}
-        {userData.userProfile === PROFILE_TYPES.ANFITRION
+       {/*  {userData.userProfile === PROFILE_TYPES.ANFITRION
             && <>
                 <Text>Pesos en "kg" que admites</Text>
                 <View style={myStyles.specification}>
@@ -62,7 +62,7 @@ const AccountDataScreen = ({navigation}) =>{
                     <InputView editable={false} label="Hasta" value={userData.userHostAnimalAgeTo} typeInput="numeric" inputStyles={myStyles.inputStyleHost}/>
                 </View>
                 <InputView editable={false} label="Tipo de alojamiento para..." value={userData.userHostType} icon="paw"/>
-        </>}
+        </>} */}
 
         <View style={myStyles.btnContainer}>
                 <Button

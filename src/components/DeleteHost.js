@@ -1,10 +1,25 @@
-import {} from "react"
+import { useState } from "react"
 import { StyleSheet, View } from "react-native"
 import { Button, Modal, Portal , Text} from "react-native-paper"
 import { Colors } from "../tools/constant"
+import { server } from "../api/server"
 
 
-export default function DeleteHost({navigation,visible,hideModal}){
+export default function DeleteHost({navigation,visible,hideModal,hostOwnerId}){
+
+    const [loading,setLoading] = useState(false)
+
+    const deleteHostData = async () =>{
+        setLoading(true)        
+        try {
+            await server.delete(`/host/${hostOwnerId}`)
+            hideModal()
+            navigation.navigate("Account")
+        } catch (error) {
+            console.log(error.response.data)
+        }
+        setLoading(false)
+    }
 
     return(
         <>
@@ -16,8 +31,9 @@ export default function DeleteHost({navigation,visible,hideModal}){
                         <View style={myStyles.btnActionContainer}>
                             <Button
                                 mode="contained"
-                                onPress={()=>console.log("Eliminar")}
+                                onPress={()=>deleteHostData()}
                                 style={{ marginTop:20,marginBottom:20,}}
+                                loading={loading}
                             >
                                 Si, eliminar
                             </Button>
