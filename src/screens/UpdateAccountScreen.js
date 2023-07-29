@@ -4,7 +4,7 @@ import { Colors } from "../tools/constant"
 import InputView from "../components/InputView"
 import { server } from "../api/server"
 import { useSelector } from "react-redux"
-import { ActivityIndicator, Text } from "react-native-paper"
+import { ActivityIndicator, Button, Text } from "react-native-paper"
 
 
 
@@ -14,6 +14,7 @@ export default function UpdateAccountScreen({navigation}){
     const [loadingRequest,setLoadingRequest] = useState(false)
     const [errorRequest,setErrorRequest] = useState("")
     const [userData,setUserData] = useState({})
+    const [loading,setLoading] = useState(false)
 
     const handleData = (camp,value) => setUserData({...userData,[camp]:value})
 
@@ -26,6 +27,17 @@ export default function UpdateAccountScreen({navigation}){
             setErrorRequest(error.response.data)
         }
         setLoadingRequest(false)
+    }
+
+    const updateUserData = async () =>{
+        setLoading(true)
+        try {
+            await server.put(`/user/${user._id}`,userData)
+            navigation.navigate("Account")
+        } catch (error) {
+            console.log(error)
+        }
+        setLoading(false)
     }
 
 
@@ -43,13 +55,75 @@ export default function UpdateAccountScreen({navigation}){
 
     return <KeyboardAvoidingView  behavior={Platform.OS === "ios" ? "padding" : "height"} style={myStyles.container}> 
         <ScrollView>
+            <Text style={myStyles.title}>Modificar datos</Text>
             <InputView 
                 nameField="userFullName"
                 label="Tu nombre completo"
                 editable={true}
                 handleData={handleData}
                 value={userData.userFullName}
+                icon="pencil"
             />
+            <InputView 
+                nameField="userEmail"
+                label="Tu email"
+                editable={true}
+                handleData={handleData}
+                value={userData.userEmail}
+                icon="pencil"
+            />
+            <InputView 
+                nameField="userPhone"
+                label="Tu numero de telefono"
+                editable={true}
+                handleData={handleData}
+                value={userData.userPhone}
+                typeInput='numeric'
+                icon="pencil"
+            />
+             <InputView 
+                nameField="userAddressStreet"
+                label="Tu Direccion"
+                editable={true}
+                handleData={handleData}
+                value={userData.userAddressStreet}
+                icon="pencil"
+            />
+            <InputView 
+                nameField="userAddressNumber"
+                label="Altura"
+                editable={true}
+                handleData={handleData}
+                value={userData.userAddressNumber}
+                icon="pencil"
+                typeInput='numeric'
+            />
+            <InputView 
+                nameField="userAddressBetwStreet"
+                label="Entre Calles"
+                editable={true}
+                handleData={handleData}
+                value={userData.userAddressBetwStreet}
+                icon="pencil"
+            />
+            <InputView 
+                nameField="userAddressExtraInfo"
+                label="Informacion extra"
+                editable={true}
+                handleData={handleData}
+                value={userData.userAddressExtraInfo}
+                icon="pencil"
+            />
+
+            <View style={myStyles.btnContainer}>
+                <Button
+                    mode="contained"
+                    onPress={()=>updateUserData()}
+                    loading={loading}
+                >
+                    Confirmar Cambios
+                </Button>
+            </View>
         </ScrollView>
     </KeyboardAvoidingView>
 }
@@ -69,5 +143,19 @@ const myStyles = StyleSheet.create({
     },
     requestMessage:{
         fontSize:20
+    },
+    title:{
+        textAlign:"center",
+        marginTop:10,
+        marginBottom:10,
+        fontSize:15
+    },
+    btnContainer:{
+        flex:1,
+        justifyContent:"center",
+        alignItems:"center",
+        padding:10,
+        marginTop:10,
+        marginBottom:10
     }
 })
