@@ -1,4 +1,4 @@
-import {} from "react"
+import { useEffect } from "react"
 import { StyleSheet, View } from "react-native"
 import { Colors } from "../tools/constant"
 import { Text } from "react-native-paper"
@@ -13,7 +13,17 @@ const host = [
 ]
 
 
-export default function SearchResultScreen({navigation}){
+export default function SearchResultScreen({navigation,route}){
+
+    const {ubication} = req.params
+
+    const getAllHostbyUbication = () =>{
+        
+    }
+
+    useEffect(()=>{
+        getAllHostbyUbication()
+    },[ubication])
 
     return <View style={myStyles.container}>
         <Text>Resultado de la busqueda</Text>

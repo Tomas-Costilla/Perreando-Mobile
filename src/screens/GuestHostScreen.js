@@ -6,6 +6,7 @@ import { useSelector } from "react-redux"
 import ErrorMessage from "../components/ErrorMessage"
 import { Colors } from "../tools/constant"
 import InputView from "../components/InputView"
+import CancelHost from "../components/CancelHost"
 
 
 
@@ -92,20 +93,15 @@ export default function GuestHostScreen({navigation}){
         />
         </View>
 
-        <View /* style={myStyles.btnContainer} */>
-           {/*  <Button
+        <View style={myStyles.btnContainer}>
+            <Button
                 mode="contained"
                 onPress={()=>console.log("dd")}
             >
                 Contactar
             </Button>
 
-            <Button
-                mode="contained"
-                onPress={()=>console.log("dd")}
-            >
-                Cancelar Reserva
-            </Button> */}
+            <CancelHost navigation={navigation}/>
         </View>
 
 
@@ -130,12 +126,12 @@ const myStyles = StyleSheet.create({
         marginTop:10,
         marginBottom:10
     },
-    /* btnContainer:{
+    btnContainer:{
         display:"flex",
         justifyContent:"space-evenly",
         flexDirection:"row",
         padding:10,
         marginTop:10,
         marginBottom:10
-    } */
+    }
 })

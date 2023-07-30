@@ -6,23 +6,25 @@ import InputView from "../components/InputView"
 
 export default function SearchHostScreen({navigation,route}){
 
+    /* console.log(route.params.ubication) */
+
     return <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={myStyles.container}>
             <Text style={myStyles.title}>Realizar busqueda de alojamiento</Text>
             <InputView 
                 editable={false}
                 label="Zona por defecto"
-                value="CABA"
+                value="Buenos Aires"
             />
             <InputView 
                 editable={false}
                 label="Selecciona una localidad"
-                value={typeof route.params !== 'undefined' ? route.params.ubi : ""}
+                value={typeof route.params !== 'undefined' ? route.params.ubication : ""}
                 placeholder="Aun no has seleccionado ningun valor..."
             />
             <View style={myStyles.btnUbications}>
                 <Button
                     mode="outlined"
-                    onPress={()=>navigation.navigate("UbicationSearch")}
+                    onPress={()=>navigation.navigate("UbicationSearch",{...route.params,screenBack: "SearchHost"})}
                     icon="map-marker-outline"
                 >
                     Ver Localidades
@@ -32,7 +34,9 @@ export default function SearchHostScreen({navigation,route}){
             <View style={myStyles.btnSearchContainer}>
                    <Button
                         mode="contained"
-                        onPress={()=>navigation.navigate("SearchResult")}
+                        onPress={()=>navigation.navigate("SearchResult",{
+                            ubication: route.params.ubication
+                        })}
                         style={myStyles.btnSearch}
                         icon="magnify"
                    >
