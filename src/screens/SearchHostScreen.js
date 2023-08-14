@@ -35,7 +35,7 @@ export default function SearchHostScreen({navigation,route}){
                    <Button
                         mode="contained"
                         onPress={()=>navigation.navigate("SearchResult",{
-                            ubication: route.params.ubication
+                            ubication: typeof route.params !== 'undefined' ? route.params.ubication : "all"
                         })}
                         style={myStyles.btnSearch}
                         icon="magnify"

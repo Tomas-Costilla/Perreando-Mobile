@@ -16,6 +16,7 @@ import UbicationsScreen from "../../../screens/UbicationsScreen"
 import SearchResultScreen from "../../../screens/SearchResultScreen"
 import UpdateAccountScreen from "../../../screens/UpdateAccountScreen"
 import GuestHostScreen from "../../../screens/GuestHostScreen"
+import ViewGuestHost from "../../../screens/ViewGuestHost"
 
 const StackNavigation = createStackNavigator()
 const AccountNav = () =>{
@@ -87,6 +88,11 @@ const AccountNav = () =>{
             <StackNavigation.Screen 
                 name="GuestHost"
                 component={GuestHostScreen}
+            />
+
+            <StackNavigation.Screen 
+                name="ViewHost"
+                component={ViewGuestHost}
             />
 
         </StackNavigation.Navigator>
