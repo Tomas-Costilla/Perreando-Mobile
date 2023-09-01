@@ -7,8 +7,9 @@ import UserOptions from "./UserOptions"
 import { SafeAreaView } from "react-native-safe-area-context"
 import LogoutBtn from "./LogoutBtn"
 import {Colors, PROFILE_TYPES} from "../tools/constant"
+import SnackMessage from "./SnackMessage"
 
-const AccountOptions = ({navigation}) =>{
+const AccountOptions = ({navigation,route}) =>{
 
     const user = useSelector(state=>state.user.user)
 
@@ -19,6 +20,7 @@ return <ScrollView style={myStyles.container}>
 
             {user.userProfile === PROFILE_TYPES.HUESPED
             ? <>
+                <UserOptions iconname="paw" text="Mi Mascota" nav={navigation} link="UpdatePawData"/>
                 <UserOptions iconname="database" text="Mi Reserva" nav={navigation} link="GuestHost"/>
                 <UserOptions iconname="magnify" text="Buscar hospedajes" nav={navigation} link="SearchHost"/>
             </>
@@ -28,6 +30,7 @@ return <ScrollView style={myStyles.container}>
             </>}
             <Divider style={myStyles.dividerStyle}/>
             <LogoutBtn />
+            {route.params?.message && <SnackMessage message={route.params?.message}/>}
     </View>
     </ScrollView>
 }

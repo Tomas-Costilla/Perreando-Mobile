@@ -1,13 +1,31 @@
 import { useState } from "react"
 import { StyleSheet, View } from "react-native"
-import { Button, Modal, Portal, Text } from "react-native-paper"
+import { Button, HelperText, Modal, Portal, Text } from "react-native-paper"
 import { Colors } from "../tools/constant"
+import { server } from "../api/server"
 
-export default function CancelHost({navigation}){
+export default function CancelHost({navigation,hostId,userEmail}){
 
     const [visibleModal,setVisibleModal] = useState(false)
+    const [loadingServer,setLoadingServer] = useState(false)
+    const [errorServer,setErrorServer] = useState("")
 
     const handleModal = () =>setVisibleModal(!visibleModal)
+
+
+    const cancelReserve = async () =>{
+        setErrorServer("")
+        setLoadingServer(true)
+        try {
+            await server.delete(`/host/guest/${hostId}/${userEmail}`)
+            handleModal()
+            navigation.navigate("Account")
+        } catch (error) {
+            setErrorServer(error.response.data)
+        }
+        setLoadingServer(false)
+    }
+
 
     return <>
         <Portal>
@@ -17,6 +35,8 @@ export default function CancelHost({navigation}){
                     <View style={myStyles.btnContainer}>
                         <Button
                             mode="contained"
+                            loading={loadingServer}
+                            onPress={cancelReserve}
                         >
                             Aceptar
                         </Button>
@@ -27,6 +47,7 @@ export default function CancelHost({navigation}){
                             Volver
                         </Button>
                     </View>
+                        {errorServer && <HelperText type="error">{errorServer}</HelperText>}
                 </View>
             </Modal>
         </Portal>

@@ -4,6 +4,9 @@ import { ActivityIndicator, Avatar, Button, HelperText, Text } from "react-nativ
 import { server } from "../api/server"
 import { Colors } from "../tools/constant"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
+import CreateReserve from "../components/CreateReserve"
+import { useSelector } from "react-redux"
+import ContactBtn from "../components/ContactBtn"
 
 const PropertyWithIcon = ({text,icon}) => {
     return <View style={myStyles.propertyContainer}>
@@ -15,9 +18,11 @@ const PropertyWithIcon = ({text,icon}) => {
 export default function ViewGuestHost({navigation,route}){
 
     const {hostId} = route.params
+    const user = useSelector(state=>state.user.user)
     const [loadingReq, setLoadingReq] = useState(false)
     const [errorServer,setErrorServer] = useState("")
     const [hostData,setHostData] = useState({})
+    const [loading,setLoading] = useState(false)
 
     const getHostbyId = async () =>{
         setLoadingReq(true)
@@ -30,6 +35,8 @@ export default function ViewGuestHost({navigation,route}){
         }
         setLoadingReq(false)
     }
+
+    
 
     useEffect(()=>{
         getHostbyId()
@@ -127,18 +134,20 @@ export default function ViewGuestHost({navigation,route}){
             </View>
 
             <View style={myStyles.btnContainer}>
-                <Button
+               {/*  <Button
                     icon="whatsapp"
                     mode="outlined"
                 >
                     Contactar
-                </Button>
+                </Button> */}
+                <ContactBtn phone={hostData.hostOwnerId?.userPhone} message="Hola!, estoy interesado en tu alojamiento"/>
 
-                <Button
+                <CreateReserve navigation={navigation} hostIdProp={hostId} guestIdProp={user._id}/>
+                {/* <Button
                     mode="contained"
                 >
                     Reservar
-                </Button>
+                </Button> */}
             </View>
 
 

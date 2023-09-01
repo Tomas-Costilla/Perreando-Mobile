@@ -82,18 +82,7 @@ export const ValidateUserData = (userObject,passRpt) =>{
         isValid = false
     }
 
-    if(userObject.userProfile === PROFILE_TYPES.ANFITRION){
-        if(userObject.userHostAnimalWeightFrom === 0 || userObject.userHostAnimalWeightTo === 0){
-            validationMessage.hostanimalweight = "Como anfitrion, debes ingresar el peso de animales que permites"
-            isValid = false
-        }
-    
-        if(userObject.userHostAnimalAgeFrom === 0 || userObject.userHostAnimalAgeTo === 0){
-            validationMessage.hostanimalage = "Como anfitrion, debes ingresar la edad de animales que permites"
-            isValid = false
-        }
-
-    }else{
+    if(userObject.userProfile === PROFILE_TYPES.HUESPED){
         if(userObject.userGuestAnimalAge === 0){
             validationMessage.guestAnimalAge = "Debes ingresar la edad de tu mascota"
             isValid = false
@@ -104,6 +93,7 @@ export const ValidateUserData = (userObject,passRpt) =>{
             isValid = false
         }
     }
+    
     return {
         isValid,
         validationMessage

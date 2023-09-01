@@ -66,11 +66,12 @@ const SignUpScreen = ({ route, navigation }) => {
       userData,
       passwordRepeat
     );
-   /*  if(isValid === false){
+    if(isValid === false){
         setValidMessage(validationMessage)
-        console.log(isValid)
+        /* console.log(validationMessage)
+        console.log(isValid) */
         return
-    } */
+    }
 
   
     /* prepare object to send backend */

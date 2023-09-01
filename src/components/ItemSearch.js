@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native"
 import { Avatar, Button, Card, Text } from "react-native-paper"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import { Colors } from "../tools/constant"
+import ContactBtn from "./ContactBtn"
 
 const PropertyCard = ({text,icon}) => {
     return <View style={myStyles.propertyContainer}>
@@ -29,7 +30,7 @@ export default function ItemSearch({data,navigation}){
             : <Text style={myStyles.textCapacity}>No hay mas lugar disponible</Text>}
         </Card.Content>
         <Card.Actions>
-            <Button icon="phone">Contactar</Button>
+            <ContactBtn phone={data.hostOwnerId.userPhone} message="Hola!, estoy interesado en tu publicacion"/>
             <Button 
                 icon="eye"
                 onPress={()=>navigation.navigate("ViewHost",{hostId: data._id})}

@@ -7,6 +7,7 @@ import ErrorMessage from "../components/ErrorMessage"
 import { Colors } from "../tools/constant"
 import InputView from "../components/InputView"
 import CancelHost from "../components/CancelHost"
+import ContactBtn from "../components/ContactBtn"
 
 
 
@@ -94,14 +95,15 @@ export default function GuestHostScreen({navigation}){
         </View>
 
         <View style={myStyles.btnContainer}>
-            <Button
+            {/* <Button
                 mode="contained"
                 onPress={()=>console.log("dd")}
             >
                 Contactar
-            </Button>
+            </Button> */}
+            <ContactBtn phone={guestHostData.hostOwnerId.userPhone} message="Hola!, quisiera hacerte una consulta"/>
 
-            <CancelHost navigation={navigation}/>
+            <CancelHost navigation={navigation} hostId={guestHostData._id} userEmail={user.userEmail}/>
         </View>
 
 
