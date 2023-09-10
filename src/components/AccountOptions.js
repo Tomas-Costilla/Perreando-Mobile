@@ -1,4 +1,4 @@
-import {} from "react"
+import { useEffect } from "react"
 import {View,StyleSheet, ScrollView} from "react-native"
 import {Divider, Text, Button} from "react-native-paper"
 import UserAccount from "./UserAccount"
@@ -12,6 +12,10 @@ import SnackMessage from "./SnackMessage"
 const AccountOptions = ({navigation,route}) =>{
 
     const user = useSelector(state=>state.user.user)
+
+    useEffect(()=>{
+
+    },[])
 
 return <ScrollView style={myStyles.container}>
         <View>
@@ -30,7 +34,7 @@ return <ScrollView style={myStyles.container}>
             </>}
             <Divider style={myStyles.dividerStyle}/>
             <LogoutBtn />
-            {route.params?.message && <SnackMessage message={route.params?.message}/>}
+            {/* {route.params?.message && <SnackMessage message={route.params?.message}/>} */}
     </View>
     </ScrollView>
 }
@@ -43,7 +47,9 @@ const myStyles = StyleSheet.create({
 
     },
     dividerStyle:{
-        borderWidth:0.2
+        borderWidth:0.2,
+        borderColor:"#CACACA",
+        borderWidth:1
     },
     btnCrtHost:{
         display:"flex",

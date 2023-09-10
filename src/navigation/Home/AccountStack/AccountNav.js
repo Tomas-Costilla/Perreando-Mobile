@@ -18,6 +18,9 @@ import UpdateAccountScreen from "../../../screens/UpdateAccountScreen"
 import GuestHostScreen from "../../../screens/GuestHostScreen"
 import ViewGuestHost from "../../../screens/ViewGuestHost"
 import UpdatePawData from "../../../screens/UpdatePawData"
+import ConfirmReserveScreen from "../../../screens/ConfirmReserveScreen"
+import ConfirmUpdatePawScreen from "../../../screens/ConfirmUpdatePawScreen"
+import UpdateImagePaw from "../../../screens/UpdateImagePaw"
 
 const StackNavigation = createStackNavigator()
 const AccountNav = () =>{
@@ -35,16 +38,25 @@ const AccountNav = () =>{
             <StackNavigation.Screen 
                 name="AccountData"
                 component={AccountDataScreen}
+                options={{
+                    headerTitle:'Datos de la cuenta'
+                }}
             />
 
             <StackNavigation.Screen 
                 name="UpdateAccount"
                 component={UpdateAccountScreen}
+                options={{
+                    headerTitle:''
+                }}
             />
             
             <StackNavigation.Screen 
                 name="CreateHost"
                 component={CreateHostScreen}
+                options={{
+                    headerTitle:'Crear hospedaje'
+                }}
                 /* component={} */
             />
 
@@ -89,6 +101,10 @@ const AccountNav = () =>{
             <StackNavigation.Screen 
                 name="GuestHost"
                 component={GuestHostScreen}
+                options={({navigation})=>({
+                    headerLeft:()=><BackButton navigation={navigation} screen="Account"/>,
+                    headerTitle:'Mi Reserva'
+                })}
             />
 
             <StackNavigation.Screen 
@@ -100,6 +116,12 @@ const AccountNav = () =>{
                 name="UpdatePawData"
                 component={UpdatePawData}
             />
+
+            <StackNavigation.Screen name="ConfirmUpdatePaw" component={ConfirmUpdatePawScreen}/>
+
+            <StackNavigation.Screen name="UpdateImagePaw" component={UpdateImagePaw} />
+
+            <StackNavigation.Screen name="ConfirmReserve" component={ConfirmReserveScreen}/>
 
         </StackNavigation.Navigator>
     )

@@ -94,16 +94,22 @@ export default function GuestHostScreen({navigation}){
         />
         </View>
 
+        <InputView 
+            editable={false}
+            label="Tu fecha de reserva"
+            value={guestHostData.hostReserveDateFrom}
+        />
+        <InputView 
+            editable={false}
+            label="Hasta"
+            value={guestHostData.hostReserveDateTo}
+        />
+
         <View style={myStyles.btnContainer}>
-            {/* <Button
-                mode="contained"
-                onPress={()=>console.log("dd")}
-            >
-                Contactar
-            </Button> */}
+
             <ContactBtn phone={guestHostData.hostOwnerId.userPhone} message="Hola!, quisiera hacerte una consulta"/>
 
-            <CancelHost navigation={navigation} hostId={guestHostData._id} userEmail={user.userEmail}/>
+            <CancelHost navigation={navigation} hostId={guestHostData._id} userId={user._id}/>
         </View>
 
 
@@ -131,7 +137,8 @@ const myStyles = StyleSheet.create({
     btnContainer:{
         display:"flex",
         justifyContent:"space-evenly",
-        flexDirection:"row",
+        flexDirection:"column",
+        alignItems:"center",
         padding:10,
         marginTop:10,
         marginBottom:10

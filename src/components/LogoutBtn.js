@@ -5,6 +5,7 @@ import {useDispatch} from "react-redux"
 import {signUp} from "../store/slices/userSlice"
 import { server } from "../api/server"
 import Icon from "react-native-vector-icons/FontAwesome"
+import { Colors } from "../tools/constant"
 
 
 const LogoutBtn = () =>{
@@ -39,12 +40,15 @@ const LogoutBtn = () =>{
                             style={myStyles.btnSignUp}
                             loading={loading}
                             onPress={()=> SignUpUser()}
-                        >{!loading && "Cerrar sesion"}</Button>
+                            icon="logout"
+                        >Cerrar sesion</Button>
 
                         <Button
                             mode="outlined"
                             onPress={closeModal}
                             style={myStyles.btnCloseModal}
+                            icon="cancel"
+                            labelStyle={{color:"#000000"}}
                         >Cancelar</Button>
                     </View>
                 </View>
@@ -59,8 +63,8 @@ const LogoutBtn = () =>{
                 <>
                     <View style={myStyles.optionContainer}>
                         <View style={myStyles.iconLink}>
-                            <Icon name="sign-out" size={30}/>
-                            <Text>Salir de la cuenta</Text>
+                            <Icon name="sign-out" size={40} style={{color:Colors.secondary}}/>
+                            <Text style={myStyles.titleLink}>Salir de la cuenta</Text>
                         </View>
                         {/* <Icon name="chevron-right" size={20}/> */}
                     </View>
@@ -82,7 +86,7 @@ const myStyles = StyleSheet.create({
     },
     modalContent:{
         width:"auto",
-        height:200,
+        height:250,
         padding:10,
         backgroundColor:"white",
         borderRadius:10,
@@ -90,7 +94,7 @@ const myStyles = StyleSheet.create({
         display:"flex",
         flexDirection:"column",
         alignItems:"center",
-        justifyContent:"center",
+        justifyContent:"space-evenly",
     },
     title:{
         textAlign:"center"
@@ -103,10 +107,17 @@ const myStyles = StyleSheet.create({
         gap:10
     },
     btnSignUp:{
-        width:250,
+        width:300,
+        padding:3,
+        backgroundColor:Colors.principal,
+        borderRadius:10
     },
     btnCloseModal:{
-        width:250
+        width:200,
+        padding:3,
+        borderRadius:10,
+        backgroundColor:Colors.backgroundColor,
+        borderColor:"#000000"
     },
     btnStyle:{
 
@@ -125,6 +136,9 @@ const myStyles = StyleSheet.create({
         flexDirection:"row",
         alignItems:"center",
         gap:10
+    },
+    titleLink:{
+        fontSize:15
     }
 })
 

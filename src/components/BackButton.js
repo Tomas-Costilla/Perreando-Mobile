@@ -4,11 +4,12 @@ import { Button } from "react-native-paper"
 
 
 export default function BackButton({navigation,screen}){
-    return <Button style={myStyles.buttonStyle} icon="arrow-left" mode="text" onPress={()=>navigation.navigate(screen)}></Button>
+    return <Button labelStyle={myStyles.buttonStyle} icon="arrow-left" mode="text" onPress={()=>navigation.popToTop()}></Button>
 }
 
 const myStyles = StyleSheet.create({
     buttonStyle:{
-        color:"#000000"
+        color:"#000000",
+        fontSize:30
     }
 })

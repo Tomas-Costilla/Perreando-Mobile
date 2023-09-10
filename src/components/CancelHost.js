@@ -4,7 +4,7 @@ import { Button, HelperText, Modal, Portal, Text } from "react-native-paper"
 import { Colors } from "../tools/constant"
 import { server } from "../api/server"
 
-export default function CancelHost({navigation,hostId,userEmail}){
+export default function CancelHost({navigation,hostId,userId}){
 
     const [visibleModal,setVisibleModal] = useState(false)
     const [loadingServer,setLoadingServer] = useState(false)
@@ -17,7 +17,7 @@ export default function CancelHost({navigation,hostId,userEmail}){
         setErrorServer("")
         setLoadingServer(true)
         try {
-            await server.delete(`/host/guest/${hostId}/${userEmail}`)
+            await server.delete(`/host/${hostId}/guest/${userId}`)
             handleModal()
             navigation.navigate("Account")
         } catch (error) {
@@ -31,21 +31,26 @@ export default function CancelHost({navigation,hostId,userEmail}){
         <Portal>
             <Modal visible={visibleModal} onDismiss={handleModal} style={myStyles.modalContainer}>
                 <View style={myStyles.container}>
-                    <Text>Estas seguro de que deseas cancelar la reserva?</Text>
+                    <View style={myStyles.btnCloseModalStyle}>
+                        <Button mode="text" icon="close" labelStyle={myStyles.iconStyle} onPress={handleModal} />
+                    </View>
+                    <Text>¿Estas seguro de que deseas cancelar la reserva?</Text>
                     <View style={myStyles.btnContainer}>
                         <Button
                             mode="contained"
                             loading={loadingServer}
                             onPress={cancelReserve}
+                            style={myStyles.btnCancelConfirmStyle}
+                            icon="check-bold"
                         >
                             Aceptar
                         </Button>
-                        <Button
+                       {/*  <Button
                             mode="contained-tonal"
                             onPress={handleModal}
                         >
                             Volver
-                        </Button>
+                        </Button> */}
                     </View>
                         {errorServer && <HelperText type="error">{errorServer}</HelperText>}
                 </View>
@@ -53,8 +58,10 @@ export default function CancelHost({navigation,hostId,userEmail}){
         </Portal>
     
         <Button
-            mode="contained-tonal"
+            mode="contained"
             onPress={handleModal}
+            style={myStyles.btnCancelStyle}
+            icon="cancel"
         >
             Cancelar Reserva
         </Button>
@@ -67,9 +74,14 @@ const myStyles = StyleSheet.create({
         justifyContent:"center",
         alignItems:"center"
     },
+    btnCloseModalStyle:{
+        flex:1,
+        justifyContent:"flex-end",
+        alignItems:"flex-end"
+    },
     container:{
         backgroundColor:Colors.backgroundColor,
-        padding:10,
+        padding:15,
         borderRadius:10,
         height:200,
         display:"flex",
@@ -82,5 +94,25 @@ const myStyles = StyleSheet.create({
         justifyContent:"space-evenly",
         marginTop:10,
         marginBottom:10
+    },
+    btnCancelStyle:{
+        marginTop:10,
+        marginBottom:10,
+        width:300,
+        borderRadius:10,
+        backgroundColor:Colors.principal,
+        padding:5
+    },
+    btnCancelConfirmStyle:{
+        marginTop:10,
+        marginBottom:10,
+        width:200,
+        borderRadius:10,
+        backgroundColor:Colors.principal,
+        padding:5
+    },
+    iconStyle:{
+        fontSize:25,
+        color:"#CACACA"
     }
 })

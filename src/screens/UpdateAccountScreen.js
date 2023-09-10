@@ -120,6 +120,8 @@ export default function UpdateAccountScreen({navigation}){
                     mode="contained"
                     onPress={()=>updateUserData()}
                     loading={loading}
+                    style={myStyles.btnConfirmUpdate}
+                    icon="account-check"
                 >
                     Confirmar Cambios
                 </Button>
@@ -157,5 +159,11 @@ const myStyles = StyleSheet.create({
         padding:10,
         marginTop:10,
         marginBottom:10
+    },
+    btnConfirmUpdate:{
+        padding:3,
+        backgroundColor:Colors.principal,
+        borderRadius:10,
+        width:250
     }
 })

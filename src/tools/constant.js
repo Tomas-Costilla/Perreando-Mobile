@@ -2,8 +2,9 @@ export const Colors = {
     errorColor: "#FF0000",
     requiredColor:"#FF0000",
     backgroundColor:"#FFFFFF",
-    principal:"#7D3DFF",
-    warningMessage:"#F9A200"
+    principal:"#2D3F4E",
+    warningMessage:"#F9A200",
+    secondary:"#6790B2"
 }
 
 export const PROFILE_TYPES = {

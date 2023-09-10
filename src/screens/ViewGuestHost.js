@@ -63,10 +63,13 @@ export default function ViewGuestHost({navigation,route}){
                 <Image source={{uri: hostData.ImageUri}} style={myStyles.userImage}/>
             </View>
 
-            <View style={{display:"flex",flexDirection:"row",justifyContent:"center",padding:5}}>
+            <View style={{flex:1,justifyContent:"space-evenly",flexDirection:"row",padding:5,alignItems:"center"}}>
+            <ContactBtn phone={hostData.hostOwnerId?.userPhone} message="Hola!, estoy interesado en tu alojamiento"/>
                 <Button
-                    mode="contained-tonal"
+                    mode="outlined"
                     icon="comment"
+                    style={myStyles.btnCommentStyle}
+                    labelStyle={myStyles.btnCommentFont}
                 >
                     Ver comentarios
                 </Button>
@@ -140,9 +143,15 @@ export default function ViewGuestHost({navigation,route}){
                 >
                     Contactar
                 </Button> */}
-                <ContactBtn phone={hostData.hostOwnerId?.userPhone} message="Hola!, estoy interesado en tu alojamiento"/>
 
-                <CreateReserve navigation={navigation} hostIdProp={hostId} guestIdProp={user._id}/>
+               {/*  <CreateReserve navigation={navigation} hostIdProp={hostId} guestIdProp={user._id}/> */}
+               <Button
+                mode="contained"
+                style={myStyles.btnReserveStyle}
+                onPress={()=>navigation.navigate("ConfirmReserve",{hostId:hostId,guestId:user._id})}
+               >
+                    Reservar
+               </Button>
                 {/* <Button
                     mode="contained"
                 >
@@ -222,6 +231,22 @@ const myStyles = StyleSheet.create({
         justifyContent:"space-evenly",
         flexDirection:"row",
         marginTop:10,
+        marginBottom:10
+    },
+    btnCommentStyle:{
+        borderColor:Colors.secondary,
+        borderRadius:10,
+        padding:3
+    },
+    btnCommentFont:{
+        color:Colors.secondary
+    },
+    btnReserveStyle:{
+        borderRadius:10,
+        backgroundColor:Colors.principal,
+        padding:5,
+        width:250,
+        marginTop:5,
         marginBottom:10
     }
 })

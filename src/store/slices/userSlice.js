@@ -17,11 +17,14 @@ export const userSlice = createSlice({
             state.user = {}
             state.isLogged = false
         },
+        updateImageUser(state,action){
+            state.user.userFileUri = action.payload
+        },
         default:(state)=>{
             return state
         }
     }
 })
 
-export const {signIn,signUp} = userSlice.actions
+export const {signIn,signUp,updateImageUser} = userSlice.actions
 export default userSlice.reducer;

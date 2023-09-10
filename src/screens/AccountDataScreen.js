@@ -68,6 +68,8 @@ const AccountDataScreen = ({navigation}) =>{
                 <Button
                     mode="contained"
                     onPress={()=>navigation.navigate("UpdateAccount")}
+                    style={myStyles.btnUpdateData}
+                    icon="account"
                 >
                     Modificar Datos
                 </Button>
@@ -109,6 +111,12 @@ const myStyles = StyleSheet.create({
         marginTop:10,
         marginBottom:10,
         padding:10
+    },
+    btnUpdateData:{
+        padding:3,
+        backgroundColor:Colors.principal,
+        borderRadius:10,
+        width:250
     }
 })
 

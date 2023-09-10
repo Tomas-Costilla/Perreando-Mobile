@@ -4,6 +4,7 @@ import { StyleSheet } from "react-native"
 import { Avatar, Button, Divider, Text } from "react-native-paper"
 import { SafeAreaView } from "react-native-safe-area-context"
 import {useSelector} from "react-redux"
+import { Colors } from "../tools/constant"
 
 
 
@@ -27,7 +28,8 @@ const myStyles = StyleSheet.create({
         alignContent:"center",
         alignItems:"center",
         gap:10,
-        padding:5
+        padding:5,
+        marginBottom:20
     },
     userContainer:{
         display:"flex",

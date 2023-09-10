@@ -26,6 +26,8 @@ export default function SearchHostScreen({navigation,route}){
                     mode="outlined"
                     onPress={()=>navigation.navigate("UbicationSearch",{...route.params,screenBack: "SearchHost"})}
                     icon="map-marker-outline"
+                    style={myStyles.btnViewMap}
+                    labelStyle={{color:"#000000"}}
                 >
                     Ver Localidades
                 </Button>
@@ -72,7 +74,17 @@ const myStyles = StyleSheet.create({
         marginTop:10,
         marginBottom:10
     },
+    btnViewMap:{
+        width:200,
+        padding:2,
+        backgroundColor:Colors.backgroundColor,
+        borderColor:"#000000",
+        borderRadius:10
+    },
     btnSearch:{
-        width:250
+        width:300,
+        padding:3,
+        backgroundColor:Colors.principal,
+        borderRadius:10
     }
 })

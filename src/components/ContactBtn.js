@@ -1,6 +1,7 @@
 import {} from "react"
 import { Linking, StyleSheet } from "react-native"
 import { Button } from "react-native-paper"
+import { Colors } from "../tools/constant"
 
 
 export default function ContactBtn({phone,message}){
@@ -11,9 +12,10 @@ export default function ContactBtn({phone,message}){
 
     return <>
         <Button
-            mode="outlined"
+            mode="contained"
             onPress={handleContactBtn}
             icon="message"
+            style={myStyles.btnContactStyle}
         >
             Contactar
         </Button>
@@ -23,5 +25,12 @@ export default function ContactBtn({phone,message}){
 const myStyles = StyleSheet.create({
     container:{
 
+    },
+    btnContactStyle:{
+        width:150,
+        /* marginBottom:, */
+        backgroundColor:Colors.secondary,
+        borderRadius:10,
+        padding:3
     }
 })

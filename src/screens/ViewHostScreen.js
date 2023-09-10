@@ -115,12 +115,16 @@ export default function ViewHostScreen({ navigation }) {
         <Button
           mode="contained"
           onPress={() => navigation.navigate("ViewHostGuest")}
+          style={myStyles.btnViewGuest}
+          icon="account-group"
         >
           Ver Huespedes
         </Button>
         <Button
           mode="contained"
           onPress={() => navigation.navigate("ViewHostRating")}
+          style={myStyles.btnRating}
+          icon="star"
         >
           Ver Calificaciones
         </Button>
@@ -192,4 +196,16 @@ const myStyles = StyleSheet.create({
   inputNumberStyle: {
     width: 150,
   },
+  btnViewGuest:{
+    padding:2,
+    backgroundColor:Colors.principal,
+    borderRadius:10,
+    width:180
+  },
+  btnRating:{
+    padding:2,
+    backgroundColor:Colors.principal,
+    borderRadius:10,
+    width:180
+  }
 });

@@ -11,7 +11,7 @@ const StackNavigation = createStackNavigator()
 const SingInStack = () =>{
     return (
         <StackNavigation.Navigator>
-            <StackNavigation.Screen name="Inciar sesion" component={SignInScreen}/>
+            <StackNavigation.Screen name=" " component={SignInScreen}/>
             <StackNavigation.Screen
                 name="Profile"
                 component={ProfileScreen}
