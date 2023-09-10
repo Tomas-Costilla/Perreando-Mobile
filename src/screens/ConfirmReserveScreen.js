@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View, Image } from "react-native";
 import { ActivityIndicator, Button, HelperText, Text, TextInput } from "react-native-paper";
 import InputView from "../components/InputView";
 import { Colors } from "../tools/constant";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { server } from "../api/server";
+import MiReserva from "../../assets/reserva.png"
 
 export default function ConfirmReserveScreen({route,navigation}) {
   let {guestId,hostId} = route.params
@@ -110,6 +111,7 @@ export default function ConfirmReserveScreen({route,navigation}) {
 
   if(userReserve) return <View style={myStyles.serverContainer}>
     <Text style={{textAlign:"center",fontSize:15}}>{messageServer}</Text>
+    <Image source={MiReserva} style={myStyles.imageReserva}/>
     <Button
       mode="contained"
       onPress={()=>navigation.navigate("GuestHost")}
@@ -190,9 +192,13 @@ export default function ConfirmReserveScreen({route,navigation}) {
 const myStyles = StyleSheet.create({
   serverContainer:{
     flex:1,
-    justifyContent:"center",
+    justifyContent:"space-evenly",
     alignItems:"center",
     backgroundColor:Colors.backgroundColor
+  },
+  imageReserva:{
+    width:300,
+    height:300
   },
   container: {
     flex: 1,

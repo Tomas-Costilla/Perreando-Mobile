@@ -7,12 +7,12 @@ import ContactBtn from "./ContactBtn"
 
 const PropertyCard = ({text,icon}) => {
     return <View style={myStyles.propertyContainer}>
-        <Icon name={icon} size={30}/>
+        <Icon name={icon} size={30} style={{color: Colors.principal}}/>
         <Text>{text}</Text>
     </View>
 }
 
-const UserAvatar = () => <Avatar.Icon size={30} icon="account"/>
+const UserAvatar = () => <Avatar.Icon size={35} icon="account" style={{backgroundColor:Colors.principal}}/>
 
 export default function ItemSearch({data,navigation}){
 
@@ -34,6 +34,7 @@ export default function ItemSearch({data,navigation}){
             <Button 
                 icon="eye"
                 onPress={()=>navigation.navigate("ViewHost",{hostId: data._id})}
+                style={myStyles.btnViewHost}
             >Ver Publicacion</Button>
         </Card.Actions>
     </Card>
@@ -66,5 +67,10 @@ const myStyles = StyleSheet.create({
         textAlign:"center",
         marginTop:10,
         marginBottom:10
+    },
+    btnViewHost:{
+        padding:3,
+        borderRadius:10,
+        backgroundColor:Colors.principal
     }
 })

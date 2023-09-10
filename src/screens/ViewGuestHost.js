@@ -53,7 +53,7 @@ export default function ViewGuestHost({navigation,route}){
     return <ScrollView style={myStyles.container}>
         <View style={myStyles.hostContainer}>
             <View style={myStyles.userContainer}>
-                <Avatar.Icon icon="account" size={50}/>
+                <Avatar.Icon icon="account" size={35} style={{backgroundColor:Colors.principal}}/>
                 <View>
                     <Text style={myStyles.userName}>{hostData.hostOwnerId?.userFullName}</Text>
                     <Text style={myStyles.userHostDescription}>{hostData.hostDescription}</Text>
@@ -195,13 +195,14 @@ const myStyles = StyleSheet.create({
         alignItems:"center",
         borderWidth:0.5,
         borderRadius:10,
-        padding:10
+        padding:10,
+        borderColor:"#CACACA"
     },
     userName:{
-        fontSize:20
+        fontSize:15
     },
     userHostDescription:{
-        fontSize:15
+        fontSize:13
     },
     userImageContainer:{
         marginTop:10,
@@ -218,7 +219,8 @@ const myStyles = StyleSheet.create({
         borderRadius:10,
         padding:10,
         marginTop:5,
-        marginBottom:5
+        marginBottom:5,
+        borderColor:"#CACACA"
     },
     ubicationContainer:{
         display:"flex",

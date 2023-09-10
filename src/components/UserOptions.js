@@ -17,10 +17,10 @@ const UserOptions = ({iconname,text,link,nav}) =>{
                 <>
                     <View style={myStyles.optionContainer}>
                         <View style={myStyles.iconLink}>
-                            <Icon name={iconname} size={40} style={{color:Colors.secondary}}/>
+                            <Icon name={iconname} size={40} style={{color:Colors.principal}}/>
                             <Text style={myStyles.title}>{text}</Text>
                         </View>
-                        <Icon name="chevron-right" size={40} style={{color:Colors.secondary}}/>
+                        <Icon name="chevron-right" size={40} style={{color:Colors.principal}}/>
                     </View>
                 </>
         </TouchableHighlight>

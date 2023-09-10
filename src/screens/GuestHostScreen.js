@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { StyleSheet, View, ScrollView } from "react-native"
+import { StyleSheet, View, ScrollView, Image } from "react-native"
 import { ActivityIndicator, Button, Text } from "react-native-paper"
 import { server } from "../api/server"
 import { useSelector } from "react-redux"
@@ -8,7 +8,7 @@ import { Colors } from "../tools/constant"
 import InputView from "../components/InputView"
 import CancelHost from "../components/CancelHost"
 import ContactBtn from "../components/ContactBtn"
-
+import SinReserva from "../../assets/sinreserva.png"
 
 
 export default function GuestHostScreen({navigation}){
@@ -42,6 +42,7 @@ export default function GuestHostScreen({navigation}){
 
     if(Object.keys(guestHostData).length === 0) return <View style={myStyles.responseContainer}>
         <Text>Aun no has hecho una reserva!</Text>
+        <Image source={SinReserva} style={myStyles.reserveImage}/>
     </View>
 
     return <ScrollView style={myStyles.container}>
@@ -106,6 +107,14 @@ export default function GuestHostScreen({navigation}){
         />
 
         <View style={myStyles.btnContainer}>
+            <Button
+                mode="outlined"
+                labelStyle={{color:"#000000"}}
+                style={myStyles.btnRating}
+                icon="account-star"
+            >
+                Calificar
+            </Button>
 
             <ContactBtn phone={guestHostData.hostOwnerId.userPhone} message="Hola!, quisiera hacerte una consulta"/>
 
@@ -124,6 +133,11 @@ const myStyles = StyleSheet.create({
         justifyContent:"center",
         alignItems:"center"
     },
+    reserveImage:{
+        width:300,
+        height:300,
+        marginTop:10
+    },
     container:{
         flex:1,
         backgroundColor:Colors.backgroundColor,
@@ -141,6 +155,11 @@ const myStyles = StyleSheet.create({
         alignItems:"center",
         padding:10,
         marginTop:10,
+        marginBottom:10
+    },
+    btnRating:{
+        padding:3,
+        borderRadius:10,
         marginBottom:10
     }
 })

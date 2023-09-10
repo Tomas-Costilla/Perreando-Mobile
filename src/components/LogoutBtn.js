@@ -63,7 +63,7 @@ const LogoutBtn = () =>{
                 <>
                     <View style={myStyles.optionContainer}>
                         <View style={myStyles.iconLink}>
-                            <Icon name="sign-out" size={40} style={{color:Colors.secondary}}/>
+                            <Icon name="sign-out" size={40} style={{color:Colors.principal}}/>
                             <Text style={myStyles.titleLink}>Salir de la cuenta</Text>
                         </View>
                         {/* <Icon name="chevron-right" size={20}/> */}
