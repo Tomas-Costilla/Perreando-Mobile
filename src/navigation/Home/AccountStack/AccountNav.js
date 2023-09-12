@@ -21,6 +21,7 @@ import UpdatePawData from "../../../screens/UpdatePawData";
 import ConfirmReserveScreen from "../../../screens/ConfirmReserveScreen";
 import ConfirmUpdatePawScreen from "../../../screens/ConfirmUpdatePawScreen";
 import UpdateImagePaw from "../../../screens/UpdateImagePaw";
+import AddRatingScreen from "../../../screens/AddRatingScreen";
 
 const StackNavigation = createStackNavigator();
 const AccountNav = () => {
@@ -128,6 +129,14 @@ const AccountNav = () => {
           ),
           headerTitle: "Mi Reserva",
         })}
+      />
+
+      <StackNavigation.Screen 
+        name="AddRating"
+        component={AddRatingScreen}
+        options={{
+          headerTitle:"Calificar"
+        }}
       />
 
       <StackNavigation.Screen

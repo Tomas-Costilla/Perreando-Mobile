@@ -154,7 +154,7 @@ const myStyles = StyleSheet.create({
   },
   loginContainer: {
     flex: 1,
-    justifyContent: "flex-start",
+    justifyContent: "center",
     backgroundColor: Colors.backgroundColor,
     padding: 10,
     gap: 10,

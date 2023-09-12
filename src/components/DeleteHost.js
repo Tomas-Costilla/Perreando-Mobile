@@ -26,23 +26,24 @@ export default function DeleteHost({navigation,visible,hideModal,hostOwnerId}){
             <Portal>
                 <Modal visible={visible} onDismiss={hideModal} style={{padding:10,display:"flex",flexDirection:"column",justifyContent:"center"}}>
                    <View style={myStyles.container}>
+                    <View style={{display:"flex",justifyContent:"flex-end",flexDirection:"row",alignItems:"center"}}>
+                        <Button 
+                            mode="text"
+                            icon="close"
+                            labelStyle={{fontSize:20,color:"#CACACA"}}
+                            onPress={hideModal}
+                        />
+                    </View>
                         <Text style={myStyles.title}>¿Estas seguro que deseas eliminar tu alojamiento?</Text>
                         <Text style={myStyles.description}>Se eliminaran todos los huespedes y comentarios acerca de este alojamiento. Puedes volver a crear otro desde el menu principal</Text>
                         <View style={myStyles.btnActionContainer}>
                             <Button
                                 mode="contained"
                                 onPress={()=>deleteHostData()}
-                                style={{ marginTop:20,marginBottom:20,}}
+                                style={myStyles.btnCancel}
                                 loading={loading}
                             >
-                                Si, eliminar
-                            </Button>
-                            <Button
-                                mode="contained"
-                                onPress={()=>hideModal()}
-                                style={{marginBottom:20}}
-                            >
-                                No, cancelar
+                                Aceptar
                             </Button>
                         </View>
                    </View>
@@ -74,5 +75,10 @@ const myStyles = StyleSheet.create({
         display:"flex",
         flexDirection:"column",
         justifyContent:"center"
+    },
+    btnCancel:{
+        borderRadius:10,
+        backgroundColor:Colors.principal,
+        padding:3
     }
 })

@@ -4,7 +4,7 @@ import { Button } from "react-native-paper"
 import { Colors } from "../tools/constant"
 
 
-export default function ContactBtn({phone,message}){
+export default function ContactBtn({phone,message,textBtn,styleBtn,styleLabel}){
 
     const handleContactBtn = () =>{
         Linking.openURL(`https://wa.me/${phone}?text=${message}`)
@@ -15,9 +15,10 @@ export default function ContactBtn({phone,message}){
             mode="contained"
             onPress={handleContactBtn}
             icon="message"
-            style={myStyles.btnContactStyle}
+            labelStyle={styleLabel && styleLabel}
+            style={styleBtn ? styleBtn : myStyles.btnContactStyle}
         >
-            Contactar
+            {!textBtn && "Contactar"}
         </Button>
     </>
 }

@@ -112,6 +112,7 @@ export default function GuestHostScreen({navigation}){
                 labelStyle={{color:"#000000"}}
                 style={myStyles.btnRating}
                 icon="account-star"
+                onPress={()=>navigation.navigate("AddRating",{hostId: guestHostData._id })}
             >
                 Calificar
             </Button>

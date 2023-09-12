@@ -2,7 +2,7 @@ import {} from "react"
 import { StyleSheet, View } from "react-native"
 import { HelperText, Text, TextInput } from "react-native-paper"
 
-export default function InputView({modeInput,label,editable,value,placeholder,disabled,typeInput,inputStyles,icon,nameField,handleData,validateMessage,isPrivate,iconFunction}){
+export default function InputView({modeInput,label,editable,value,placeholder,disabled,typeInput,inputStyles,icon,nameField,handleData,validateMessage,isPrivate,iconFunction,multiline}){
     return <View style={myStyles.container}>
         <Text>{label}</Text>
         <TextInput 
@@ -17,6 +17,7 @@ export default function InputView({modeInput,label,editable,value,placeholder,di
             right={icon !== "" ? <TextInput.Icon icon={icon} onPress={iconFunction}/> : <></>}
             onChangeText={val=>handleData(nameField,val)}
             secureTextEntry={isPrivate}
+            multiline={multiline ? multiline : false}
         />
         {validateMessage && <HelperText type="error" visible>{validateMessage}</HelperText>}
     </View>

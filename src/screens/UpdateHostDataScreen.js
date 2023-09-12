@@ -133,7 +133,7 @@ export default function UpdateHostDataScreen({ navigation, route }) {
         />
 
         <View style={myStyles.btnContainer}>
-          <Button mode="contained" onPress={() => updateHostData()} loading={loading}>
+          <Button mode="contained" onPress={() => updateHostData()} loading={loading} style={myStyles.btnConfirmUpdate} icon="pencil">
             Confirmar cambios
           </Button>
         </View>
@@ -161,7 +161,8 @@ const myStyles = StyleSheet.create({
     flex:1,
     justifyContent:"center",
     alignItems:"center",
-    padding:10
+    padding:10,
+    backgroundColor:Colors.backgroundColor
   },
   btnContainer: {
     padding: 10,
@@ -171,4 +172,10 @@ const myStyles = StyleSheet.create({
     marginTop:10,
     marginBottom:10
   },
+  btnConfirmUpdate:{
+    padding:3,
+    borderRadius:10,
+    backgroundColor:Colors.principal,
+    width:250
+  }
 });

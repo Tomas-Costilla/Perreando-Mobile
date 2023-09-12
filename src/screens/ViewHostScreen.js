@@ -46,7 +46,7 @@ export default function ViewHostScreen({ navigation }) {
       </View>
     );
 
-  /* onsole.log(hostData); */
+
   return (
     <ScrollView style={myStyles.container}>
       {/*  <ScrollView> */}
@@ -114,7 +114,7 @@ export default function ViewHostScreen({ navigation }) {
       <View style={myStyles.btnsViewGuest}>
         <Button
           mode="contained"
-          onPress={() => navigation.navigate("ViewHostGuest")}
+          onPress={() => navigation.navigate("ViewHostGuest",{hostId: hostData._id})}
           style={myStyles.btnViewGuest}
           icon="account-group"
         >
@@ -122,7 +122,7 @@ export default function ViewHostScreen({ navigation }) {
         </Button>
         <Button
           mode="contained"
-          onPress={() => navigation.navigate("ViewHostRating")}
+          onPress={() => navigation.navigate("ViewHostRating",{hostId: hostData._id})}
           style={myStyles.btnRating}
           icon="star"
         >
