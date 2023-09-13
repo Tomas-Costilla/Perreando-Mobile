@@ -1,10 +1,10 @@
 import {useState,useEffect} from "react"
-import { ScrollView, StyleSheet, View, FlatList } from "react-native"
+import { ScrollView, StyleSheet, View, FlatList, Image } from "react-native"
 import { ActivityIndicator, Divider, HelperText, Text } from "react-native-paper"
 import { Colors } from "../tools/constant"
 import GuestData from "../components/GuestData"
 import { server } from "../api/server"
-
+import Usuarios from "../../assets/usuarios.png"
 
 export default function ViewGuestScreen({navigation,route}){
 
@@ -37,6 +37,11 @@ export default function ViewGuestScreen({navigation,route}){
         <HelperText type="error">{messageServer}</HelperText>
     </View>
 
+    if(guestsData.length===0) return <View style={myStyles.imageContainer}>
+        <Text>Aun no tienes huespedes!</Text>
+        <Image source={Usuarios} style={myStyles.imageStyle}/>
+    </View>
+
     return <View style={myStyles.container}>
             {/* <Text style={myStyles.title}>Tus huespedes</Text> */}
             <FlatList 
@@ -55,6 +60,17 @@ const myStyles = StyleSheet.create({
         justifyContent:"center",
         alignItems:"center",
         padding:10
+    },
+    imageContainer:{
+        flex:1,
+        justifyContent:"center",
+        alignItems:"center",
+        backgroundColor:Colors.backgroundColor,
+        padding:10
+    },
+    imageStyle:{
+        width:300,
+        height:300
     },
     container:{
         padding:10,

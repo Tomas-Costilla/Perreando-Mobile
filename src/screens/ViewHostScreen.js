@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { Image, ScrollView, StyleSheet, View } from "react-native";
 import { TextInput, Text, Button, ActivityIndicator } from "react-native-paper";
 import InputView from "../components/InputView";
 import { Colors } from "../tools/constant";
 import DeleteHost from "../components/DeleteHost";
 import { useSelector } from "react-redux";
 import { server } from "../api/server";
+import SinHospedaje from "../../assets/sinhospedaje.png"
 
 export default function ViewHostScreen({ navigation }) {
   const { user } = useSelector((state) => state.user);
@@ -43,6 +44,7 @@ export default function ViewHostScreen({ navigation }) {
         <Text style={myStyles.notHostTitle}>
           Aun no tienes creado un hospedaje!
         </Text>
+        <Image source={SinHospedaje} style={myStyles.imageStyle}/>
       </View>
     );
 
@@ -150,6 +152,10 @@ const myStyles = StyleSheet.create({
         flexDirection:"column",
         justifyContent:"flex-start", */
   },
+  imageStyle:{
+    width:300,
+    height:300
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
@@ -158,7 +164,8 @@ const myStyles = StyleSheet.create({
   },
   emptyContainer: {
     flex: 1,
-    justifyContent: "flex-start",
+    justifyContent: "center",
+    alignItems:"center",
     backgroundColor: Colors.backgroundColor,
     padding: 10,
   },

@@ -31,11 +31,11 @@ export default function UbicationSelect({navigation,route}){
         <Text style={myStyles.title}>Selecciona a que zona perteneces</Text>
         <InputView 
             editable={false}
-            label="Provincia"
-            value="Buenos Aires"     
+            label="Zona"
+            value="AMBA"     
             disabled={true}       
         />
-        <HelperText type="info">Por el momento solo estamos disponibles en "CABA"</HelperText>
+        <HelperText type="info">Por el momento solo estamos disponibles en el "AMBA"</HelperText>
         <InputView 
             editable={false}
             label="Selecciona tu localidad"
@@ -43,9 +43,12 @@ export default function UbicationSelect({navigation,route}){
             value={typeof route.params.ubication !== 'undefined' ? route.params.ubication : ""}
         />
          {isError && <HelperText type="error">{errorMessage}</HelperText>}
-        <Button
+       <View style={myStyles.btnContainer}>
+       <Button
             mode="contained"
             onPress={()=>navigation.navigate("UbicationSearch",{...route.params,screenBack: "UbicationSelect"})}
+            style={myStyles.btnUbication}
+            icon="map-marker"
         >
             Ver localidades
         </Button>
@@ -54,9 +57,11 @@ export default function UbicationSelect({navigation,route}){
             mode="contained"
             /* onPress={()=>navigation.navigate("SignUp",{photo: photo,profile:profile,ubication: route.params.ubication})} */
             onPress={validateUbication}
+            style={myStyles.btnNext}
         >
             Continuar
         </Button>
+       </View>
 
 
     </View>
@@ -72,6 +77,27 @@ const myStyles = StyleSheet.create({
         textAlign:"center",
         marginTop:10,
         marginBottom:10
+    },
+    btnContainer:{
+        display:"flex",
+        justifyContent:"center",
+        flexDirection:"column",
+        alignItems:"center",
+        gap:10,
+        padding:10,
+        marginTop:10
+    },
+    btnUbication:{
+        borderRadius:10,
+        backgroundColor:Colors.principal,
+        padding:3,
+        width:200
+    },
+    btnNext:{
+        borderRadius:10,
+        backgroundColor:Colors.principal,
+        padding:3,
+        width:250
     }
 })
 

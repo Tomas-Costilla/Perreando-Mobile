@@ -4,7 +4,7 @@ import { Text } from "react-native-paper"
 import AnfitrionImg from "../../../assets/anfitrion.png"
 import MascotaImg from "../../../assets/mascota.png"
 import ProfileOption from "../../components/ProfileOption"
-import { PROFILE_TYPES } from "../../tools/constant"
+import { Colors, PROFILE_TYPES } from "../../tools/constant"
 
 
 export default function ProfileScreen({navigation}){
@@ -39,9 +39,10 @@ const myStyles = StyleSheet.create({
         padding:10,
         flex:1,
        /*  display:"flex", */
-        justifyContent:"flex-start",
+        justifyContent:"space-evenly",
         flexDirection:"column",
         alignItems:"center",
-        gap:30
+        gap:0,
+        backgroundColor:Colors.backgroundColor
     }
 })

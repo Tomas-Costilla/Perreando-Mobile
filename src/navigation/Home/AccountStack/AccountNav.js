@@ -22,6 +22,7 @@ import ConfirmReserveScreen from "../../../screens/ConfirmReserveScreen";
 import ConfirmUpdatePawScreen from "../../../screens/ConfirmUpdatePawScreen";
 import UpdateImagePaw from "../../../screens/UpdateImagePaw";
 import AddRatingScreen from "../../../screens/AddRatingScreen";
+import IconApp from "../../../components/IconApp";
 
 const StackNavigation = createStackNavigator();
 const AccountNav = () => {
@@ -32,8 +33,8 @@ const AccountNav = () => {
         component={AccountOptions}
         options={{
           /* header:() => <UserAccount />, */
-          headerTitle: "Perreando",
-          headerTitleAlign: "left",
+          headerTitle:"",
+          headerLeft: () => <IconApp />
         }}
       />
       <StackNavigation.Screen
@@ -76,7 +77,7 @@ const AccountNav = () => {
         name="UpdateHostData"
         component={UpdateHostDataScreen}
         options={{
-          headerTitle: "Modificar datos de alojamiento",
+          headerTitle: " ",
         }}
       />
 

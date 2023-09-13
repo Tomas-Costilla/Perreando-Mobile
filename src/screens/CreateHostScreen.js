@@ -201,7 +201,7 @@ export default function CreateHostScreen({navigation}){
                     {validateMsg.age && <HelperText type="error" visible>{validateMsg.age}</HelperText>}
                     
              
-                    <Text>Selecciona el tipo de animal a hospedar</Text>
+                   {/*  <Text>Selecciona el tipo de animal a hospedar</Text>
                     <RadioButton.Group onValueChange={newValue => setTypeAnimal(newValue)} value={typeAnimal}>
                         <View style={myStyles.radioContainer}>
                             <Text>Perros</Text>
@@ -216,18 +216,20 @@ export default function CreateHostScreen({navigation}){
                             <RadioButton value="Ambos" disabled/>
                         </View>
                     </RadioButton.Group>
-                    <HelperText type="info">Por el momento solo esta disponible el tipo "Perros"</HelperText>
+                    <HelperText type="info">Por el momento solo esta disponible el tipo "Perros"</HelperText> */}
                    
 
 
-                    <Button
-                        mode="contained"
-                        style={myStyles.btnStyles}
-                        onPress={()=>createHost()}
-                        loading={loading}
-                    >
-                        Crear Hospedaje
-                    </Button>
+                    <View style={myStyles.btnContainer}>
+                        <Button
+                            mode="contained"
+                            style={myStyles.btnStyles}
+                            onPress={()=>createHost()}
+                            loading={loading}
+                        >
+                            Crear Hospedaje
+                        </Button>
+                    </View>
                     <ErrorMessage errorMessage="Esto es un error" isError={error}/>
                
                     </ScrollView>        
@@ -282,8 +284,18 @@ const myStyles = StyleSheet.create({
         alignContent:"center",
         alignItems:"center"
     },
+    btnContainer:{
+        display:"flex",
+        justifyContent:"center",
+        alignItems:"center",
+        padding:10,
+        marginTop:10
+    },
     btnStyles:{
-        
+        backgroundColor:Colors.principal,
+        borderRadius:10,
+        padding:3,
+        width:300
     },
     numberInput:{
         width:150

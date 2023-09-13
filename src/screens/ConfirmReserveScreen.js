@@ -73,14 +73,38 @@ export default function ConfirmReserveScreen({route,navigation}) {
   }
 
   const validateDates = () =>{
+    setErrorMessage("")
     if(datesSelected.datesSelectedFrom === "" || datesSelected.dateSelectedTo === ""){
       setErrorMessage("Debes elegir una fecha para reservar tu estadia")
       return
     }
 
-    if(datesSelected.dateSelectedTo < datesSelected.datesSelectedFrom){
-      setErrorMessage("La fecha fin de tu estadia no puede ser menor que la de inicio")
+    let dateFromMonth = dateFrom.getMonth() + 1
+    let dateFromDay = dateFrom.getDay()
+    let dateToMonth = dateTo.getMonth() + 1
+    let dateToDay = dateTo.getDay()
+    
+    if(dateFromMonth < dateToMonth){
+      setErrorMessage("El mes de la fecha inicio no puede ser menor que el mes de fin")
+      return
     }
+
+    if(dateToMonth < dateFromMonth){
+      setErrorMessage("El mes de la fecha fin no puede ser menor que el mes de inicio")
+      return
+    }
+   /*  if(dateFromMonth === dateToMonth){
+      if(dateToDay < dateFromDay){
+        setErrorMessage("El dia fin de tu estadia no puede ser menor que la de inicio")
+        return
+      }
+       if(dateFromDay > dateToDay){
+        setErrorMessage("El dia inicio de tu estadia no puede ser mayor que el dia de fin")
+        return
+      } 
+    } */
+
+
     createReserve()
   }
 

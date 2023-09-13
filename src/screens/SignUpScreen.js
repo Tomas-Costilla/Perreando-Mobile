@@ -290,6 +290,7 @@ const SignUpScreen = ({ route, navigation }) => {
             mode="contained"
             onPress={signUpUser}
             loading={loading}
+            icon="account-plus-outline"
           >
             Registrarme
           </Button>
@@ -320,7 +321,9 @@ const myStyles = StyleSheet.create({
   },
   btnSignUp: {
     width: 250,
-    padding: 5,
+    padding: 4,
+    borderRadius:10,
+    backgroundColor:Colors.principal
   },
   errorText: {
     color: Colors.errorColor,

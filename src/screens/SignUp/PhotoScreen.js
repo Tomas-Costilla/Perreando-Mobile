@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, Image,View } from "react-native";
-import { Button, Text } from "react-native-paper";
+import { Button, IconButton, Text } from "react-native-paper";
 import * as ImagePicker from 'expo-image-picker'
 import NoPhoto from "../../../assets/nophoto.png"
 import {Camera,CameraType} from "expo-camera"
@@ -82,12 +82,14 @@ const PhotoScreen = ({route,navigation}) =>{
                 mode="contained"
                 labelStyle={{fontSize:18}}
                 onPress={()=>pickImage()}
+                style={myStyles.btnSelectImage}
             >Selecciona una imagen</Button>
             <Button 
-                mode = "contained" 
+                mode = "outlined" 
                 icon="camera"
-                labelStyle={{fontSize:18}}
+                labelStyle={{fontSize:18,borderColor:"#000000",color:"#000000"}}
                 onPress={()=>takePhoto()}
+                style={myStyles.btnTakePicture}
             >Toma una foto</Button>
         </View> 
         : <>
@@ -104,19 +106,23 @@ const PhotoScreen = ({route,navigation}) =>{
                 <View style={myStyles.userPhotoContainer}>
                     <Image source={{uri: image.imageUri}} style={myStyles.userPhoto}/>
                 </View>
-                <Button
-                    icon="delete"
-                    mode="text"
+                <IconButton
+                    /* icon="delete"
+                    mode="outlined" */
                     onPress={()=>deletePickImage()}
-                    labelStyle={myStyles.dltImage}
-                    style={myStyles.btnDlt}
-                >Eliminar</Button>
+                    icon="delete"
+                    iconColor={Colors.errorColor}
+                    size={30}
+                    /* labelStyle={myStyles.dltImage}
+                    style={myStyles.btnDlt} */
+                />
                 <Button
                     icon="chevron-right"
                     mode="contained"
                     onPress={()=>navigation.navigate("UbicationSelect",{photo: image,profile: profile })}
                     labelStyle={{fontSize:20}}
                     contentStyle={{flexDirection:"row-reverse"}}
+                    style={myStyles.btnNext}
                 >Siguiente</Button>
              </View> } 
              
@@ -131,7 +137,8 @@ const myStyles = StyleSheet.create({
         justifyContent:"center",
         flexDirection:"column",
         alignItems:"center",
-        gap:10
+        gap:10,
+        backgroundColor:Colors.backgroundColor
     },
     userPhotoContainer:{
         display:"flex",
@@ -146,7 +153,8 @@ const myStyles = StyleSheet.create({
         display:"flex",
         justifyContent:"space-evenly",
         flexDirection:"column",
-        alignItems:"center"
+        alignItems:"center",
+        backgroundColor:Colors.backgroundColor
     },
     userPhoto:{
         width:300,
@@ -164,7 +172,29 @@ const myStyles = StyleSheet.create({
     },
     dltImage:{
         fontSize:20,
-        color: Colors.errorColor
+        color: Colors.errorColor,
+        textAlign:"center"
+    },
+    btnSelectImage:{
+        borderRadius:10,
+        backgroundColor:Colors.principal,
+        padding:4,
+        width:300
+    },
+    btnTakePicture:{
+        borderRadius:10,
+        width:250,
+        padding:4
+    },
+    btnDlt:{
+        borderRadius:10,
+        padding:3
+    },
+    btnNext:{
+        borderRadius:10,
+        backgroundColor:Colors.principal,
+        padding:3,
+        width:250
     }
 })
 
