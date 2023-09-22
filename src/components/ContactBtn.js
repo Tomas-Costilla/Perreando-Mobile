@@ -14,7 +14,7 @@ export default function ContactBtn({phone,message,textBtn,styleBtn,styleLabel}){
         <Button
             mode="contained"
             onPress={handleContactBtn}
-            icon="message"
+            icon="account-box-outline"
             labelStyle={styleLabel && styleLabel}
             style={styleBtn ? styleBtn : myStyles.btnContactStyle}
         >

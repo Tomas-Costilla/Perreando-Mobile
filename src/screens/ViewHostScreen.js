@@ -48,7 +48,6 @@ export default function ViewHostScreen({ navigation }) {
       </View>
     );
 
-
   return (
     <ScrollView style={myStyles.container}>
       {/*  <ScrollView> */}
@@ -77,7 +76,7 @@ export default function ViewHostScreen({ navigation }) {
       <InputView
         label="La ubicacion es por defecto la de tus datos"
         editable={false}
-        value={hostData.hostOwnerId.userUbication}
+        value={hostData.hostOwnerId?.userUbication}
         icon="map-marker-outline"
       />
 

@@ -49,8 +49,7 @@ if(ratings.length===0) return <View style={myStyles.imageContainer}>
             <FlatList 
                 data={ratings}
                 renderItem={({item})=> <GuestRating data={item}/>}
-                keyExtractor={item=>item.id}
-                initialNumToRender={10}
+                keyExtractor={item=>item._id}
             />
             
     </View>

@@ -74,7 +74,7 @@ const PhotoScreen = ({route,navigation}) =>{
         ? <View style={myStyles.container}>
             <Text style={myStyles.title}>
                 {profile === PROFILE_TYPES.ANFITRION
-                    ? "Sube una foto tuya o de tu guarderia" 
+                    ? "Sube una foto tuya" 
                     : "Sube una foto tuya o de tu mascota"}
             </Text>
             <Button

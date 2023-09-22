@@ -21,18 +21,18 @@ export default function GuestData({data}){
                 <ContactBtn message="Hola!" phone={data.userPhone} textBtn=" " styleBtn={myStyles.btnContact} styleLabel={myStyles.labelButton}/>
             </View> */}
             <View style={myStyles.imageContainer}>
-                <Image style={myStyles.avatarStyle} source={{uri: data.userImageUri}}/>
+                <Image style={myStyles.avatarStyle} source={{uri: data.imageFileUri}}/>
             </View>
             <View style={myStyles.textIcon}>
                 <Icon name="account" size={25}/>
-                <Text style={{fontSize:13,textAlign:"center"}}>{data.userFullName}</Text>
+                <Text style={{fontSize:13,textAlign:"center"}}>{data.bookingGuestId?.userFullName}</Text>
             </View>
             <View style={myStyles.textIcon}>
                 <Icon name="calendar-account" size={30}/>
-                <Text style={{fontSize:13,textAlign:"center"}}>{`${data.hostReserveDateFrom} - ${data.hostReserveDateTo}`}</Text>
+                <Text style={{fontSize:13,textAlign:"center"}}>{`${data.bookingDateStart} - ${data.bookingDateEnd}`}</Text>
             </View>
             <View style={myStyles.btnContactContainer}>
-                <ContactBtn message="Hola!" phone={data.userPhone} styleBtn={myStyles.btnContact}/>
+                <ContactBtn message="Hola!" phone={data.bookingGuestId?.userPhone} styleBtn={myStyles.btnContact}/>
             </View>
         </View>
     </>

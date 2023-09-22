@@ -8,8 +8,9 @@ import {server} from "../api/server"
 import ErrorMessage from "../components/ErrorMessage";
 import InputView from "../components/InputView";
 
-export default function CreateHostScreen({navigation}){
+export default function CreateHostScreen({navigation,route}){
 
+    const {images} = route.params
     const user = useSelector(state=>state.user.user)
     const [typeAnimal,setTypeAnimal] = useState('Perros')
     const [loading,setLoading] = useState(false)
@@ -27,15 +28,14 @@ export default function CreateHostScreen({navigation}){
     const [hostData,setHostData] = useState({
         hostOwnerId:user._id,
         hostDescription:"",
-        hostLocation:"",
+        hostLocation:user.userUbication,
         hostOwnerCapacity:0,
         hostPrice:0,
         hostTypeAnimals:typeAnimal,
         hostAnimalWeightFrom:0,
         hostAnimalWeightTo:0,
         hostAnimalAgeFrom:0,
-        hostAnimalAgeTo:0,
-        hostGuests:[],
+        hostAnimalAgeTo:0
     })
  
    const handleHostData = (camp,value) => setHostData({...hostData,[camp]:value}) 
@@ -105,17 +105,42 @@ export default function CreateHostScreen({navigation}){
             return
         }
         else setValidateMsg({...validateMsg,description:"",capacity:"",price:""})
+        const formData = new FormData();
+        formData.append("hostOwnerId",hostData.hostOwnerId)
+        formData.append("hostDescription",hostData.hostDescription)
+        formData.append("hostLocation",hostData.hostLocation)
+        formData.append("hostOwnerCapacity",hostData.hostOwnerCapacity)
+        formData.append("hostPrice",hostData.hostPrice)
+        formData.append("hostTypeAnimals",hostData.hostTypeAnimals)
+        formData.append("hostAnimalWeightFrom",hostData.hostAnimalWeightFrom)
+        formData.append("hostAnimalWeightTo",hostData.hostAnimalWeightTo)
+        formData.append("hostAnimalAgeFrom",hostData.hostAnimalAgeFrom)
+        formData.append("hostAnimalAgeTo",hostData.hostAnimalAgeTo)
+        images.forEach((value,index)=>{
+            formData.append("hostPhotos",{
+                name: new Date() + "_hostPhotos",
+                uri: value.uri,
+                type: "image/jpg",
+            })
+        })
+          /* console.log(formData) */
         try {
-            await server.post("/host",hostData)
-            navigation.navigate("ViewHostData")
+            await server.post("/host",formData,{
+                headers:{
+                  Accept: 'application/json',
+                  'Content-Type':'multipart/form-data'
+                }
+              })
+            navigation.navigate("Account")
         } catch (error) {
-            setError(error.response.data)
+            /* setError(error.response.data) */
+            /* console.log(error.response.data) */
         }
         setLoading(false)
     }
 
     useEffect(()=>{
-        checkIfAnyHostCreated()
+        /* checkIfAnyHostCreated() */
     },[])
 
     if(loadingResponse) return <View style={myStyles.responseContainer}>

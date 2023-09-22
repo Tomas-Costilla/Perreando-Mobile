@@ -11,17 +11,22 @@ import ContactBtn from "../components/ContactBtn"
 import SinReserva from "../../assets/sinreserva.png"
 
 
-export default function GuestHostScreen({navigation}){
+export default function GuestHostScreen({navigation,route}){
     const {user} = useSelector(state=>state.user)
     const [loadingRequest,setLoadingRequest] = useState(false)
     const [errorServer,setErrorServer] = useState("")
     const [guestHostData,setGuestHostData] = useState({})
+    const [guestComment,setGuestComment] = useState(null)
 
     const getGuestHostInfo = async () =>{
         setLoadingRequest(true)
         try {
-            const response = await server.get(`/host/guest/${user._id}`)
+
+            let response = await server.get(`/host/${route.params.hostId}`)
+            let comment = await server.get(`/rating/host/${route.params.hostId}/guest/${user._id}`)  
             setGuestHostData(response.data)
+            if(comment.data.result) setGuestComment(comment.data.result)
+            else setGuestComment(false)
         } catch (error) {
             setErrorServer(error.response.data)
         }
@@ -40,18 +45,20 @@ export default function GuestHostScreen({navigation}){
         <ErrorMessage errorMessage={errorServer} isError={true}/>
     </View>
 
-    if(Object.keys(guestHostData).length === 0) return <View style={myStyles.responseContainer}>
+   /*  if(Object.keys(guestHostData).length === 0) return <View style={myStyles.responseContainer}>
         <Text>Aun no has hecho una reserva!</Text>
         <Image source={SinReserva} style={myStyles.reserveImage}/>
     </View>
-
+ */
+console.log(guestHostData)
+   
     return <ScrollView style={myStyles.container}>
         <View style={{marginBottom:10}}>
         <Text style={myStyles.title}>Datos de tu reserva</Text>
         <InputView 
             editable={false}
             label="Nombre del anfitrion"
-            value={guestHostData.hostOwnerId.userFullName}
+            value={guestHostData.hostOwnerId?.userFullName}
         />
         <InputView 
             editable={false}
@@ -61,7 +68,7 @@ export default function GuestHostScreen({navigation}){
         <InputView 
             editable={false}
             label="Telefono del anfitrion"
-            value={guestHostData.hostOwnerId.userPhone}
+            value={guestHostData.hostOwnerId?.userPhone}
             typeInput='numeric'
         />
         <InputView 
@@ -74,40 +81,49 @@ export default function GuestHostScreen({navigation}){
         <InputView 
             editable={false}
             label="Zona del anfitrion"
-            value={guestHostData.hostOwnerId.userUbication}
+            value={guestHostData.hostOwnerId?.userUbication}
         />
         <InputView 
             editable={false}
             label="Direccion del anfitrion"
-            value={`${guestHostData.hostOwnerId.userAddressStreet} ${guestHostData.hostOwnerId.userAddressNumber}`}
+            value={`${guestHostData.hostOwnerId?.userAddressStreet} ${guestHostData.hostOwnerId?.userAddressNumber}`}
         />
 
         <InputView 
             editable={false}
             label="Entre las Calles"
-            value={guestHostData.hostOwnerId.userAddressBetwStreet}
+            value={guestHostData.hostOwnerId?.userAddressBetwStreet}
         />
 
         <InputView 
             editable={false}
             label="Informacion extra del anfitrion"
-            value={guestHostData.hostOwnerId.userAddressExtraInfo}
+            value={guestHostData.hostOwnerId?.userAddressExtraInfo}
         />
         </View>
 
         <InputView 
             editable={false}
             label="Tu fecha de reserva"
-            value={guestHostData.hostReserveDateFrom}
+            value={route.params.startDate}
         />
         <InputView 
             editable={false}
             label="Hasta"
-            value={guestHostData.hostReserveDateTo}
+            value={route.params.endDate}
         />
 
         <View style={myStyles.btnContainer}>
-            <Button
+            {guestComment ? <Button
+                mode="outlined"
+                labelStyle={{color:"#000000"}}
+                style={myStyles.btnRating}
+                icon="account-star"
+                onPress={()=>navigation.navigate("ViewRating",{ratingId: guestComment })}
+            >
+                Ver calificacion
+            </Button> 
+            : <Button
                 mode="outlined"
                 labelStyle={{color:"#000000"}}
                 style={myStyles.btnRating}
@@ -115,11 +131,11 @@ export default function GuestHostScreen({navigation}){
                 onPress={()=>navigation.navigate("AddRating",{hostId: guestHostData._id })}
             >
                 Calificar
-            </Button>
+            </Button>}
 
-            <ContactBtn phone={guestHostData.hostOwnerId.userPhone} message="Hola!, quisiera hacerte una consulta"/>
+            <ContactBtn phone={guestHostData.hostOwnerId?.userPhone} message="Hola!, quisiera hacerte una consulta"/>
 
-            <CancelHost navigation={navigation} hostId={guestHostData._id} userId={user._id}/>
+            <CancelHost navigation={navigation} bookingId={route.params.bookingId}/>
         </View>
 
 

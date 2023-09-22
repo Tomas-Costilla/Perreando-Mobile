@@ -30,11 +30,13 @@ export default function SearchResultScreen({navigation,route}){
         let url = ""
         if(ubication==="all") url = `/host/search`
         else url = `/host/search?ubiName=${ubication}`
+        console.log(ubication)
         try {
             const response = await server.get(url)
             setHostData(response.data)
         } catch (error) {
-            setErrorReq(error.response.data)
+            /* setErrorReq(error.response.data) */
+            console.log(error.response)
         }
         setLoadingReq(false)
     }
@@ -50,6 +52,10 @@ export default function SearchResultScreen({navigation,route}){
 
     if(errorReq) return <View style={myStyles.loadingReq}>
         <HelperText type="error">{errorReq}</HelperText>
+    </View>
+
+    if(hostData.length === 0) return <View style={{flex:1,alignItems:"center",justifyContent:"center",backgroundColor:Colors.backgroundColor}}>
+        <Text style={{fontSize:15}}>No existen hospedajes para la localidad seleccionada</Text>
     </View>
 
     return <View style={myStyles.container}>

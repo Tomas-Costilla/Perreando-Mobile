@@ -47,7 +47,7 @@ export default function AddRatingScreen({navigation,route}){
                 hostGuestRating:defaultStar,
                 hostGuestComment:comment.hostGuestComment
             })
-            navigation.goBack()
+            navigation.popToTop()
         } catch (error) {
             setServerMessage(error.response.data)
 
@@ -67,7 +67,7 @@ export default function AddRatingScreen({navigation,route}){
     }
 
     useEffect(()=>{
-        checkIfRatingGuest()
+        /* checkIfRatingGuest() */
     },[])
     
     if(loadingServer) return <View style={myStyles.serverContainer}>

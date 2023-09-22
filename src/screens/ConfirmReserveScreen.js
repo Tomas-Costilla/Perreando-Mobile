@@ -55,22 +55,7 @@ export default function ConfirmReserveScreen({route,navigation}) {
     setDateSelected({ ...datesSelected, dateSelectedTo: dateToString });
   };
 
-  const checkifUserHaveReserve = async () =>{
-    setLoadingServer(true)
-    setMessageServer("")
-    try {
-      let response = await server.get(`/host/guestReserve/${guestId}`)
-      if(response.data.existe){
-        setUserReserve(true)
-        setMessageServer("Ya tienes una reserva creada!")
-        setLoadingServer(false)
-        return
-      }
-    } catch (error) {
-      
-    }
-    setLoadingServer(false)
-  }
+  
 
   const validateDates = () =>{
     setErrorMessage("")
@@ -112,13 +97,19 @@ export default function ConfirmReserveScreen({route,navigation}) {
     setLoadingBtn(true)
     setErrorMessage("")
     try {
-        let response = await server.post(`/host/guest`,{
-          hostId: hostId,
-          guestId:guestId,
-          hostReserveDateFrom: datesSelected.datesSelectedFrom,
-          hostReserveDateTo: datesSelected.dateSelectedTo
+        let response = await server.post(`/booking`,{
+          bookingHostId: hostId,
+          bookingGuestId:guestId,
+          bookingDateStart: datesSelected.datesSelectedFrom,
+          bookingDateEnd: datesSelected.dateSelectedTo,
+          bookingState:"Reservada"
         })
-        navigation.navigate("GuestHost")
+        if(!response.data.result){
+          setLoadingBtn(false)
+          setErrorMessage(response.data.message)
+          return
+        }
+        navigation.navigate("MyBookings")
     } catch (error) {
       setErrorMessage(error.response.data)
     }
@@ -126,8 +117,8 @@ export default function ConfirmReserveScreen({route,navigation}) {
   }
 
   useEffect(()=>{
-    checkifUserHaveReserve()
-  },[hostId])
+   /*  checkifUserHaveReserve() */
+  },[])
 
   if(loadingServer) return <View style={myStyles.serverContainer}>
     <ActivityIndicator animating size={45}/>
@@ -204,7 +195,7 @@ export default function ConfirmReserveScreen({route,navigation}) {
           style={myStyles.btnActionReserve}
           loading={loadingBtn}
           onPress={validateDates}
-        >Reservar
+        >Confirmar Reserva
         
         </Button>
       </View>
@@ -259,6 +250,7 @@ const myStyles = StyleSheet.create({
   btnActionReserve:{
     width:300,
     borderRadius:10,
-    backgroundColor:Colors.principal
+    backgroundColor:Colors.principal,
+    padding:3
   }
 });

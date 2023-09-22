@@ -23,6 +23,11 @@ import ConfirmUpdatePawScreen from "../../../screens/ConfirmUpdatePawScreen";
 import UpdateImagePaw from "../../../screens/UpdateImagePaw";
 import AddRatingScreen from "../../../screens/AddRatingScreen";
 import IconApp from "../../../components/IconApp";
+import MyBookingsScreen from "../../../screens/MyBookingsScreen";
+import ViewCommentScreen from "../../../screens/ViewCommentScreen";
+import UpdateCommentScreen from "../../../screens/UpdateCommentScreen";
+import SelectImagesScreen from "../../../screens/SelectImagesScreen";
+import ViewCommentsScreen from "../../../screens/ViewCommentsScreen";
 
 const StackNavigation = createStackNavigator();
 const AccountNav = () => {
@@ -50,6 +55,14 @@ const AccountNav = () => {
         component={UpdateAccountScreen}
         options={{
           headerTitle: "",
+        }}
+      />
+
+      <StackNavigation.Screen 
+        name="UploadImages"
+        component={SelectImagesScreen}
+        options={{
+          headerTitle:" "
         }}
       />
 
@@ -121,6 +134,18 @@ const AccountNav = () => {
         }}
       />
 
+        <StackNavigation.Screen 
+          name="MyBookings"
+          component={MyBookingsScreen}
+          options={({ navigation }) => ({
+            headerLeft: () => (
+              <BackButton navigation={navigation} screen="Account" />
+            ),
+            headerTitle: "Mis Reservas",
+          })}
+        />
+
+
       <StackNavigation.Screen
         name="GuestHost"
         component={GuestHostScreen}
@@ -131,6 +156,23 @@ const AccountNav = () => {
           headerTitle: "Mi Reserva",
         })}
       />
+
+        <StackNavigation.Screen 
+          name="ViewRating"
+          component={ViewCommentScreen}
+          options={{
+            headerTitle:"Tu calificacion"
+          }}
+        />
+
+        <StackNavigation.Screen 
+          name="UpdateComment"
+          component={UpdateCommentScreen}
+          options={{
+            headerTitle: "Actualizar comentario"
+          }}
+        />
+
 
       <StackNavigation.Screen 
         name="AddRating"
@@ -145,6 +187,14 @@ const AccountNav = () => {
         component={ViewGuestHost}
         options={{
           headerTitle: " ",
+        }}
+      />
+
+      <StackNavigation.Screen 
+        name="ViewComments"
+        component={ViewCommentsScreen}
+        options={{
+          headerTitle: " "
         }}
       />
 

@@ -4,7 +4,7 @@ import { Button, HelperText, Modal, Portal, Text } from "react-native-paper"
 import { Colors } from "../tools/constant"
 import { server } from "../api/server"
 
-export default function CancelHost({navigation,hostId,userId}){
+export default function CancelHost({navigation,bookingId}){
 
     const [visibleModal,setVisibleModal] = useState(false)
     const [loadingServer,setLoadingServer] = useState(false)
@@ -17,7 +17,7 @@ export default function CancelHost({navigation,hostId,userId}){
         setErrorServer("")
         setLoadingServer(true)
         try {
-            await server.delete(`/host/${hostId}/guest/${userId}`)
+            await server.put(`/booking/guest/cancel/${bookingId}`)
             handleModal()
             navigation.navigate("Account")
         } catch (error) {

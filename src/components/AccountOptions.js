@@ -25,11 +25,11 @@ return <ScrollView style={myStyles.container}>
             {user.userProfile === PROFILE_TYPES.HUESPED
             ? <>
                 <UserOptions iconname="paw" text="Mi Mascota" nav={navigation} link="UpdatePawData"/>
-                <UserOptions iconname="database" text="Mi Reserva" nav={navigation} link="GuestHost"/>
+                <UserOptions iconname="database" text="Mis Reservas" nav={navigation} link="MyBookings"/>
                 <UserOptions iconname="magnify" text="Buscar hospedajes" nav={navigation} link="SearchHost"/>
             </>
             : <>
-                <UserOptions iconname="home" text="Crear hospedaje" nav={navigation} link="CreateHost"/>
+                <UserOptions iconname="home" text="Crear hospedaje" nav={navigation} link="UploadImages"/>
                 <UserOptions iconname="home" text="Mi hospedaje" nav={navigation} link="ViewHostData"/>
             </>}
             <Divider style={myStyles.dividerStyle}/>

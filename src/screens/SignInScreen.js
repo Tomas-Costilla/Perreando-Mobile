@@ -2,8 +2,10 @@ import { useState } from "react";
 import {
   Image,
   KeyboardAvoidingView,
+  Linking,
   ScrollView,
   StyleSheet,
+  TouchableHighlight,
   View,
 } from "react-native";
 import {
@@ -20,6 +22,7 @@ import axios from "axios";
 import { Colors } from "../tools/constant";
 import AppImage from "../../assets/logo-sin-fondo.png";
 import InputView from "../components/InputView";
+import Instagram from "../../assets/instagram.png"
 
 const SignInScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -37,6 +40,10 @@ const SignInScreen = ({ navigation }) => {
     userPassword: "",
   });
   const [viewPassword, setViewPassword] = useState(false);
+
+  const handleViewInstagram = () =>{
+    Linking.openURL(`https://instagram.com/perreando.app?igshid=OGQ5ZDc2ODk2ZA==`)
+}
 
   const handleInputData = (camp, value) =>
     setInputValue({ ...inputValue, [camp]: value });
@@ -137,6 +144,16 @@ const SignInScreen = ({ navigation }) => {
         >
           ¿No tienes una cuenta? Presiona aqui para registrarte
         </Button>
+        <View style={myStyles.socialNetwork}>
+           <TouchableHighlight
+             activeOpacity={1}
+             underlayColor="#DDDDDD"
+             style={{padding:3,borderRadius:5}}
+             onPress={()=>handleViewInstagram()}
+           >
+            <Image source={Instagram} style={{width:35,height:35,marginTop:10}}/>
+           </TouchableHighlight>
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -183,6 +200,13 @@ const myStyles = StyleSheet.create({
   btnSignUp: {
     color: "#000000",
   },
+  socialNetwork:{
+    padding:10,
+    display:"flex",
+    alignItems:"center",
+    marginTop:10,
+    justifyContent:"center"
+  }
 });
 
 export default SignInScreen;

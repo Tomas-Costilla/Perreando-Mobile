@@ -8,13 +8,14 @@ export default function SetRating({handleStar,defaultStar}){
 
 
     return <View style={myStyles.container}>
-        {stars.map((value,index)=><>
-            <IconButton key={index} 
+        {stars.map((value,index)=>
+            <IconButton
+                key={index} 
                 icon={value <= defaultStar ? "star" : "star-outline"} 
                 mode="" 
                 iconColor="#FFCD00"
                 onPress={()=>handleStar(value)}/>
-        </>)}
+        )}
     </View>
 }
 

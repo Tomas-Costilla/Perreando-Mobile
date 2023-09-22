@@ -30,21 +30,6 @@ export default function UpdatePawData({navigation,route}){
         setLoadingServer(false)
     }
 
-    const pickImage = async () =>{
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing:true,
-            aspect:[4,3],
-            quality:1
-        })
-
-        if(!result.canceled){
-            setNewImage({...newImage,
-                imageFile: result.assets[0],
-                imageUri: result.assets[0].uri})
-        }
-
-    }
 
     useEffect(()=>{
         getUserPawInfo()
@@ -59,6 +44,7 @@ export default function UpdatePawData({navigation,route}){
         <HelperText type="error">{messageServer}</HelperText>
     </View>
 
+   
     return <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={myStyles.container}>
         <View style={myStyles.imageContainer}>
             <Image source={{uri: pawData.userImageUrl}} style={myStyles.imagePaw}/>

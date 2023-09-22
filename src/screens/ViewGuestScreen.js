@@ -16,7 +16,7 @@ export default function ViewGuestScreen({navigation,route}){
         setLoadingServer(true)
         setMessageServer("")
         try {
-            let response = await server.get(`/host/guests/${route.params.hostId}`)
+            let response = await server.get(`/booking/host/${route.params.hostId}`)
             setGuestsData(response.data.result)
         } catch (error) {
             setMessageServer(error.response.data.message)
