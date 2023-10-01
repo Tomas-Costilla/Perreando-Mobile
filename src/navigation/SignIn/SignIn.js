@@ -6,16 +6,20 @@ import PhotoScreen from "../../screens/SignUp/PhotoScreen";
 import ProfileScreen from "../../screens/SignUp/ProfileScreen";
 import UbicationsScreen from "../../screens/UbicationsScreen";
 import UbicationSelect from "../../screens/SignUp/UbicationSelect";
+import ResetPassword from "../../screens/ResetPassword";
+import ValidateCodeScreen from "../../screens/ValidateCodeScreen";
+import ChangePasswordScreen from "../../screens/ChangePasswordScreen";
 
 const StackNavigation = createStackNavigator();
 const SingInStack = () => {
   return (
     <StackNavigation.Navigator>
       <StackNavigation.Screen 
-        name=" " 
+        name="SignIn" 
         component={SignInScreen}
         options={{
-            headerShown:false
+            headerShown:false,
+            
         }} 
     />
       <StackNavigation.Screen 
@@ -49,7 +53,35 @@ const SingInStack = () => {
         }}
       />
       <StackNavigation.Screen name="SignUp" component={SignUpScreen} options={{headerTitle:"Completar registro"}} />
+     
+      <StackNavigation.Screen 
+        name="ResetPassword" 
+        component={ResetPassword}
+        options={{
+          headerShown:true,
+          headerTitle:"Recuperar contraseña"
+        }}
+      />
+
+      <StackNavigation.Screen 
+        name="ValidateCode"
+        component={ValidateCodeScreen}
+        options={{
+          headerShown:true,
+          headerTitle: ""
+        }}
+      />
+
+      <StackNavigation.Screen 
+        name="ChangePassword"
+        component={ChangePasswordScreen}
+        options={{
+          headerShown:false
+        }}
+      />
+
     </StackNavigation.Navigator>
+
   );
 };
 

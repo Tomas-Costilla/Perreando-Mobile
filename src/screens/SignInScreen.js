@@ -124,6 +124,16 @@ const SignInScreen = ({ navigation }) => {
         {errorServer.isError && (
           <HelperText type="error">{errorServer.errorMessage}</HelperText>
         )}
+        
+          <View style={{display:"flex",justifyContent:"flex-start",flexDirection:"row",marginTop:10,marginBottom:5}}>
+            <Button
+            mode="text"
+            labelStyle={{color:"#000000"}}
+            onPress={()=>navigation.navigate("ResetPassword")}
+          >¿Has olvidado tu contraseña? Presiona aqui</Button>
+          </View>
+
+
         <View style={myStyles.btnContainer}>
           <Button
             style={myStyles.btnLogin}
@@ -136,14 +146,15 @@ const SignInScreen = ({ navigation }) => {
           >
             Ingresar
           </Button>
-        </View>
         <Button
-          mode="text"
-          labelStyle={myStyles.btnSignUp}
+          mode="outlined"
+          style={myStyles.btnSignUp}
+          labelStyle={{color:"#000000"}}
           onPress={() => navigation.navigate("Profile")}
         >
-          ¿No tienes una cuenta? Presiona aqui para registrarte
+          Registrarme
         </Button>
+        </View>
         <View style={myStyles.socialNetwork}>
            <TouchableHighlight
              activeOpacity={1}
@@ -182,8 +193,9 @@ const myStyles = StyleSheet.create({
   },
   btnContainer: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "center",
+    alignItems:"center",
     marginTop: 10,
     marginBottom: 10,
   },
@@ -193,12 +205,19 @@ const myStyles = StyleSheet.create({
     backgroundColor: Colors.principal,
     borderRadius: 10,
     padding: 5,
+    marginBottom:10,
+    marginTop:10
   },
   errorStyle: {
     color: "#FF0000",
   },
   btnSignUp: {
-    color: "#000000",
+    backgroundColor:"#FFFFFF",
+    width:300,
+    borderColor:Colors.principal,
+    padding:5,
+    borderRadius:10
+
   },
   socialNetwork:{
     padding:10,
