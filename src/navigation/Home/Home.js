@@ -9,13 +9,13 @@ import { Colors } from "../../tools/constant";
 const Tabs = createBottomTabNavigator();
 const Home = () =>{
     return (
-        <Tabs.Navigator initialRouteName="FeedStack" >
+        <Tabs.Navigator initialRouteName="FeedStack" screenOptions={{tabBarStyle:{backgroundColor:Colors.principal}}} >
             <Tabs.Screen 
                 name="FeedStack" 
                 component={FeedNav}
                 options={{
-                    tabBarLabel:"Inicio",
-                    tabBarIcon:()=> <Icon name="home" style={myStyles.icons} size={26}/>,
+                   /*  tabBarLabel:"Inicio", */
+                    tabBarIcon:()=> <Icon name="home" color={Colors.backgroundColor} size={26}/>,
                     tabBarShowLabel:false,
                     headerShown:false,
                 }}
@@ -24,8 +24,8 @@ const Home = () =>{
                 name="SearchStack" 
                 component={SearchNav}
                 options={{
-                    tabBarLabel:"Buscar",
-                    tabBarIcon:()=> <Icon name="search" style={myStyles.icons} size={26}/>,
+                 /*    tabBarLabel:"Buscar", */
+                    tabBarIcon:()=> <Icon name="search" color={Colors.backgroundColor} size={26}/>,
                     tabBarShowLabel:false,
                     headerShown:false
                 }} 
@@ -34,8 +34,8 @@ const Home = () =>{
                 name="AccountStack" 
                 component={AccountNav}
                 options={{
-                    tabBarLabel:"Buscar",
-                    tabBarIcon:()=> <Icon name="bars" style={myStyles.icons}  size={26}/>,
+                   /*  tabBarLabel:"Buscar", */
+                    tabBarIcon:()=> <Icon name="user" color={Colors.backgroundColor}  size={26}/>,
                     tabBarShowLabel:false,
                     headerShown:false
                 }} 

@@ -38,8 +38,8 @@ const AccountNav = () => {
         component={AccountOptions}
         options={{
           /* header:() => <UserAccount />, */
-          headerTitle:"",
-          headerLeft: () => <IconApp />
+          headerTitle:"Mi Cuenta",
+         /*  headerLeft: () => <IconApp /> */
         }}
       />
       <StackNavigation.Screen

@@ -47,7 +47,7 @@ export default function ViewGuestScreen({navigation,route}){
             <FlatList 
                 data={guestsData}
                 renderItem={({item})=> <GuestData data={item}/>}
-                keyExtractor={item=>item.id}
+                keyExtractor={item=>item._id}
                 initialNumToRender={10}
             />
     </View>

@@ -26,7 +26,7 @@ return <ScrollView style={myStyles.container}>
             ? <>
                 <UserOptions iconname="paw" text="Mi Mascota" nav={navigation} link="UpdatePawData"/>
                 <UserOptions iconname="database" text="Mis Reservas" nav={navigation} link="MyBookings"/>
-                <UserOptions iconname="magnify" text="Buscar hospedajes" nav={navigation} link="SearchHost"/>
+               {/*  <UserOptions iconname="magnify" text="Buscar hospedajes" nav={navigation} link="SearchHost"/> */}
             </>
             : <>
                 <UserOptions iconname="home" text="Crear hospedaje" nav={navigation} link="UploadImages"/>

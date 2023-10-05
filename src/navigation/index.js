@@ -15,7 +15,7 @@ const Navigation = () =>{
 
     return (
         <NavigationContainer>
-                {isLogged ? <AccountNav /> : <SingInStack/>}
+                {isLogged ? <HomeStack /> : <SingInStack/>}
         </NavigationContainer>
     )
 }

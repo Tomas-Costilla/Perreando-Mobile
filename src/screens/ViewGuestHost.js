@@ -8,7 +8,7 @@ import {
   Text,
 } from "react-native-paper";
 import { server } from "../api/server";
-import { Colors } from "../tools/constant";
+import { Colors, PROFILE_TYPES } from "../tools/constant";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import CreateReserve from "../components/CreateReserve";
 import { useSelector } from "react-redux";
@@ -62,6 +62,7 @@ export default function ViewGuestHost({ navigation, route }) {
       </View>
     );
 
+    
     return (
     <ScrollView style={myStyles.container}>
       <View style={myStyles.hostContainer}>
@@ -118,7 +119,7 @@ export default function ViewGuestHost({ navigation, route }) {
         </View>
       
 
-        <View style={myStyles.btnContainer}>
+        {user.userProfile === PROFILE_TYPES.HUESPED && <View style={myStyles.btnContainer}>
           <Button
             mode="contained"
             style={myStyles.btnReserveStyle}
@@ -131,7 +132,7 @@ export default function ViewGuestHost({ navigation, route }) {
           >
             Reservar
           </Button>
-        </View>
+        </View>}
       </View>
     </ScrollView>
   );

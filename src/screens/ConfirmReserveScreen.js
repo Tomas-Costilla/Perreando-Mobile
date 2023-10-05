@@ -109,7 +109,8 @@ export default function ConfirmReserveScreen({route,navigation}) {
           setErrorMessage(response.data.message)
           return
         }
-        navigation.navigate("MyBookings")
+        navigation.popToTop()
+        navigation.jumpTo("AccountStack")
     } catch (error) {
       setErrorMessage(error.response.data)
     }
