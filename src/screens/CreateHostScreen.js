@@ -153,7 +153,7 @@ export default function CreateHostScreen({navigation,route}){
 
     return <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={myStyles.container}>
             <ScrollView>
-                    <Text style={myStyles.title}>Completá los datos para crear el hospedaje</Text>
+                    <Text style={myStyles.title}>Completa los datos para crear el hospedaje</Text>
 
                     <InputView 
                         nameField="hostDescription"
@@ -167,7 +167,7 @@ export default function CreateHostScreen({navigation,route}){
 
                     <InputView 
                         nameField="hostOwnerCapacity"
-                        label="Ingresá tu capacidad maxima de huespedes"
+                        label="Ingresa tu capacidad maxima de huespedes"
                         editable={true}
                         handleData={handleHostData}
                         typeInput="numeric"
@@ -178,7 +178,7 @@ export default function CreateHostScreen({navigation,route}){
 
                     <InputView 
                         nameField="hostPrice"
-                        label="Ingresá el costo total por la estadia"
+                        label="Ingresa el costo total por la estadia"
                         editable={true}
                         handleData={handleHostData}
                         typeInput="numeric"

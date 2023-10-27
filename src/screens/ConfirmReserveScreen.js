@@ -140,7 +140,7 @@ export default function ConfirmReserveScreen({route,navigation}) {
   return (
     <View style={myStyles.container}>
       {/* <ScrollView> */}
-      <Text style={myStyles.title}>Seleccioná la fecha de tu reserva</Text>
+      <Text style={myStyles.title}>Selecciona la fecha de tu reserva</Text>
       <Button
         mode="outlined"
         onPress={handleModalDateFrom}

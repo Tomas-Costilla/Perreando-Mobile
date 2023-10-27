@@ -21,7 +21,7 @@ export default function CreateReserve({navigation,hostIdProp,guestIdProp}){
             const response = await server.get(`/host/guestReserve/${guestIdProp}`)
             if(response.data.existe) {
                 setIsErrorServer(true)
-                setErrorMessage("Ya tienes una reserva, cancelá tu reserva para poder gestionar otra")
+                setErrorMessage("Ya tienes una reserva, cancela tu reserva para poder gestionar otra")
                 setLoading(false)
                 return
             }
