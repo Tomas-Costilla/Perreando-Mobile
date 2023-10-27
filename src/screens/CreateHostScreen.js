@@ -157,7 +157,7 @@ export default function CreateHostScreen({navigation,route}){
 
                     <InputView 
                         nameField="hostDescription"
-                        label="Ingresá un nombre descriptivo"
+                        label="Ingresa un nombre descriptivo"
                         editable={true}
                         handleData={handleHostData}
                         validateMessage={validateMsg.description}
