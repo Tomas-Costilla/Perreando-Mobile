@@ -18,6 +18,7 @@ export default function InputView({modeInput,label,editable,value,placeholder,di
             onChangeText={val=>handleData(nameField,val)}
             secureTextEntry={isPrivate}
             multiline={multiline ? multiline : false}
+            autoCapitalize="none"
         />
         {validateMessage && <HelperText type="error" visible>{validateMessage}</HelperText>}
     </View>

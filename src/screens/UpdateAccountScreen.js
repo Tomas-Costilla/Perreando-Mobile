@@ -16,7 +16,12 @@ export default function UpdateAccountScreen({navigation}){
     const [userData,setUserData] = useState({})
     const [loading,setLoading] = useState(false)
 
-    const handleData = (camp,value) => setUserData({...userData,[camp]:value})
+    const handleData = (camp,value) => {
+
+        if(camp==="userAddressNumber" && isNaN(value)) return
+
+        setUserData({...userData,[camp]:value})
+    }
 
     const getUserInfobyID = async () =>{
         setLoadingRequest(true)

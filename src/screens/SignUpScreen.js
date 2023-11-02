@@ -56,7 +56,12 @@ const SignUpScreen = ({ route, navigation }) => {
   const [visible, setVisible] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const handleUserData = (camp, value) => setUserData({ ...userData, [camp]: value });
+  const handleUserData = (camp, value) => {
+    if(camp==="userAddressNumber" && isNaN(value)) return
+
+    setUserData({ ...userData, [camp]: value })
+  
+  }
   const handleRepeatPassword = (value) => setPasswordRepeat(value);
 
   const signUpUser = async () => {
