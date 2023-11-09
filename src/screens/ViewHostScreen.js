@@ -1,20 +1,41 @@
 import { useEffect, useState } from "react";
-import { Image, ScrollView, StyleSheet, View } from "react-native";
-import { TextInput, Text, Button, ActivityIndicator } from "react-native-paper";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { TextInput, Text, Button, ActivityIndicator, IconButton, Portal, Modal } from "react-native-paper";
 import InputView from "../components/InputView";
 import { Colors } from "../tools/constant";
 import DeleteHost from "../components/DeleteHost";
 import { useSelector } from "react-redux";
 import { server } from "../api/server";
 import SinHospedaje from "../../assets/sinhospedaje.png"
+import { Image } from "expo-image";
+import Message from "../components/Message";
+
+
+
+
 
 export default function ViewHostScreen({ navigation }) {
   const { user } = useSelector((state) => state.user);
   const [deleteModal, setDeleteModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [hostData, setHostData] = useState({});
+  const [dltImageModal,setDltImageModal] = useState(false)
+  const [errorImage,setErrorImage] = useState("")
+
+  const handleDeleteImageModal = () => setDltImageModal(!dltImageModal)
 
   const handleDeleteModal = () => setDeleteModal(!deleteModal);
+
+  const handleDeleteImage = async (imageName) =>{
+    setDltImageModal(true)
+    try {
+      let response = await server.delete(`/host/${hostData._id}/image/${imageName}`)
+      setHostData({...hostData,hostImages: response.data})
+    } catch (error) {
+      setErrorImage("Ocurrio un error al eliminar la imagen")
+    }
+    setDltImageModal(false)
+  }
 
   const getOwnerHostbyID = async () => {
     setLoading(true);
@@ -112,6 +133,22 @@ export default function ViewHostScreen({ navigation }) {
         inputStyles={myStyles.inputNumberStyle}
       />
 
+      <View style={myStyles.hostImageContainer}>
+        {hostData.hostImages.length > 0 ? hostData.hostImages.map((value,index)=> <View key={index}>
+          <Image source={{uri: value.ImageUri}} style={{width:150,height:100}}/>
+          <View style={{display:"flex",justifyContent:"center",flexDirection:"row",gap:10}}>
+            <IconButton icon="delete" size={20} iconColor="red" onPress={()=>handleDeleteImage(value.ImageName)}/>
+          </View>
+        </View>) : <Text>Debes dejar al menos una imagen de tu hospedaje</Text>}
+      </View>
+
+      {errorImage && <Message msg={errorImage} type="error"/>}
+
+      {hostData.hostImages.length < 3 && <View style={{display:"flex",justifyContent:"center",flexDirection:"row",padding:10,marginBottom:10,marginTop:10}}>
+        <Button icon="plus" mode="text" onPress={()=>console.log("Agregar imagen")}>Agregar imagen</Button>
+      </View>}
+
+
       <View style={myStyles.btnsViewGuest}>
         <Button
           mode="contained"
@@ -137,16 +174,38 @@ export default function ViewHostScreen({ navigation }) {
         hideModal={handleDeleteModal}
         hostOwnerId={user._id}
       />
+
+      {/* <DeleteImageModal visible={dltImageModal} hideModal={handleDeleteImageModal} hostId={hostData._id} updateState={handleUpdateImages}/>
+       */}
+
+      <Portal>
+          <Modal visible={dltImageModal}>
+            <View style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+                <ActivityIndicator size={45}/>
+            </View>
+          </Modal>
+      </Portal>
+
       {/* </ScrollView> */}
     </ScrollView>
   );
 }
 
 const myStyles = StyleSheet.create({
+  modalContainer:{
+    backgroundColor:Colors.backgroundColor,
+    padding:10,
+    display:"flex",
+    flexDirection:"column",
+    justifyContent:"center",
+    borderRadius:10,
+    alignItems:"center",
+    gap:10
+  },
   container: {
     backgroundColor: Colors.backgroundColor,
     flex: 1,
-    padding: 10,
+    padding: 10
     /* display:"flex",
         flexDirection:"column",
         justifyContent:"flex-start", */
@@ -198,6 +257,7 @@ const myStyles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     marginTop: 10,
+    marginBottom:15
   },
   inputNumberStyle: {
     width: 150,
@@ -213,5 +273,14 @@ const myStyles = StyleSheet.create({
     backgroundColor:Colors.principal,
     borderRadius:10,
     width:180
+  },
+  hostImageContainer:{
+    display:"flex",
+    justifyContent:"flex-start",
+    flexDirection:"row",
+    marginTop:10,
+    marginBottom:10,
+    gap:10,
+    flexWrap:"wrap"
   }
 });

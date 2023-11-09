@@ -26,7 +26,7 @@ export default function ItemSearch({data,navigation}){
     style={{borderRadius:10,height:185,marginBottom:10}}>
         <View style={myStyles.cardContainer}>
             <View style={myStyles.infoContainer}>
-               <View style={{display:"flex",flexDirection:"row",justifyContent:"space-between",width:230,alignItems:"center"}}>
+               <View style={{display:"flex",flexDirection:"row",justifyContent:"space-between",width:230,alignItems:"center",padding:5}}>
                     <View style={myStyles.avatarContainer}>
                             <Avatar.Image size={30} source={{uri: data.imageUri}}/>
                             <Text style={{color: "#868686",fontWeight:"bold",fontSize:10}}>{data.hostOwnerId?.userFullName}</Text>
@@ -112,7 +112,8 @@ const myStyles = StyleSheet.create({
         flexDirection:"row",
         alignItems:"center",
         justifyContent:"space-between",
-        gap:5
+        gap:5,
+        padding:5
     }
 })
 

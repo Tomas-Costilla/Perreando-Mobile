@@ -21,6 +21,7 @@ const FeedScreen = ({navigation}) =>{
         setErrorType("")
         try {
             let response = await server.get("/host/search") 
+           /*  console.log(response.data); */
             setData(response.data)
         } catch (error) {
             console.log(error)
