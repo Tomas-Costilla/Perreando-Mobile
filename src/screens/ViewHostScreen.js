@@ -9,6 +9,7 @@ import { server } from "../api/server";
 import SinHospedaje from "../../assets/sinhospedaje.png"
 import { Image } from "expo-image";
 import Message from "../components/Message";
+import * as ImagePicker from "expo-image-picker";
 
 
 
@@ -21,13 +22,54 @@ export default function ViewHostScreen({ navigation }) {
   const [hostData, setHostData] = useState({});
   const [dltImageModal,setDltImageModal] = useState(false)
   const [errorImage,setErrorImage] = useState("")
+  const [uploadImage,setUploadImage] = useState({})
 
-  const handleDeleteImageModal = () => setDltImageModal(!dltImageModal)
+  const pickImages = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      /* allowsEditing:true, */
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setUploadImage({...uploadImage,
+        imageFile: result.assets[0],
+        imageUri: result.assets[0].uri
+    })
+    handleAddImage()
+    }
+  };
+
+  const handleAddImage = async () =>{
+    setDltImageModal(true)
+    setErrorImage("")
+    const formData = new FormData();
+    formData.append("uploadImage", {
+      name: new Date() + "_uploadImage",
+      uri: uploadImage.imageUri,
+      type: "image/jpg",
+    });
+    try {
+      let response = await server.post(`/host/${hostData._id}/updateimage`,formData,{
+        headers:{
+          Accept: 'application/json',
+          'Content-Type':'multipart/form-data'
+        }
+      })
+      setHostData({...hostData,hostImages: response.data})
+    } catch (error) {
+      console.log(error)
+      setErrorImage("Ocurrio un error al agregar una imagen")
+    }
+    setDltImageModal(false)
+  }
 
   const handleDeleteModal = () => setDeleteModal(!deleteModal);
 
   const handleDeleteImage = async (imageName) =>{
     setDltImageModal(true)
+    setErrorImage("")
     try {
       let response = await server.delete(`/host/${hostData._id}/image/${imageName}`)
       setHostData({...hostData,hostImages: response.data})
@@ -145,7 +187,7 @@ export default function ViewHostScreen({ navigation }) {
       {errorImage && <Message msg={errorImage} type="error"/>}
 
       {hostData.hostImages.length < 3 && <View style={{display:"flex",justifyContent:"center",flexDirection:"row",padding:10,marginBottom:10,marginTop:10}}>
-        <Button icon="plus" mode="text" onPress={()=>console.log("Agregar imagen")}>Agregar imagen</Button>
+        <Button icon="plus" mode="text" onPress={()=>pickImages()}>Agregar imagen</Button>
       </View>}
 
 
