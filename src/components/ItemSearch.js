@@ -1,11 +1,13 @@
 import {} from "react"
-import { FlatList, Image, Linking, StyleSheet, TouchableHighlight, View } from "react-native"
+import { FlatList, Linking, StyleSheet, TouchableHighlight, View } from "react-native"
 import { Avatar, Button, Card, Divider, IconButton, Text } from "react-native-paper"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import { Colors } from "../tools/constant"
 import ContactBtn from "./ContactBtn"
 import ImageItemSlide from "./ImageItemSlide"
 import ImageCarrousel from "./ImageCarrousel"
+import NoPhoto from "../../assets/nophoto.png"
+import {Image} from "expo-image"
 
 const PropertyCard = ({text,icon}) => {
     return <View style={myStyles.propertyContainer}>
@@ -48,7 +50,12 @@ export default function ItemSearch({data,navigation}){
                     <PropertyCard text={data.activeGuests} icon="account-group"/>
                 </View>
             </View>
-            <Image source={{uri: data?.hostImages[0].ImageUri}} style={myStyles.imageHost} />
+            
+            {data?.hostImages.length > 0 
+                ?<Image source={{uri: data?.hostImages[0].ImageUri}} style={myStyles.imageHost}/> 
+                :<View style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+                    <Image source={NoPhoto} style={myStyles.noImageStyle}/>            
+                </View> }
        </View>
     </TouchableHighlight>
 }
@@ -77,6 +84,11 @@ const myStyles = StyleSheet.create({
         height:'100%',
         borderTopRightRadius:5,
    /*      borderBottomEndRadius:5 */
+    },
+    noImageStyle:{
+        width:100,
+        height:100,
+        borderTopRightRadius:5,
     },
     propertyContainer:{
         display:"flex",

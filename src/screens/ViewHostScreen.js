@@ -33,21 +33,21 @@ export default function ViewHostScreen({ navigation }) {
     });
 
     if (!result.canceled) {
-      setUploadImage({...uploadImage,
+      /* setUploadImage({...uploadImage,
         imageFile: result.assets[0],
         imageUri: result.assets[0].uri
-    })
-    handleAddImage()
+      }) */
+      handleAddImage(result.assets[0].uri)
     }
   };
 
-  const handleAddImage = async () =>{
+  const handleAddImage = async (imageUri) =>{
     setDltImageModal(true)
     setErrorImage("")
     const formData = new FormData();
     formData.append("uploadImage", {
       name: new Date() + "_uploadImage",
-      uri: uploadImage.imageUri,
+      uri: imageUri,
       type: "image/jpg",
     });
     try {
@@ -177,7 +177,7 @@ export default function ViewHostScreen({ navigation }) {
 
       <View style={myStyles.hostImageContainer}>
         {hostData.hostImages.length > 0 ? hostData.hostImages.map((value,index)=> <View key={index}>
-          <Image source={{uri: value.ImageUri}} style={{width:150,height:100}}/>
+          <Image source={{uri: value.ImageUri}} style={{width:150,height:100,borderRadius:10}}/>
           <View style={{display:"flex",justifyContent:"center",flexDirection:"row",gap:10}}>
             <IconButton icon="delete" size={20} iconColor="red" onPress={()=>handleDeleteImage(value.ImageName)}/>
           </View>
