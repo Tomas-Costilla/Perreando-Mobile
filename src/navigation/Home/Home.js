@@ -9,7 +9,7 @@ import { Colors } from "../../tools/constant";
 const Tabs = createBottomTabNavigator();
 const Home = () =>{
     return (
-        <Tabs.Navigator initialRouteName="FeedStack" screenOptions={{tabBarStyle:{backgroundColor:Colors.principal}}} >
+        <Tabs.Navigator initialRouteName="FeedStack" screenOptions={{tabBarStyle:{backgroundColor:Colors.principal},tabBarHideOnKeyboard:true}}  >
             <Tabs.Screen 
                 name="FeedStack" 
                 component={FeedNav}

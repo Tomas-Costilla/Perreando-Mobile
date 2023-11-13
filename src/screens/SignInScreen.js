@@ -23,6 +23,7 @@ import { Colors } from "../tools/constant";
 import AppImage from "../../assets/logo-sin-fondo.png";
 import InputView from "../components/InputView";
 import Instagram from "../../assets/instagram.png"
+import {API_URL} from "@env"
 
 const SignInScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -72,6 +73,7 @@ const SignInScreen = ({ navigation }) => {
   };
 
   const signInUser = async () => {
+   /*  console.log(API_URL); */
     setLoading(true);
     setErrorServer({ ...errorServer, isError: false, errorMessage: "" });
     try {

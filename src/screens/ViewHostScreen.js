@@ -1,49 +1,149 @@
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { TextInput, Text, Button, ActivityIndicator, IconButton, Portal, Modal } from "react-native-paper";
+import {
+  TextInput,
+  Text,
+  Button,
+  ActivityIndicator,
+  IconButton,
+  Portal,
+  Modal,
+} from "react-native-paper";
 import InputView from "../components/InputView";
 import { Colors } from "../tools/constant";
 import DeleteHost from "../components/DeleteHost";
 import { useSelector } from "react-redux";
 import { server } from "../api/server";
-import SinHospedaje from "../../assets/sinhospedaje.png"
+import SinHospedaje from "../../assets/sinhospedaje.png";
 import { Image } from "expo-image";
 import Message from "../components/Message";
 import * as ImagePicker from "expo-image-picker";
+import NoPhoto from "../../assets/nophoto.png";
 
+const UploadImageModal = ({ visible, hideModal, uploadImage}) => {
+  const [image, setImage] = useState("");
 
+  const pickImageFromGallery = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
 
+  const handleDeleteImage = () => setImage("")
+
+  return (
+    <>
+      <Portal>
+        <Modal
+          visible={visible}
+          onDismiss={hideModal}
+          style={myStyles.modalUploadContainer}
+        >
+          <View style={myStyles.uploadViewContainer}>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                alignItems: "flex-end",
+              }}
+            >
+              <IconButton icon="close" size={30} onPress={hideModal} />
+            </View>
+            <Text style={{ textAlign: "center" }}>
+              Selecciona una imagen de tu galeria
+            </Text>
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {image ? (
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: 150, height: 150,borderRadius:5 }}
+                />
+              ) : (
+                <Image source={NoPhoto} style={{ width: 150, height: 150 }} />
+              )}
+              {image && (
+                <IconButton icon="delete-outline" iconColor="red" size={30} onPress={handleDeleteImage}/>
+              )}
+            </View>
+
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 10,
+              }}
+            >
+              <Button
+                mode="outlined"
+                icon="image-search"
+                style={{ borderRadius: 10 }}
+                labelStyle={{ color: "#000000" }}
+                onPress={pickImageFromGallery}
+              >
+                Ver galeria
+              </Button>
+              {image && (
+                <Button
+                  mode="contained"
+                  onPress={()=>uploadImage(image)}
+                  style={{
+                    borderRadius: 10,
+                    backgroundColor: Colors.principal,
+                    width: 200,
+                  }}
+                >
+                  Confirmar
+                </Button>
+              )}
+            </View>
+          </View>
+        </Modal>
+      </Portal>
+
+     <View style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+     <Button
+        icon="plus"
+        mode="outlined"
+        labelStyle={{borderRadius:10,color:"#000000"}}
+        onPress={hideModal}
+      >
+        Agregar Imagen
+      </Button>
+     </View>
+    </>
+  );
+};
 
 export default function ViewHostScreen({ navigation }) {
   const { user } = useSelector((state) => state.user);
   const [deleteModal, setDeleteModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [hostData, setHostData] = useState({});
-  const [dltImageModal,setDltImageModal] = useState(false)
-  const [errorImage,setErrorImage] = useState("")
-  const [uploadImage,setUploadImage] = useState({})
+  const [dltImageModal, setDltImageModal] = useState(false);
+  const [errorImage, setErrorImage] = useState("");
+  const [uploadImageModal, setUploadImageModal] = useState(false);
 
-  const pickImages = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      /* allowsEditing:true, */
-      aspect: [4, 3],
-      quality: 1,
-    });
+  const handleUploadImageModal = () => setUploadImageModal(!uploadImageModal)
 
-    if (!result.canceled) {
-      /* setUploadImage({...uploadImage,
-        imageFile: result.assets[0],
-        imageUri: result.assets[0].uri
-      }) */
-      handleAddImage(result.assets[0].uri)
-    }
-  };
-
-  const handleAddImage = async (imageUri) =>{
-    setDltImageModal(true)
-    setErrorImage("")
+  const handleAddImage = async (imageUri) => {
+    handleUploadImageModal(false)
+    setDltImageModal(true);
+    setErrorImage("");
     const formData = new FormData();
     formData.append("uploadImage", {
       name: new Date() + "_uploadImage",
@@ -51,38 +151,43 @@ export default function ViewHostScreen({ navigation }) {
       type: "image/jpg",
     });
     try {
-      let response = await server.post(`/host/${hostData._id}/updateimage`,formData,{
-        headers:{
-          Accept: 'application/json',
-          'Content-Type':'multipart/form-data'
+      let response = await server.post(
+        `/host/${hostData._id}/updateimage`,
+        formData,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "multipart/form-data",
+          },
         }
-      })
-      setHostData({...hostData,hostImages: response.data})
+      );
+      setHostData({ ...hostData, hostImages: response.data });
     } catch (error) {
-      console.log(error)
-      setErrorImage("Ocurrio un error al agregar una imagen")
+      setErrorImage("Ocurrio un error al agregar una imagen");
     }
-    setDltImageModal(false)
-  }
+    setDltImageModal(false);
+  };
 
   const handleDeleteModal = () => setDeleteModal(!deleteModal);
 
-  const handleDeleteImage = async (imageName) =>{
-    setDltImageModal(true)
-    setErrorImage("")
+  const handleDeleteImage = async (imageName) => {
+    setDltImageModal(true);
+    setErrorImage("");
     try {
-      let response = await server.delete(`/host/${hostData._id}/image/${imageName}`)
-      setHostData({...hostData,hostImages: response.data})
+      let response = await server.delete(
+        `/host/${hostData._id}/image/${imageName}`
+      );
+      setHostData({ ...hostData, hostImages: response.data });
     } catch (error) {
-      setErrorImage("Ocurrio un error al eliminar la imagen")
+      setErrorImage("Ocurrio un error al eliminar la imagen");
     }
-    setDltImageModal(false)
-  }
+    setDltImageModal(false);
+  };
 
   const getOwnerHostbyID = async () => {
     setLoading(true);
     try {
-      const response = await server.get(`/host/owner/${user._id}`);
+      let response = await server.get(`/host/owner/${user._id}`);
       if (response.data) setHostData(response.data);
     } catch (error) {
       console.log(error);
@@ -107,17 +212,18 @@ export default function ViewHostScreen({ navigation }) {
         <Text style={myStyles.notHostTitle}>
           Aun no tienes creado un hospedaje!
         </Text>
-        <Image source={SinHospedaje} style={myStyles.imageStyle}/>
+        <Image source={SinHospedaje} style={myStyles.imageStyle} />
       </View>
     );
 
   return (
     <ScrollView style={myStyles.container}>
-      {/*  <ScrollView> */}
       <View style={myStyles.btnActionContainer}>
         <Button
           icon="pencil"
-          onPress={() => navigation.navigate("UpdateHostData",{hostDataId: user._id})}
+          onPress={() =>
+            navigation.navigate("UpdateHostData", { hostDataId: user._id })
+          }
           compact
           labelStyle={myStyles.btnActionEditStyles}
         />
@@ -176,25 +282,49 @@ export default function ViewHostScreen({ navigation }) {
       />
 
       <View style={myStyles.hostImageContainer}>
-        {hostData.hostImages.length > 0 ? hostData.hostImages.map((value,index)=> <View key={index}>
-          <Image source={{uri: value.ImageUri}} style={{width:150,height:100,borderRadius:10}}/>
-          <View style={{display:"flex",justifyContent:"center",flexDirection:"row",gap:10}}>
-            <IconButton icon="delete" size={20} iconColor="red" onPress={()=>handleDeleteImage(value.ImageName)}/>
-          </View>
-        </View>) : <Text>Debes dejar al menos una imagen de tu hospedaje</Text>}
+        {hostData?.hostImages.length > 0 ? (
+          hostData.hostImages.map((value, index) => (
+            <View key={index}>
+              <Image
+                source={{ uri: value.ImageUri }}
+                style={{ width: 150, height: 100, borderRadius: 10 }}
+              />
+              <View
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  flexDirection: "row",
+                  gap: 10,
+                }}
+              >
+                <IconButton
+                  icon="delete"
+                  size={20}
+                  iconColor="red"
+                  onPress={() => handleDeleteImage(value.ImageName)}
+                />
+              </View>
+            </View>
+          ))
+        ) : (
+          <Text>Debes dejar al menos una imagen de tu hospedaje</Text>
+        )}
       </View>
 
-      {errorImage && <Message msg={errorImage} type="error"/>}
+      {errorImage && <Message msg={errorImage} type="error" />}
 
-      {hostData.hostImages.length < 3 && <View style={{display:"flex",justifyContent:"center",flexDirection:"row",padding:10,marginBottom:10,marginTop:10}}>
-        <Button icon="plus" mode="text" onPress={()=>pickImages()}>Agregar imagen</Button>
-      </View>}
+      {hostData?.hostImages.length < 3 && (
+        <UploadImageModal visible={uploadImageModal} hideModal={handleUploadImageModal} uploadImage={handleAddImage}/>
+      )}
 
+    
 
       <View style={myStyles.btnsViewGuest}>
         <Button
           mode="contained"
-          onPress={() => navigation.navigate("ViewHostGuest",{hostId: hostData._id})}
+          onPress={() =>
+            navigation.navigate("ViewHostGuest", { hostId: hostData._id })
+          }
           style={myStyles.btnViewGuest}
           icon="account-group"
         >
@@ -202,7 +332,9 @@ export default function ViewHostScreen({ navigation }) {
         </Button>
         <Button
           mode="contained"
-          onPress={() => navigation.navigate("ViewHostRating",{hostId: hostData._id})}
+          onPress={() =>
+            navigation.navigate("ViewHostRating", { hostId: hostData._id })
+          }
           style={myStyles.btnRating}
           icon="star"
         >
@@ -217,44 +349,50 @@ export default function ViewHostScreen({ navigation }) {
         hostOwnerId={user._id}
       />
 
-      {/* <DeleteImageModal visible={dltImageModal} hideModal={handleDeleteImageModal} hostId={hostData._id} updateState={handleUpdateImages}/>
-       */}
+      
 
       <Portal>
-          <Modal visible={dltImageModal}>
-            <View style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-                <ActivityIndicator size={45}/>
-            </View>
-          </Modal>
+        <Modal visible={dltImageModal}>
+          <View
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <ActivityIndicator size={45} />
+          </View>
+        </Modal>
       </Portal>
-
-      {/* </ScrollView> */}
     </ScrollView>
   );
 }
 
 const myStyles = StyleSheet.create({
-  modalContainer:{
-    backgroundColor:Colors.backgroundColor,
-    padding:10,
-    display:"flex",
-    flexDirection:"column",
-    justifyContent:"center",
-    borderRadius:10,
-    alignItems:"center",
-    gap:10
+  modalUploadContainer: {
+    padding: 10,
+  },
+  uploadViewContainer: {
+    backgroundColor: Colors.backgroundColor,
+    padding: 10,
+    borderRadius: 10,
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "column",
+    /* alignItems:"center", */
+    gap: 10,
   },
   container: {
     backgroundColor: Colors.backgroundColor,
     flex: 1,
-    padding: 10
+    padding: 10,
     /* display:"flex",
         flexDirection:"column",
         justifyContent:"flex-start", */
   },
-  imageStyle:{
-    width:300,
-    height:300
+  imageStyle: {
+    width: 300,
+    height: 300,
   },
   loadingContainer: {
     flex: 1,
@@ -265,7 +403,7 @@ const myStyles = StyleSheet.create({
   emptyContainer: {
     flex: 1,
     justifyContent: "center",
-    alignItems:"center",
+    alignItems: "center",
     backgroundColor: Colors.backgroundColor,
     padding: 10,
   },
@@ -299,30 +437,30 @@ const myStyles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     marginTop: 10,
-    marginBottom:15
+    marginBottom: 15,
   },
   inputNumberStyle: {
     width: 150,
   },
-  btnViewGuest:{
-    padding:2,
-    backgroundColor:Colors.principal,
-    borderRadius:10,
-    width:180
+  btnViewGuest: {
+    padding: 2,
+    backgroundColor: Colors.principal,
+    borderRadius: 10,
+    width: 180,
   },
-  btnRating:{
-    padding:2,
-    backgroundColor:Colors.principal,
-    borderRadius:10,
-    width:180
+  btnRating: {
+    padding: 2,
+    backgroundColor: Colors.principal,
+    borderRadius: 10,
+    width: 180,
   },
-  hostImageContainer:{
-    display:"flex",
-    justifyContent:"flex-start",
-    flexDirection:"row",
-    marginTop:10,
-    marginBottom:10,
-    gap:10,
-    flexWrap:"wrap"
-  }
+  hostImageContainer: {
+    display: "flex",
+    justifyContent: "flex-start",
+    flexDirection: "row",
+    marginTop: 10,
+    marginBottom: 10,
+    gap: 10,
+    flexWrap: "wrap",
+  },
 });
