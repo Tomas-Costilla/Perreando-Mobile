@@ -6,6 +6,7 @@ import { useSelector } from "react-redux"
 import { Colors } from "../tools/constant"
 import InputView from "../components/InputView"
 import * as ImagePicker from 'expo-image-picker'
+import { ScrollView } from "react-native-gesture-handler"
 
 
 export default function UpdatePawData({navigation,route}){
@@ -46,6 +47,8 @@ export default function UpdatePawData({navigation,route}){
 
    
     return <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={myStyles.container}>
+       <ScrollView>
+        
         <View style={myStyles.imageContainer}>
             <Image source={{uri: pawData.userImageUrl}} style={myStyles.imagePaw}/>
         </View>
@@ -98,6 +101,7 @@ export default function UpdatePawData({navigation,route}){
                 Modificar datos
             </Button>
         </View>
+       </ScrollView>
     
     </KeyboardAvoidingView>
 }

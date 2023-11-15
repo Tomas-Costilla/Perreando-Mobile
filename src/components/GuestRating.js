@@ -13,7 +13,7 @@ export default function GuestRating({ data }) {
       <View style={myStyles.dataContainer}>
         <View style={myStyles.userContainer}>
             <Text>{data.userFullName}</Text>
-            <Text>{data.hostGuestComment}</Text>
+            <Text style={{textAlign:"justify"}}>{data.hostGuestComment}</Text>
         </View>
         <View style={myStyles.ratingContainer}>
             <StarsRating numberofStars={data.hostGuestRating} sizeStar={20}/>

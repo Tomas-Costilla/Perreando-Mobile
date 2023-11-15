@@ -65,9 +65,9 @@ export default function ConfirmReserveScreen({route,navigation}) {
     }
 
     let dateFromMonth = dateFrom.getMonth() + 1
-    let dateFromDay = dateFrom.getDay()
+    let dateFromDay = dateFrom.getDate()
     let dateToMonth = dateTo.getMonth() + 1
-    let dateToDay = dateTo.getDay()
+    let dateToDay = dateTo.getDate()
     
     if(dateFromMonth < dateToMonth){
       setErrorMessage("El mes de la fecha inicio no puede ser menor que el mes de fin")
@@ -78,16 +78,13 @@ export default function ConfirmReserveScreen({route,navigation}) {
       setErrorMessage("El mes de la fecha fin no puede ser menor que el mes de inicio")
       return
     }
-   /*  if(dateFromMonth === dateToMonth){
-      if(dateToDay < dateFromDay){
-        setErrorMessage("El dia fin de tu estadia no puede ser menor que la de inicio")
-        return
-      }
-       if(dateFromDay > dateToDay){
-        setErrorMessage("El dia inicio de tu estadia no puede ser mayor que el dia de fin")
-        return
-      } 
-    } */
+
+    if(dateFromMonth === dateToMonth){
+        if(dateFromDay > dateToDay){
+          setErrorMessage("El dia de inicio no puede ser menor que el de fin dentro del mismo mes")
+          return
+        }
+    }
 
 
     createReserve()

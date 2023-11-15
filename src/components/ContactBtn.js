@@ -7,7 +7,7 @@ import { Colors } from "../tools/constant"
 export default function ContactBtn({phone,message,textBtn,styleBtn,styleLabel}){
 
     const handleContactBtn = () =>{
-        Linking.openURL(`https://wa.me/${phone}?text=${message}`)
+        Linking.openURL(`https://wa.me/+54${phone}?text=${message}`)
     }
 
     return <>

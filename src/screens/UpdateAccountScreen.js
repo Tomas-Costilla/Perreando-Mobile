@@ -17,8 +17,8 @@ export default function UpdateAccountScreen({navigation}){
     const [loading,setLoading] = useState(false)
 
     const handleData = (camp,value) => {
-
-        if(camp==="userAddressNumber" && isNaN(value)) return
+        
+        if(camp==="userAddressNumber" && !/^\d+$/.test(value)) return
 
         setUserData({...userData,[camp]:value})
     }
