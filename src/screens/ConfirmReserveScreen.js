@@ -68,23 +68,57 @@ export default function ConfirmReserveScreen({route,navigation}) {
     let dateFromDay = dateFrom.getDate()
     let dateToMonth = dateTo.getMonth() + 1
     let dateToDay = dateTo.getDate()
-    
-    if(dateFromMonth < dateToMonth){
-      setErrorMessage("El mes de la fecha inicio no puede ser menor que el mes de fin")
+    let dateToYear = dateTo.getFullYear()
+    let dateFromYear = dateFrom.getFullYear()
+
+    if(dateFromYear > dateToYear){
+      setErrorMessage("El año de la fecha inicio no puede ser menor que el año de fin")
       return
     }
 
-    if(dateToMonth < dateFromMonth){
-      setErrorMessage("El mes de la fecha fin no puede ser menor que el mes de inicio")
-      return
-    }
+    if(dateFromYear === dateToYear){
+      if(dateFromMonth > dateToMonth){
+        setErrorMessage("El mes de la fecha inicio no puede ser mayor que el mes de fin")
+        return
+      }
 
-    if(dateFromMonth === dateToMonth){
+      if(dateFromMonth === dateToMonth){
         if(dateFromDay > dateToDay){
-          setErrorMessage("El dia de inicio no puede ser menor que el de fin dentro del mismo mes")
+          setErrorMessage("El dia de la fecha inicio no puede ser mayor que el dia de fin")
           return
         }
+        if(dateFromDay === dateToDay){
+          setErrorMessage("El dia de la fecha inicio no puede ser igual que el dia de fin")
+          return
+        }
+      }
     }
+
+
+
+    /* if(dateFromYear > dateToYear){
+      setErrorMessage("El año de la fecha inicio no puede ser menor que el año de fin")
+      return
+    }else{
+      if(dateFromYear === dateToYear){
+        if(dateFromMonth > dateToMonth){
+          setErrorMessage("El mes de la fecha inicio no puede ser mayor que el mes de fin")
+          return
+        }else{
+          if(dateFromMonth === dateToMonth){
+            if(dateFromDay > dateToDay){
+              setErrorMessage("El dia de la fecha inicio no puede ser mayor que el dia de fin")
+              return
+            }else{
+              if(dateFromDay === dateToDay){
+                setErrorMessage("El dia de la fecha inicio no puede ser igual que el dia de fin")
+                return
+              }
+            }
+          }
+        }
+      }
+    } */
 
 
     createReserve()
