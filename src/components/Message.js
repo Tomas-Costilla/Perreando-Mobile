@@ -30,6 +30,7 @@ export default function Message({ type, msg }) {
             ? myStyles.alertColorIcon
             : myStyles.successColorIcon
         }
+        size={20}
       />
       <Text 
         style={

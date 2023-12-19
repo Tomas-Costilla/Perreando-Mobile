@@ -35,11 +35,11 @@ export default function ValidateCodeScreen({navigation,route}){
         setErrorServer("")
         setErrorType("")
         try {
-            let response = await server.get(`/user/validatetokenpassword/${userEmail}/${code.userCode}`)
+            await server.get(`/user/validatetokenpassword/${userEmail}/${code.userCode}`)
             navigation.navigate("ChangePassword",{userEmail: userEmail})
         } catch (error) {
-            setErrorType("error")
-            setErrorServer(error.response.data)
+            if(error.response.data?.message) setErrorServer(error.response.data?.message)
+            else setErrorServer("Ocurrio un error en la operacion")
         }
         setLoading(false)
     }
@@ -55,7 +55,7 @@ export default function ValidateCodeScreen({navigation,route}){
                 handleData={handleCodeUser}
                 nameField="userCode"
             />
-            {errorServer && <Message msg={errorServer} type={errorType}/>}
+            {errorServer && <Message msg={errorServer} type="error"/>}
             <View style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center",marginTop:10,padding:5}}>
                 <Button 
                     mode="contained"
@@ -91,9 +91,8 @@ const myStyles = StyleSheet.create({
         marginBottom:10
     },
     btnValidate:{
-        borderRadius:10,
         width:200,
         padding:3,
-        backgroundColor:Colors.principal
+        backgroundColor:Colors.principalBtn
     }
 })

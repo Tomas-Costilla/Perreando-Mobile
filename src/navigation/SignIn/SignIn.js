@@ -9,6 +9,7 @@ import UbicationSelect from "../../screens/SignUp/UbicationSelect";
 import ResetPassword from "../../screens/ResetPassword";
 import ValidateCodeScreen from "../../screens/ValidateCodeScreen";
 import ChangePasswordScreen from "../../screens/ChangePasswordScreen";
+import SelectCountryScreen from "../../screens/SelectCountryScreen";
 
 const StackNavigation = createStackNavigator();
 const SingInStack = () => {
@@ -22,6 +23,16 @@ const SingInStack = () => {
             
         }} 
     />
+
+    <StackNavigation.Screen 
+      name="Countries"
+      component={SelectCountryScreen}
+      options={{
+        headerTitle:"Paises disponibles"
+      }}
+    />
+
+
       <StackNavigation.Screen 
         name="Profile" 
         component={ProfileScreen}

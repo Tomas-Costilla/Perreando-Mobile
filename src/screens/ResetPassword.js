@@ -9,6 +9,7 @@ import { server } from "../api/server"
 
 export default function ResetPassword({navigation}){
 
+    const [errorServer,setErrorServer] = useState("")
     const [errorMessage,setErrorMessage] = useState({
         errorInput:"",
         errorServer:"",
@@ -40,13 +41,14 @@ export default function ResetPassword({navigation}){
 
     const sendEmailToServer = async () =>{
         setLoading(true)
-        setErrorMessage({...errorMessage,errorServer:"",errorType:""})
+        setErrorServer("")
         try {
-            let response = await server.post("/user/resetpassword",{userEmail: userData.userEmail})
-            /* console.log(response.data) */
+            await server.post("/user/resetpassword",{userEmail: userData.userEmail})
             navigation.navigate("ValidateCode",{userEmail: userData.userEmail})
         } catch (error) {
-            setErrorMessage({...errorMessage,errorServer:error.response.data,errorType:"error"})
+            console.log(error.response)
+            if(error.response.data?.message) setErrorServer(error.response.data?.message)
+            else setErrorServer("Ocurrio un error en realizar la operacion")
         }
         setLoading(false)
     }
@@ -62,17 +64,17 @@ export default function ResetPassword({navigation}){
                 label="Tu Email"
                 validateMessage={errorMessage.errorInput}
             />
-            {errorMessage.errorServer && <Message msg={errorMessage.errorServer} type={errorMessage.errorType}/>}
             <View style={{display:"flex",flexDirection:"row",justifyContent:"center"}}>
                 <Button
                     mode="contained"
                     style={myStyles.btnValidate}
                     onPress={validateUserEmail}
                     loading={loading}
-                >
+                    >
                     Validar
                 </Button>
             </View>
+            {errorServer && <Message msg={errorServer} type="error"/>}
         </View>
     </View>
 }
@@ -86,8 +88,7 @@ const myStyles = StyleSheet.create({
     },
     btnValidate:{
         width:250,
-        backgroundColor:Colors.principal,
-        borderRadius:10,
+        backgroundColor:Colors.principalBtn,
         padding:3,
         marginTop:10
     },

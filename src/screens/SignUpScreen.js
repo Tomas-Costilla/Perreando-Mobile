@@ -17,9 +17,10 @@ import { ValidateUserData } from "../tools/validators";
 import InputSignUp from "../components/InputSignUp";
 import GuestInputs from "../components/GuestInputs";
 import InputView from "../components/InputView";
+import Message from "../components/Message";
 
 const SignUpScreen = ({ route, navigation }) => {
-  const { photo, profile, ubication } = route.params;
+  const { photo,countryId, profile } = route.params;
   const dispatch = useDispatch();
   const [userData, setUserData] = useState({
     userFullName: "",
@@ -27,32 +28,20 @@ const SignUpScreen = ({ route, navigation }) => {
     userPhone: 0,
     userPassword: "",
     userRepeatPassword:"",
-    userUbication: ubication,
-    userAddressStreet: "",
-    userAddressNumber: 0,
-    userAddressBetwStreet: "",
+    userAddress: "",
     userAddressExtraInfo: "",
     userPhoto: photo,
     userProfile: profile,
-    userGuestAnimalName:"",
-    userGuestAnimalAge:0,
-    userGuestAnimalWeight:0,
-    userHostType: "Perros",
-    userHostCapacity:0,
-    userHostAnimalWeightFrom: 0,
-    userHostAnimalWeightTo: 0,
-    userHostAnimalAgeFrom: 0,
-    userHostAnimalAgeTo: 0,
+    userFirstLogin:true,
+    userTermsAccept:false,
+    userCountryId: countryId
   });
 
   const [validMessage, setValidMessage] = useState({});
 
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const [error, setError] = useState(false);
-  const [serverError, setServerError] = useState({
-    isError: false,
-    errorMessage: "",
-  });
+  const [serverError, setServerError] = useState("")
   const [visible, setVisible] = useState(true);
   const [loading, setLoading] = useState(false);
 
@@ -66,7 +55,7 @@ const SignUpScreen = ({ route, navigation }) => {
 
   const signUpUser = async () => {
     setError(false);
-    setServerError({ ...serverError, isError: false, errorMessage: "" });
+    setServerError("")
     const { isValid, validationMessage } = ValidateUserData(
       userData,
       passwordRepeat
@@ -90,20 +79,12 @@ const SignUpScreen = ({ route, navigation }) => {
       uri: photo.imageUri,
       type: "image/jpg",
     });
-    formData.append("userUbication",userData.userUbication)
-    formData.append("userAddressStreet",userData.userAddressStreet)
-    formData.append("userAddressNumber",userData.userAddressNumber)
-    formData.append("userAddressBetwStreet",userData.userAddressBetwStreet)
+    formData.append("userAddress",userData.userAddress)
     formData.append("userAddressExtraInfo",userData.userAddressExtraInfo)
     formData.append("userProfile",userData.userProfile)
-    formData.append("userGuestAnimalName",userData.userGuestAnimalName)
-    formData.append("userGuestAnimalAge",userData.userGuestAnimalAge)
-    formData.append("userGuestAnimalWeight",userData.userGuestAnimalWeight)
-    formData.append("userHostType",userData.userHostType)
-    formData.append("userHostAnimalWeightFrom",userData.userHostAnimalWeightFrom)
-    formData.append("userHostAnimalWeightTo",userData.userHostAnimalWeightTo)
-    formData.append("userHostAnimalAgeFrom",userData.userHostAnimalAgeFrom)
-    formData.append("userHostAnimalAgeTo",userData.userHostAnimalAgeTo)
+    formData.append("userFirstLogin",userData.userFirstLogin)
+    formData.append("userTermsAccept",userData.userTermsAccept)
+    formData.append("userCountryId",userData.userCountryId)
     setLoading(true);
     try {
             await server.post("/user",formData,{
@@ -118,7 +99,8 @@ const SignUpScreen = ({ route, navigation }) => {
             })
            dispatch(signIn(response.data))
         } catch (error) {
-            setServerError({...serverError,isError: true,errorMessage: error.response.data})
+            if(error.response.data?.message) setServerError(error.response.data?.message)
+            else setServerError("Ocurrio un error al realizar la peticion")
         }
     setLoading(false);
   };
@@ -140,36 +122,15 @@ const SignUpScreen = ({ route, navigation }) => {
         validateMessage={validMessage.name}
       />
 
-        {/* <InputSignUp
-          textLabel="Nombre Completo"
-          type="text"
-          name="userFullName"
-          handleData={handleUserData}
-          validMessage={validMessage.name}
-        /> */}
 
         <InputView 
           nameField="userEmail"
-          label="Tu email"
+          label="Tu email *"
           editable={true}
           handleData={handleUserData}
           validateMessage={validMessage.email}
         />
-        {/* <InputSignUp
-          textLabel="Email*"
-          type="text"
-          name="userEmail"
-          handleData={handleUserData}
-          validMessage={validMessage.email}
-        /> */}
-
-        {/* <InputSignUp
-          textLabel="Tu celular*"
-          type="numeric"
-          name="userPhone"
-          handleData={handleUserData}
-          validMessage={validMessage.phone}
-        /> */}
+      
         
         <InputView 
           nameField="userPhone"
@@ -177,101 +138,42 @@ const SignUpScreen = ({ route, navigation }) => {
           handleData={handleUserData}
           editable={true}
           typeInput='numeric'
+          placeholder="Sin +54 y 011, Ejemplo: 1150069397"
           validateMessage={validMessage.phone}
         />
 
         <InputView 
-          nameField="userAddressStreet"
-          label="Tu direccion"
+          nameField="userAddress"
+          label="Ingresa tu direccion"
           handleData={handleUserData}
           editable={true}
+          placeholder="Ejemplo: Calle 1834, Buenos Aires"
           validateMessage={validMessage.address}
         />
 
-        {/* <InputSignUp
-          textLabel="Tu Direccion*"
-          type="text"
-          name="userAddressStreet"
-          handleData={handleUserData}
-          validMessage={validMessage.address}
-        /> */}
-
-        <InputView 
-          nameField="userAddressNumber"
-          label="Altura"
-          editable={true}
-          typeInput='numeric'
-          handleData={handleUserData}
-          validateMessage={validMessage.addressNumber}
-        />
-        {/* <InputSignUp
-          textLabel="Altura"
-          type="numeric"
-          name="userAddressNumber"
-          handleData={handleUserData}
-          validMessage={validMessage.addressNumber}
-        /> */}
-
-        {/* <InputSignUp
-          textLabel="Entre Calles"
-          type="text"
-          name="userAddressBetwStreet"
-          handleData={handleUserData}
-          validMessage={validMessage.addressBetwStreet}
-        /> */}
-        <InputView 
-          nameField="userAddressBetwStreet"
-          label="Entre Calles"
-          editable={true}
-          handleData={handleUserData}
-          validateMessage={validMessage.addressBetwStreet}
-        />
-
-        {/* <InputSignUp
-          textLabel="Informacion extra, Ej: Depto 5B, etc"
-          type="text"
-          name="userAddressExtraInfo"
-          handleData={handleUserData}
-          validMessage={validMessage.addressExtrainf}
-        /> */}
+        
         <InputView 
           nameField="userAddressExtraInfo"
-          label="Informacion extra, Ej: Depto, etc"
+          label="Ingresa informacion extra de tu domicilio"
           editable={true}
           handleData={handleUserData}
+          placeholder="Ejemplo: Entre las calles 1 y 2"
           validateMessage={validMessage.addressExtrainf}
         />
 
-        {profile === PROFILE_TYPES.HUESPED && <GuestInputs handleGuestData={handleUserData} validationMessage={validMessage}/>}
-
-        {/* <InputSignUp
-          textLabel="Contraseña*"
-          type="text"
-          name="userPassword"
-          handleData={handleUserData}
-          validMessage={validMessage.password}
-          secure={visible}
-        /> */}
         <InputView 
           nameField="userPassword"
-          label="Crear Contraseña*"
+          label="Crear Contraseña *"
           editable={true}
           isPrivate={visible}
           handleData={handleUserData}
           validateMessage={validMessage.password}
         />
 
-        {/* <InputSignUp
-          textLabel="Repetir contraseña*"
-          type="text"
-          handleData={handleRepeatPassword}
-          validMessage={validMessage.passwordRepeat}
-          secure={visible}
-          typeInput="password"
-        /> */}
+
         <InputView 
           nameField="userRepeatPassword"
-          label="Repite la contraseña"
+          label="Repite la contraseña *"
           editable={true}
           isPrivate={visible}
           handleData={handleUserData}
@@ -285,10 +187,7 @@ const SignUpScreen = ({ route, navigation }) => {
           onPress={() => setVisible(!visible)}
         />
 
-        <ErrorMessage
-          isError={serverError.isError}
-          errorMessage={serverError.errorMessage}
-        />
+        {serverError && <Message msg={serverError} type="error"/>}
         <View style={myStyles.btnContainer}>
           <Button
             style={myStyles.btnSignUp}
@@ -327,8 +226,8 @@ const myStyles = StyleSheet.create({
   btnSignUp: {
     width: 250,
     padding: 4,
-    borderRadius:10,
-    backgroundColor:Colors.principal
+    borderRadius:50,
+    backgroundColor:Colors.principalBtn
   },
   errorText: {
     color: Colors.errorColor,

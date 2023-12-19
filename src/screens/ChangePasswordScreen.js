@@ -94,7 +94,7 @@ export default function ChangePasswordScreen({navigation,route}){
                 </Button>
                 <Button
                     mode="text"
-                    labelStyle={{textAlign:"center",fontSize:15,color:Colors.principal}}
+                    labelStyle={{textAlign:"center",fontSize:15,color:Colors.textColor}}
                     style={{marginTop:10}}
                     onPress={()=>navigation.popToTop()}
                 >
@@ -120,8 +120,7 @@ const myStyles = StyleSheet.create({
         gap:10
     },
     btnConfirmChanges:{
-        borderRadius:10,
-        backgroundColor:Colors.principal,
+        backgroundColor:Colors.principalBtn,
         padding:5
     }
 })

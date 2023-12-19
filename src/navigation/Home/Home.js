@@ -16,8 +16,10 @@ const Home = () =>{
                 options={{
                    /*  tabBarLabel:"Inicio", */
                     tabBarIcon:()=> <Icon name="home" color={Colors.backgroundColor} size={26}/>,
-                    tabBarShowLabel:false,
+                    tabBarShowLabel:true,
+                    tabBarLabel:"Inicio",
                     headerShown:false,
+                    tabBarLabelStyle:{color:"#FFFFFF",fontWeight:"bold"}
                 }}
             />
             <Tabs.Screen 
@@ -26,8 +28,10 @@ const Home = () =>{
                 options={{
                  /*    tabBarLabel:"Buscar", */
                     tabBarIcon:()=> <Icon name="search" color={Colors.backgroundColor} size={26}/>,
-                    tabBarShowLabel:false,
-                    headerShown:false
+                    tabBarShowLabel:true,
+                    tabBarLabel:"Buscar",
+                    headerShown:false,
+                    tabBarLabelStyle:{color:"#FFFFFF",fontWeight:"bold"}
                 }} 
             />
             <Tabs.Screen 
@@ -36,8 +40,10 @@ const Home = () =>{
                 options={{
                    /*  tabBarLabel:"Buscar", */
                     tabBarIcon:()=> <Icon name="user" color={Colors.backgroundColor}  size={26}/>,
-                    tabBarShowLabel:false,
-                    headerShown:false
+                    tabBarShowLabel:true,
+                    tabBarLabel:"Cuenta",
+                    headerShown:false,
+                    tabBarLabelStyle:{color:"#FFFFFF",fontWeight:"bold"}
                 }} 
             />
         </Tabs.Navigator>

@@ -23,6 +23,7 @@ import { Colors } from "../tools/constant";
 import AppImage from "../../assets/logo-sin-fondo.png";
 import InputView from "../components/InputView";
 import Instagram from "../../assets/instagram.png"
+import Message from "../components/Message"
 import {API_URL} from "@env"
 
 const SignInScreen = ({ navigation }) => {
@@ -32,10 +33,7 @@ const SignInScreen = ({ navigation }) => {
     typeErrorEmail: "",
     typeErrorPass: "",
   });
-  const [errorServer, setErrorServer] = useState({
-    isError: false,
-    errorMessage: "",
-  });
+  const [errorServer, setErrorServer] = useState("")
   const [inputValue, setInputValue] = useState({
     userEmail: "",
     userPassword: "",
@@ -73,18 +71,14 @@ const SignInScreen = ({ navigation }) => {
   };
 
   const signInUser = async () => {
-   /*  console.log(API_URL); */
     setLoading(true);
-    setErrorServer({ ...errorServer, isError: false, errorMessage: "" });
+    setErrorServer("");
     try {
       let response = await server.post("/user/signin", inputValue);
       dispatch(signIn(response.data));
     } catch (error) {
-      setErrorServer({
-        ...errorServer,
-        isError: true,
-        errorMessage: error.response.data,
-      });
+      if(error.response.data?.message) setErrorServer(error.response.data?.message)
+      else setErrorServer("Ocurrio un error al querer iniciar sesion")
     }
     setLoading(false);
   };
@@ -123,14 +117,13 @@ const SignInScreen = ({ navigation }) => {
           value={inputValue.userPassword}
           validateMessage={error.typeErrorPass}
         />
-        {errorServer.isError && (
-          <HelperText type="error">{errorServer.errorMessage}</HelperText>
-        )}
         
-          <View style={{display:"flex",justifyContent:"flex-start",flexDirection:"row",marginTop:10,marginBottom:5}}>
+        {errorServer && <Message msg={errorServer} type="error"/>}
+        
+          <View style={{display:"flex",justifyContent:"center",flexDirection:"row",marginTop:10,marginBottom:5}}>
             <Button
             mode="text"
-            labelStyle={{color:"#000000"}}
+            labelStyle={{color:Colors.textColor}}
             onPress={()=>navigation.navigate("ResetPassword")}
           >¿Has olvidado tu contraseña? Presiona aqui</Button>
           </View>
@@ -151,8 +144,8 @@ const SignInScreen = ({ navigation }) => {
         <Button
           mode="outlined"
           style={myStyles.btnSignUp}
-          labelStyle={{color:"#000000"}}
-          onPress={() => navigation.navigate("Profile")}
+          labelStyle={{color:Colors.outlinedBtn}}
+          onPress={() => navigation.navigate("Countries")}
         >
           Registrarme
         </Button>
@@ -192,6 +185,7 @@ const myStyles = StyleSheet.create({
   title: {
     textAlign: "center",
     fontSize: 20,
+    color:Colors.textColor
   },
   btnContainer: {
     display: "flex",
@@ -202,10 +196,10 @@ const myStyles = StyleSheet.create({
     marginBottom: 10,
   },
   btnLogin: {
-    width: 300,
+    width: 380,
     justifyContent: "flex-end",
-    backgroundColor: Colors.principal,
-    borderRadius: 10,
+    backgroundColor: Colors.principalBtn,
+    borderRadius: 50,
     padding: 5,
     marginBottom:10,
     marginTop:10
@@ -215,10 +209,10 @@ const myStyles = StyleSheet.create({
   },
   btnSignUp: {
     backgroundColor:"#FFFFFF",
-    width:300,
-    borderColor:Colors.principal,
-    padding:5,
-    borderRadius:10
+    width:380,
+    borderColor:Colors.outlinedBtn,
+    padding:3,
+    borderRadius:50
 
   },
   socialNetwork:{

@@ -10,7 +10,7 @@ import { Colors, PROFILE_TYPES } from "../../tools/constant";
 
 const PhotoScreen = ({route,navigation}) =>{
 
-    const {profile} = route.params;
+    const {countryId,profile} = route.params;
 
     const [image,setImage] = useState({
         imageFile:null,
@@ -75,19 +75,19 @@ const PhotoScreen = ({route,navigation}) =>{
             <Text style={myStyles.title}>
                 {profile === PROFILE_TYPES.ANFITRION
                     ? "Sube una foto tuya" 
-                    : "Sube una foto tuya o de tu mascota"}
+                    : "Sube una foto tuya"}
             </Text>
             <Button
                 icon="image-album"
                 mode="contained"
-                labelStyle={{fontSize:18}}
+                labelStyle={{fontSize:15}}
                 onPress={()=>pickImage()}
                 style={myStyles.btnSelectImage}
-            >Selecciona una imagen</Button>
+            >Selecciona una imagen de tu galeria</Button>
             <Button 
                 mode = "outlined" 
                 icon="camera"
-                labelStyle={{fontSize:18,borderColor:"#000000",color:"#000000"}}
+                labelStyle={{fontSize:15,borderColor:"#2d3f4e",color:"#2d3f4e"}}
                 onPress={()=>takePhoto()}
                 style={myStyles.btnTakePicture}
             >Toma una foto</Button>
@@ -117,11 +117,8 @@ const PhotoScreen = ({route,navigation}) =>{
                     style={myStyles.btnDlt} */
                 />
                 <Button
-                    icon="chevron-right"
                     mode="contained"
-                    onPress={()=>navigation.navigate("UbicationSelect",{photo: image,profile: profile })}
-                    labelStyle={{fontSize:20}}
-                    contentStyle={{flexDirection:"row-reverse"}}
+                    onPress={()=>navigation.navigate("SignUp",{photo: image,countryId,profile})}
                     style={myStyles.btnNext}
                 >Siguiente</Button>
              </View> } 
@@ -146,7 +143,7 @@ const myStyles = StyleSheet.create({
         justifyContent:"center"
     },
     title:{
-        fontSize:20
+        fontSize:18
     },
     imageContainer:{
         flex:1,
@@ -157,10 +154,10 @@ const myStyles = StyleSheet.create({
         backgroundColor:Colors.backgroundColor
     },
     userPhoto:{
-        width:300,
-        height:300,
+        width:250,
+        height:250,
         backgroundColor:"grey",
-        borderRadius:150
+        borderRadius:5
     },
     noPhoto:{
         width:200,
@@ -176,23 +173,24 @@ const myStyles = StyleSheet.create({
         textAlign:"center"
     },
     btnSelectImage:{
-        borderRadius:10,
-        backgroundColor:Colors.principal,
+        borderRadius:50,
+        backgroundColor:Colors.principalBtn,
         padding:4,
-        width:300
+        width:350
     },
     btnTakePicture:{
-        borderRadius:10,
+        borderRadius:50,
         width:250,
-        padding:4
+        padding:4,
+        borderColor:Colors.outlinedBtn
     },
     btnDlt:{
         borderRadius:10,
         padding:3
     },
     btnNext:{
-        borderRadius:10,
-        backgroundColor:Colors.principal,
+        borderRadius:50,
+        backgroundColor:Colors.principalBtn,
         padding:3,
         width:250
     }
