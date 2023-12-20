@@ -5,6 +5,7 @@ import SearchNav from "./SearchStack/SearchNav";
 import Icon from "react-native-vector-icons/FontAwesome"
 import { StyleSheet } from "react-native";
 import { Colors } from "../../tools/constant";
+import DrawerMenu from "../DrawerMenu/DrawerMenu";
 
 const Tabs = createBottomTabNavigator();
 const Home = () =>{
@@ -36,9 +37,8 @@ const Home = () =>{
             />
             <Tabs.Screen 
                 name="AccountStack" 
-                component={AccountNav}
+                component={DrawerMenu}
                 options={{
-                   /*  tabBarLabel:"Buscar", */
                     tabBarIcon:()=> <Icon name="user" color={Colors.backgroundColor}  size={26}/>,
                     tabBarShowLabel:true,
                     tabBarLabel:"Cuenta",
@@ -46,6 +46,18 @@ const Home = () =>{
                     tabBarLabelStyle:{color:"#FFFFFF",fontWeight:"bold"}
                 }} 
             />
+            
+            {/* <Tabs.Screen 
+                name="AccountStack" 
+                component={AccountNav}
+                options={{
+                    tabBarIcon:()=> <Icon name="user" color={Colors.backgroundColor}  size={26}/>,
+                    tabBarShowLabel:true,
+                    tabBarLabel:"Cuenta",
+                    headerShown:false,
+                    tabBarLabelStyle:{color:"#FFFFFF",fontWeight:"bold"}
+                }} 
+            /> */}
         </Tabs.Navigator>
     )
 }

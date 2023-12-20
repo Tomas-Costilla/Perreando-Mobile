@@ -1,6 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import AccountDataScreen from "../../../screens/AccountDataScreen";
-import { Button } from "react-native-paper";
+import { Button, IconButton } from "react-native-paper";
 import LogoutBtn from "../../../components/LogoutBtn";
 import AccountOptions from "../../../components/AccountOptions";
 import UserAccount from "../../../components/UserAccount";
@@ -28,20 +28,29 @@ import ViewCommentScreen from "../../../screens/ViewCommentScreen";
 import UpdateCommentScreen from "../../../screens/UpdateCommentScreen";
 import SelectImagesScreen from "../../../screens/SelectImagesScreen";
 import ViewCommentsScreen from "../../../screens/ViewCommentsScreen";
+import { Colors } from "../../../tools/constant";
+import DrawerMenu from "../../DrawerMenu/DrawerMenu";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 
 const StackNavigation = createStackNavigator();
 const AccountNav = () => {
+  const navigation = useNavigation()
   return (
     <StackNavigation.Navigator>
       <StackNavigation.Screen
         name="Account"
         component={AccountOptions}
         options={{
-          /* header:() => <UserAccount />, */
+          headerRight: () => (
+            <IconButton icon="menu" size={30} iconColor="#FFFFFF" onPress={()=>navigation.dispatch(DrawerActions.openDrawer())}/>
+          ),
           headerTitle:"Mi Cuenta",
-         /*  headerLeft: () => <IconApp /> */
+          headerTitleStyle:{color:"#FFFFFF"},
+          headerStyle:{backgroundColor:Colors.principal}
         }}
+
       />
+
       <StackNavigation.Screen
         name="AccountData"
         component={AccountDataScreen}

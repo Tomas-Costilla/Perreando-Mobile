@@ -8,6 +8,8 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import LogoutBtn from "./LogoutBtn"
 import {Colors, PROFILE_TYPES} from "../tools/constant"
 import SnackMessage from "./SnackMessage"
+import ActiveBooking from "./ActiveBooking"
+import MyPets from "./MyPets"
 
 const AccountOptions = ({navigation,route}) =>{
 
@@ -18,24 +20,26 @@ const AccountOptions = ({navigation,route}) =>{
     },[])
 
 return <ScrollView style={myStyles.container}>
-        <View>
+        {/* <View> */}
             <UserAccount user={user}/>
-            <UserOptions iconname="account" text="Mis datos" nav={navigation} link="AccountData"/>
+            <MyPets storeUser={user}/>
+            <ActiveBooking storeUser={user}/>
+           {/*  <UserOptions iconname="account" text="Mis datos" nav={navigation} link="AccountData"/> */}
 
-            {user.userProfile === PROFILE_TYPES.HUESPED
+            {/* {user.userProfile === PROFILE_TYPES.HUESPED
             ? <>
                 <UserOptions iconname="paw" text="Mi Mascota" nav={navigation} link="UpdatePawData"/>
                 <UserOptions iconname="database" text="Mis Reservas" nav={navigation} link="MyBookings"/>
-               {/*  <UserOptions iconname="magnify" text="Buscar hospedajes" nav={navigation} link="SearchHost"/> */}
+              
             </>
             : <>
                 <UserOptions iconname="home" text="Crear hospedaje" nav={navigation} link="UploadImages"/>
                 <UserOptions iconname="home" text="Mi hospedaje" nav={navigation} link="ViewHostData"/>
-            </>}
-            <Divider style={myStyles.dividerStyle}/>
-            <LogoutBtn />
+            </>} */}
+          {/*   <Divider style={myStyles.dividerStyle}/>
+            <LogoutBtn /> */}
             {/* {route.params?.message && <SnackMessage message={route.params?.message}/>} */}
-    </View>
+   {/*  </View> */}
     </ScrollView>
 }
 

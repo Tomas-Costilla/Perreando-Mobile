@@ -26,6 +26,7 @@ import Instagram from "../../assets/instagram.png"
 import Message from "../components/Message"
 import {API_URL} from "@env"
 
+
 const SignInScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
