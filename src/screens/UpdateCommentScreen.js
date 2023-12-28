@@ -7,13 +7,15 @@ import InputView from "../components/InputView"
 import SetRating from "../components/SetRating"
 import Message from "../components/Message"
 import { server } from "../api/server"
+import { useNavigation } from "@react-navigation/native"
 
-export default function UpdateCommentScreen({navigation,route}){
+export default function UpdateCommentScreen({route}){
 
     const {comment} = route.params
     const [updateComment,setUpdateComment] = useState(comment)
     const [message,setMessage] = useState("")
     const [loading,setLoading] = useState(false)
+    const navigation = useNavigation()
 
     const handleUpdateStar = star => setUpdateComment({...updateComment,hostGuestRating: star})
     const handleChangeComment = (field,value) => setUpdateComment({...updateComment,[field]:value})
@@ -34,37 +36,44 @@ export default function UpdateCommentScreen({navigation,route}){
             hostGuestRating: updateComment.hostGuestRating,
             hostGuestComment: updateComment.hostGuestComment
            }) 
-           navigation.navigate("Account")
+           navigation.goBack("")
         } catch (error) {
-            setMessage(error.response.data)
+            if(error.response.data?.isLogged===false){
+                navigation.navigate("SessionOut")
+                return
+            }
+            if(error.response.data?.message) setMessage(error.response.data?.message)
+            else setMessage("Ocurrio un error en la peticion")
         }
         setLoading(false)
     }
 
     return <View style={myStyles.container}>
-        <Text>Actualizar estrellas</Text>
-        <SetRating defaultStar={updateComment.hostGuestRating} handleStar={handleUpdateStar}/>
-        <InputView 
-            editable={true}
-            label="Actualizar comentario"
-            value={updateComment.hostGuestComment}
-            handleData={handleChangeComment}
-            icon="pencil"
-            multiline={true}
-            nameField="hostGuestComment"
-        />
-        {message && <Message msg={message} type="error"/>}
-        <View style={myStyles.btnContainer}>
-            <Button
-                mode="contained"
+       <View style={myStyles.updateContainer}>
+        <Text style={myStyles.title}>Actualizar estrellas</Text>
+            <SetRating defaultStar={updateComment.hostGuestRating} handleStar={handleUpdateStar}/>
+            <InputView 
+                editable={true}
+                label="Actualizar comentario"
+                value={updateComment.hostGuestComment}
+                handleData={handleChangeComment}
                 icon="pencil"
-                style={myStyles.btnConfirmUpdate}
-                onPress={validateData}
-                loading={loading}
-            >
-                Confirmar cambios
-            </Button>
-        </View>
+                multiline={true}
+                nameField="hostGuestComment"
+            />
+            {message && <Message msg={message} type="error"/>}
+            <View style={myStyles.btnContainer}>
+                <Button
+                    mode="contained"
+                    icon="pencil"
+                    style={myStyles.btnConfirmUpdate}
+                    onPress={validateData}
+                    loading={loading}
+                >
+                    Confirmar cambios
+                </Button>
+            </View>
+       </View>
     </View>
 }
 
@@ -73,7 +82,14 @@ const myStyles = StyleSheet.create({
         flex:1,
         justifyContent:"flex-start",
         padding:10,
-        backgroundColor:Colors.backgroundColor
+        backgroundColor:Colors.backgroundGrey
+    },
+    updateContainer:{
+        backgroundColor:Colors.backgroundColor,
+        padding:10,
+        borderRadius:10,
+        borderWidth:0.6,
+        borderColor:Colors.borderColor
     },
     btnContainer:{
         display:"flex",
@@ -83,8 +99,7 @@ const myStyles = StyleSheet.create({
         padding:10
     },
     btnConfirmUpdate:{
-        borderRadius:10,
-        backgroundColor:Colors.principal,
+        backgroundColor:Colors.principalBtn,
         width:300
     }
 })

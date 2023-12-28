@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import {View,StyleSheet, ScrollView} from "react-native"
 import {Divider, Text, Button} from "react-native-paper"
 import UserAccount from "./UserAccount"
@@ -10,44 +10,39 @@ import {Colors, PROFILE_TYPES} from "../tools/constant"
 import SnackMessage from "./SnackMessage"
 import ActiveBooking from "./ActiveBooking"
 import MyPets from "./MyPets"
+import ActiveHostBooking, { ActiveHost } from "./ActiveHostBooking"
+import { useNavigation, useIsFocused } from "@react-navigation/native"
 
-const AccountOptions = ({navigation,route}) =>{
-
+const AccountOptions = ({route}) =>{
     const user = useSelector(state=>state.user.user)
+    const navigation = useNavigation()
+    const [refreshData,setRefreshData] = useState(false)
 
     useEffect(()=>{
-
-    },[])
+        /* navigation.addListener('focus',()=> console.log("reload")) */
+    },[/* navigation */])
 
 return <ScrollView style={myStyles.container}>
-        {/* <View> */}
             <UserAccount user={user}/>
-            <MyPets storeUser={user}/>
-            <ActiveBooking storeUser={user}/>
-           {/*  <UserOptions iconname="account" text="Mis datos" nav={navigation} link="AccountData"/> */}
-
-            {/* {user.userProfile === PROFILE_TYPES.HUESPED
-            ? <>
-                <UserOptions iconname="paw" text="Mi Mascota" nav={navigation} link="UpdatePawData"/>
-                <UserOptions iconname="database" text="Mis Reservas" nav={navigation} link="MyBookings"/>
-              
-            </>
-            : <>
-                <UserOptions iconname="home" text="Crear hospedaje" nav={navigation} link="UploadImages"/>
-                <UserOptions iconname="home" text="Mi hospedaje" nav={navigation} link="ViewHostData"/>
-            </>} */}
-          {/*   <Divider style={myStyles.dividerStyle}/>
-            <LogoutBtn /> */}
-            {/* {route.params?.message && <SnackMessage message={route.params?.message}/>} */}
-   {/*  </View> */}
+            <Divider />
+           {user.userProfile === PROFILE_TYPES.HUESPED
+           ? <>
+                 <ActiveBooking storeUser={user}/>
+                 <MyPets storeUser={user}/>
+           </>
+           : <>
+                {/* <ActiveHostBooking storeUser={user}/> */}
+                <ActiveHost storeUser={user}/>
+           </>}
     </ScrollView>
 }
 
 const myStyles = StyleSheet.create({
     container:{
         flex:1,
-        backgroundColor:Colors.backgroundColor,
-        padding:10
+        backgroundColor:Colors.backgroundGrey,
+        padding:10,
+        paddingBottom:200
 
     },
     dividerStyle:{

@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 //navigation stack
 import SingInStack from "./SignIn/SignIn";
 import HomeStack from "./Home/Home";
+import SessionNav from "./Home/SessionAuth";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProfileNav from "./ProfileNav";
 import AccountNav from "./Home/AccountStack/AccountNav";
@@ -20,7 +21,7 @@ const Navigation = () => {
       ) : user.userFirstLogin ? (
         <OnboardingNav />
       ) : (
-        <HomeStack />
+        <SessionNav />
       )}
     </NavigationContainer>
   );

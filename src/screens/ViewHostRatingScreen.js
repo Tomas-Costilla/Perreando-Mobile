@@ -21,6 +21,7 @@ export default function ViewHostRatingScreen({navigation,route}){
             let response = await server.get(`/rating/all/${route.params.hostId}`)
             setRatings(response.data)
         } catch (error) {
+            if(error.response.data?.isLogged===false) navigation.navigate("SessionOut")
             setMessageServer(error.response.data)
         }
         setLoadingServer(false)

@@ -30,6 +30,7 @@ export default function ConfirmUpdatePawScreen({navigation,route}){
             })
             navigation.popToTop()
         } catch (error) {
+            if(error.response.data?.isLogged===false) navigation.navigate("SessionOut")
             setMessage(error.response.data)
         }
         setLoading(false)

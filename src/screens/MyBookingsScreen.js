@@ -23,6 +23,7 @@ export default function MyBookingsScreen({navigation,route}){
             let response =  await server.get(`/booking/guest/${user._id}`)
             setBookings(response.data.result)
         } catch (error) {
+            if(error.response.data?.isLogged===false) navigation.navigate("SessionOut")
             setMessageServer(error.response.data)
         }
         setLoadingServer(false)

@@ -26,6 +26,6 @@ const myStyles = StyleSheet.create({
     title:{
         fontSize:20,
         fontWeight:"bold",
-        /* color:"#FFFFFF" */
+        color:"#FFFFFF"
     }
 })

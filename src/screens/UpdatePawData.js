@@ -26,6 +26,7 @@ export default function UpdatePawData({navigation,route}){
             let res = await server.get(`/user/paw/${user._id}`)
             setPawData(res.data)
         } catch (error) {
+            if(error.response.data?.isLogged===false) navigation.navigate("SessionOut")
             setMessageServer(error.response.data)
         }
         setLoadingServer(false)

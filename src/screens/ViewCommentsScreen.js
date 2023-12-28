@@ -18,6 +18,7 @@ export default function ViewCommentsScreen({navigation,route}){
             let response = await server.get(`/rating/all/${hostId}`)
             setComments(response.data)
         } catch (error) {
+            if(error.response.data?.isLogged===false) navigation.navigate("SessionOut")
             console.log(error)
         }
         setServerLoading(false)

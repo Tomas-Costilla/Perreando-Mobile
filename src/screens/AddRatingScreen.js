@@ -7,13 +7,15 @@ import { useState, useEffect } from "react"
 import { server } from "../api/server"
 import { useSelector } from "react-redux"
 import Rating from "../../assets/rating.png"
+import Loading from "../components/Loading"
+import { useNavigation } from "@react-navigation/native"
+import Message from "../components/Message"
 
-export default function AddRatingScreen({navigation,route}){
+export default function AddRatingScreen({route}){
 
     const user = useSelector(state=>state.user.user)
     const [defaultStar,setDefaultStar] = useState(2)
     const [loadingServer,setLoadingServer] = useState(false)
-    const [errorServer,setErrorServer] = useState("")
     const [comment,setComment] = useState({
         hostOwnerId:route.params.hostId,
         hostGuestId:user._id,
@@ -23,6 +25,7 @@ export default function AddRatingScreen({navigation,route}){
     const [loading,setLoading] = useState(false)
     const [serverMessage,setServerMessage] = useState("")
     const [ratingGuest,setRatingGuest] = useState(null)
+    const navigation = useNavigation()
 
     const handleStar = (value) => setDefaultStar(value)
 
@@ -47,32 +50,29 @@ export default function AddRatingScreen({navigation,route}){
                 hostGuestRating:defaultStar,
                 hostGuestComment:comment.hostGuestComment
             })
-            navigation.popToTop()
+            navigation.goBack()
         } catch (error) {
-            setServerMessage(error.response.data)
+            if(error.response.data?.isLogged===false) {
+                navigation.navigate("SessionOut")
+                return
+            }
+
+            if(error.response.data?.message) setServerMessage(error.response.data?.message)
+            else
+                setServerMessage(error.response.data)
 
         }
         setLoading(false)
     }
 
-    const checkIfRatingGuest = async () =>{
-        setLoadingServer(true)
-        try {
-            let response = await server.get(`/rating/host/${route.params.hostId}/guest/${user._id}`)
-            setRatingGuest(response.data.exists)
-        } catch (error) {
-            
-        }
-        setLoadingServer(false)
-    }
+
 
     useEffect(()=>{
-        /* checkIfRatingGuest() */
+
     },[])
     
-    if(loadingServer) return <View style={myStyles.serverContainer}>
-        <ActivityIndicator animating size={45}/>
-    </View>
+    if(loadingServer) return <Loading />
+
 
     if(ratingGuest) return <View style={myStyles.serverContainer}>
         <Text>Ya has calificado a este hospedaje!</Text>
@@ -102,7 +102,7 @@ export default function AddRatingScreen({navigation,route}){
                 Calificar
             </Button>
         </View>
-        {serverMessage && <HelperText type="error">{serverMessage}</HelperText>}
+        {serverMessage && <Message msg={serverMessage} type="error"/>}
     </KeyboardAvoidingView>
 }
 
@@ -132,9 +132,8 @@ const myStyles = StyleSheet.create({
         marginTop:10
     },
     btnComment:{
-        borderRadius:10,
         padding:3,
         width:300,
-        backgroundColor:Colors.principal
+        backgroundColor:Colors.principalBtn
     }
 })

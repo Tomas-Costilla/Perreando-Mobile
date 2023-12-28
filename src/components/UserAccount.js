@@ -6,10 +6,13 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import {useSelector} from "react-redux"
 import { Colors } from "../tools/constant"
 import IconProperty from "./IconProperty"
+import { useNavigation } from "@react-navigation/native"
 
 
 
 const UserAccount = ({user}) =>{
+
+    const navigation = useNavigation()
 
     return <>
         <View style={myStyles.container}>
@@ -23,8 +26,9 @@ const UserAccount = ({user}) =>{
                     icon="account-edit"
                     labelStyle={{color:Colors.textColor}}
                     style={{width:250,marginTop:5,marginBottom:10}}
+                    onPress={()=>navigation.navigate("AccountData")}
                 >
-                    Editar perfil
+                    Mi perfil
                 </Button>
         </View>
     </>
@@ -36,7 +40,12 @@ const myStyles = StyleSheet.create({
        justifyContent:"center",
        flexDirection:"column",
        alignItems:"center",
-       gap:10
+       gap:10,
+       borderRadius:10,
+       backgroundColor:Colors.backgroundColor,
+       borderWidth:1,
+       borderColor:Colors.borderColor,
+       padding:10
     },
     userOptionContainer:{
        marginTop:5,

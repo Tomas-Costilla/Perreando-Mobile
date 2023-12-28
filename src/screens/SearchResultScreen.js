@@ -35,6 +35,7 @@ export default function SearchResultScreen({navigation,route}){
             const response = await server.get(url)
             setHostData(response.data)
         } catch (error) {
+            if(error.response.data?.isLogged===false) navigation.navigate("SessionOut")
             /* setErrorReq(error.response.data) */
             console.log(error.response)
         }

@@ -8,7 +8,9 @@ export const Colors = {
     principalBtn:"#427c98",
     subColor:"#ddecf0",
     outlinedBtn:"#34556a",
-    textColor:"#192633"
+    textColor:"#192633",
+    borderColor:"#E2E2E2",
+    backgroundGrey:"#F5F5F5"
 }
 
 export const PROFILE_TYPES = {

@@ -1,38 +1,29 @@
 import {} from "react"
-import { Image, StyleSheet, View } from "react-native"
-import {Button, Text} from "react-native-paper"
+import {StyleSheet, View } from "react-native"
+import {Button, IconButton, Text} from "react-native-paper"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import ContactBtn from "./ContactBtn"
 import { Colors } from "../tools/constant"
+import { Image } from "expo-image"
 
 export default function GuestData({data}){
+    console.log(data)
     return <>
         <View style={myStyles.container}>
-            {/* <Image 
-                style={myStyles.avatarStyle}
-                source={{uri: data.userImageUri}}
-            />
-            <View style={myStyles.infoContainer}>
-                <Text style={myStyles.guestName}>{data.userFullName}</Text>
-                <Text>Fecha de reserva:</Text>
-                <Text>{`${data.hostReserveDateFrom} - ${data.hostReserveDateTo}`}</Text>
-            </View>
-            <View style={myStyles.btnContactContainer}>
-                <ContactBtn message="Hola!" phone={data.userPhone} textBtn=" " styleBtn={myStyles.btnContact} styleLabel={myStyles.labelButton}/>
-            </View> */}
             <View style={myStyles.imageContainer}>
-                <Image style={myStyles.avatarStyle} source={{uri: data.imageFileUri}}/>
+                <Image source={{uri: data.imageFileUri}} style={myStyles.userImageStyle}/>
+                <View>
+                    <Text style={{marginBottom:10}}>{data.bookingGuestId?.userFullName}</Text>
+                    <View style={{display:"flex",justifyContent:"center",flexDirection:"row",alignItems:"center",gap:5}}>
+                        <Image source={{uri: data.imageFileUri}} style={myStyles.petImageStyle}/>
+                        <Text>Dobby</Text>
+                    </View>
+                </View>
             </View>
-            <View style={myStyles.textIcon}>
-                <Icon name="account" size={25}/>
-                <Text style={{fontSize:13,textAlign:"center"}}>{data.bookingGuestId?.userFullName}</Text>
-            </View>
-            <View style={myStyles.textIcon}>
-                <Icon name="calendar-account" size={30}/>
-                <Text style={{fontSize:13,textAlign:"center"}}>{`${data.bookingDateStart} - ${data.bookingDateEnd}`}</Text>
-            </View>
-            <View style={myStyles.btnContactContainer}>
-                <ContactBtn message="Hola!" phone={data.bookingGuestId?.userPhone} styleBtn={myStyles.btnContact}/>
+            <View style={{display:"flex",justifyContent:"space-evenly",flexDirection:"row",alignItems:"center"}}>
+                {/* <IconButton 
+                    icon=""                
+                /> */}
             </View>
         </View>
     </>
@@ -40,17 +31,33 @@ export default function GuestData({data}){
 
 const myStyles = StyleSheet.create({
     container:{
-        borderWidth:0.5,
+        borderWidth:0.6,
         borderRadius:10,
-        borderColor:"#C1C1C1",
+        borderColor:Colors.borderColor,
         padding:10,
-        marginBottom:10
+        marginBottom:10,
+        display:"flex",
+        flexDirection:"row",
+        justifyContent:"space-between",
+        alignItems:"center"
     },
     imageContainer:{
         display:"flex",
-        justifyContent:"center",
+        justifyContent:"flex-start",
         alignItems:"center",
+        flexDirection:"row",
+        gap:10,
         marginBottom:5
+    },
+    userImageStyle:{
+        width:80,
+        height:80,
+        borderRadius:50
+    },
+    petImageStyle:{
+        width:30,
+        height:30,
+        borderRadius:50
     },
     avatarStyle:{
         width:100,

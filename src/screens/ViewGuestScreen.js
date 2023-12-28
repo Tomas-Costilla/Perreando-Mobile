@@ -5,51 +5,56 @@ import { Colors } from "../tools/constant"
 import GuestData from "../components/GuestData"
 import { server } from "../api/server"
 import Usuarios from "../../assets/usuarios.png"
+import Loading from "../components/Loading"
+import Message from "../components/Message"
 
 export default function ViewGuestScreen({navigation,route}){
 
     const [loadingServer,setLoadingServer] = useState()
-    const [messageServer,setMessageServer] = useState("")
+    const [errorServer,setErrorServer] = useState("")
     const [guestsData,setGuestsData] = useState([])
 
     const getHostGuests = async () =>{
         setLoadingServer(true)
-        setMessageServer("")
+        setErrorServer("")
         try {
             let response = await server.get(`/booking/host/${route.params.hostId}`)
-            setGuestsData(response.data.result)
+            setGuestsData(response.data.response)
         } catch (error) {
-            setMessageServer(error.response.data.message)
+            if(error.response.data?.isLogged===false) navigation.navigate("SessionOut")
+            
+            if(error.response.data?.message) setErrorServer(error.response.data?.message)
+            else setErrorServer("Ocurrion un error en la peticion")
         }
         setLoadingServer(false)
     }
 
     useEffect(()=>{
         getHostGuests()
-    },[route.params.hostId])
+    },[])
 
 
-    if(loadingServer) return <View style={myStyles.serverContainer}>
-        <ActivityIndicator size={45} animating/>
-    </View>
-
-    if(messageServer) return <View style={myStyles.serverContainer}>
-        <HelperText type="error">{messageServer}</HelperText>
-    </View>
-
-    if(guestsData.length===0) return <View style={myStyles.imageContainer}>
-        <Text>Aun no tienes huespedes!</Text>
-        <Image source={Usuarios} style={myStyles.imageStyle}/>
-    </View>
+    if(loadingServer) return <Loading />
 
     return <View style={myStyles.container}>
-            {/* <Text style={myStyles.title}>Tus huespedes</Text> */}
+                
+            {errorServer ? <Message msg={errorServer} type="error"/>
+            : guestsData.length > 0 ?
             <FlatList 
+            data={guestsData}
+            renderItem={({item})=> <GuestData data={item}/>}
+            keyExtractor={item=>item._id}
+            />     
+            : <View>
+                <Text>Aun no tienes huespedes activos</Text>    
+            </View>} 
+
+            {/* <FlatList 
                 data={guestsData}
                 renderItem={({item})=> <GuestData data={item}/>}
                 keyExtractor={item=>item._id}
                 initialNumToRender={10}
-            />
+            /> */}
     </View>
 }
 

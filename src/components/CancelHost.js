@@ -3,12 +3,14 @@ import { StyleSheet, View } from "react-native"
 import { Button, HelperText, Modal, Portal, Text } from "react-native-paper"
 import { Colors } from "../tools/constant"
 import { server } from "../api/server"
+import { useNavigation } from "@react-navigation/native"
 
-export default function CancelHost({navigation,bookingId}){
+export default function CancelHost({bookingId}){
 
     const [visibleModal,setVisibleModal] = useState(false)
     const [loadingServer,setLoadingServer] = useState(false)
     const [errorServer,setErrorServer] = useState("")
+    const navigation = useNavigation()
 
     const handleModal = () =>setVisibleModal(!visibleModal)
 
@@ -21,7 +23,12 @@ export default function CancelHost({navigation,bookingId}){
             handleModal()
             navigation.navigate("Account")
         } catch (error) {
-            setErrorServer(error.response.data)
+            if(!error.response.data?.isLogged){
+                navigation.navigate("SessionOut")
+                return
+            }
+            if(error.response.data?.message) setErrorServer(error.response.data?.message)
+            else setErrorServer("Ocurrio un error en la peticion")
         }
         setLoadingServer(false)
     }
@@ -41,7 +48,7 @@ export default function CancelHost({navigation,bookingId}){
                             loading={loadingServer}
                             onPress={cancelReserve}
                             style={myStyles.btnCancelConfirmStyle}
-                            icon="check-bold"
+                            icon="calendar-remove"
                         >
                             Aceptar
                         </Button>
@@ -61,7 +68,7 @@ export default function CancelHost({navigation,bookingId}){
             mode="contained"
             onPress={handleModal}
             style={myStyles.btnCancelStyle}
-            icon="cancel"
+            icon="calendar-remove"
         >
             Cancelar Reserva
         </Button>
@@ -99,16 +106,14 @@ const myStyles = StyleSheet.create({
         marginTop:10,
         marginBottom:10,
         width:300,
-        borderRadius:10,
-        backgroundColor:Colors.principal,
+        backgroundColor:Colors.errorColor,
         padding:5
     },
     btnCancelConfirmStyle:{
         marginTop:10,
         marginBottom:10,
         width:200,
-        borderRadius:10,
-        backgroundColor:Colors.principal,
+        backgroundColor:Colors.principalBtn,
         padding:5
     },
     iconStyle:{

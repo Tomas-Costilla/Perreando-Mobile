@@ -3,10 +3,10 @@ import { StyleSheet, View } from "react-native"
 import { Text } from "react-native-paper"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 
-export default function IconProperty({iconName,iconSize,text}){
+export default function IconProperty({iconName,iconSize,text,color,textStyles}){
     return <View style={myStyles.container}>
-        <Icon name={iconName} size={iconSize} style={myStyles.icon}/>
-        <Text style={myStyles.title}>{text}</Text>
+        <Icon name={iconName} size={iconSize} color={color && color}/>
+        <Text style={textStyles ? textStyles : {color: color}}>{text}</Text>
     </View>
 }
 

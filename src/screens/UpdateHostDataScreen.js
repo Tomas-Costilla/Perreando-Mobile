@@ -5,10 +5,11 @@ import { ActivityIndicator, Button, Text } from "react-native-paper";
 import { Colors } from "../tools/constant";
 import InputView from "../components/InputView";
 import { server } from "../api/server";
+import Message from "../components/Message";
 
 export default function UpdateHostDataScreen({ navigation, route }) {
-  const { hostDataId } = route.params;
-  const [newHostData, setNewHostData] = useState({});
+ /*  const { hostDataId } = route.params; */
+  const [newHostData, setNewHostData] = useState({...route.params.hostData});
   const [loading,setLoading] = useState(false)
   const [loadingData,setLoadingData] = useState(false)
   const [errorServer,setErrorServer] = useState("")
@@ -20,31 +21,22 @@ export default function UpdateHostDataScreen({ navigation, route }) {
   }
 
 
-    const getOwnerHostbyID = async () =>{
-        setLoadingData(true)
-        try {
-            const response = await server.get(`/host/owner/${hostDataId}`)
-            setNewHostData(response.data)
-        } catch (error) {
-            setErrorServer(error.response.data)
-        }
-        setLoadingData(false)
-    }
-
     const updateHostData = async () =>{
         setLoading(true)
+        setErrorServer("")
         try {
             await server.put(`/host/${newHostData._id}`,newHostData)
             navigation.navigate("Account")
         } catch (error) {
-            console.log(error.response.data)   
+          if(error.response.data?.isLogged===false) navigation.navigate("SessionOut")
+            
+          if(error.response.data?.message) setErrorServer(error.response.data?.message)
+          else setErrorServer("Ocurrio un error en la peticion")
+          
         }
         setLoading(false)
     }
 
-    useEffect(()=>{
-        getOwnerHostbyID()
-    },[])
 
 
     if(loadingData) return <View style={myStyles.loadingContainer}>
@@ -67,6 +59,28 @@ export default function UpdateHostDataScreen({ navigation, route }) {
           value={newHostData.hostDescription}
           handleData={handleNewHostData}
           icon="pencil"
+        />
+
+      <InputView
+          nameField="hostPresentation"
+          label="Actualizar presentacion"
+          editable={true}
+          value={newHostData.hostPresentation}
+          handleData={handleNewHostData}
+          icon="pencil"
+          multiline={true}
+          maxCharacters={150}
+          helperMessage={`${newHostData.hostPresentation.length}/150`}
+        />
+
+    <InputView
+          nameField="hostCompleteAddress"
+          label="Actualizar direccion"
+          editable={true}
+          value={newHostData.hostCompleteAddress}
+          handleData={handleNewHostData}
+          icon="pencil"
+          multiline={true}
         />
 
 <InputView
@@ -132,6 +146,8 @@ export default function UpdateHostDataScreen({ navigation, route }) {
           icon="pencil"
         />
 
+        {errorServer && <Message msg={errorServer} type="error"/>}
+
         <View style={myStyles.btnContainer}>
           <Button mode="contained" onPress={() => updateHostData()} loading={loading} style={myStyles.btnConfirmUpdate} icon="pencil">
             Confirmar cambios
@@ -155,7 +171,8 @@ const myStyles = StyleSheet.create({
     marginBottom: 10,
   },
   inputNumber:{
-    width:200
+    width:200,
+    backgroundColor:Colors.backgroundColor
   },
   loadingContainer:{
     flex:1,
@@ -174,8 +191,7 @@ const myStyles = StyleSheet.create({
   },
   btnConfirmUpdate:{
     padding:3,
-    borderRadius:10,
-    backgroundColor:Colors.principal,
-    width:250
+    backgroundColor:Colors.principalBtn,
+    width:300
   }
 });

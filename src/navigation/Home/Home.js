@@ -1,11 +1,11 @@
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs"
 import FeedNav from "./FeedStack/FeedNav";
-import AccountNav from "./AccountStack/AccountNav";
 import SearchNav from "./SearchStack/SearchNav";
 import Icon from "react-native-vector-icons/FontAwesome"
 import { StyleSheet } from "react-native";
 import { Colors } from "../../tools/constant";
 import DrawerMenu from "../DrawerMenu/DrawerMenu";
+import SessionOutScreen from "../../screens/SessionOutScreen";
 
 const Tabs = createBottomTabNavigator();
 const Home = () =>{
@@ -46,6 +46,18 @@ const Home = () =>{
                     tabBarLabelStyle:{color:"#FFFFFF",fontWeight:"bold"}
                 }} 
             />
+{/* 
+            <Tabs.Screen 
+                name="SessionOut"
+                component={SessionOutScreen}
+                options={{
+                    headerShown:false,
+                    tabBarStyle:{display:"none"},
+                    tabBarLabelStyle:{display:"none"},
+                    tabBarIconStyle:{display:"none"},
+                    tabb
+                }}
+            /> */}
             
             {/* <Tabs.Screen 
                 name="AccountStack" 

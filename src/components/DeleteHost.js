@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { StyleSheet, View } from "react-native"
-import { Button, Modal, Portal , Text} from "react-native-paper"
+import { Button, IconButton, Modal, Portal , Text} from "react-native-paper"
 import { Colors } from "../tools/constant"
 import { server } from "../api/server"
 
@@ -14,7 +14,7 @@ export default function DeleteHost({navigation,visible,hideModal,hostOwnerId}){
         try {
             await server.delete(`/host/${hostOwnerId}`)
             hideModal()
-            navigation.navigate("Account")
+            navigation.navigate("Account",{refresh:true})
         } catch (error) {
             console.log(error.response.data)
         }
@@ -27,8 +27,7 @@ export default function DeleteHost({navigation,visible,hideModal,hostOwnerId}){
                 <Modal visible={visible} onDismiss={hideModal} style={{padding:10,display:"flex",flexDirection:"column",justifyContent:"center"}}>
                    <View style={myStyles.container}>
                     <View style={{display:"flex",justifyContent:"flex-end",flexDirection:"row",alignItems:"center"}}>
-                        <Button 
-                            mode="text"
+                        <IconButton 
                             icon="close"
                             labelStyle={{fontSize:20,color:"#CACACA"}}
                             onPress={hideModal}
@@ -77,8 +76,7 @@ const myStyles = StyleSheet.create({
         justifyContent:"center"
     },
     btnCancel:{
-        borderRadius:10,
-        backgroundColor:Colors.principal,
+        backgroundColor:Colors.errorColor,
         padding:3
     }
 })

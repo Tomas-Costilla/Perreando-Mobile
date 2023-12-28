@@ -5,6 +5,8 @@ import InputView from "../components/InputView"
 import { server } from "../api/server"
 import { useSelector } from "react-redux"
 import { ActivityIndicator, Button, Text } from "react-native-paper"
+import Loading from "../components/Loading"
+import Message from "../components/Message"
 
 
 
@@ -12,6 +14,7 @@ export default function UpdateAccountScreen({navigation}){
 
     const {user} = useSelector(state=>state.user)
     const [loadingRequest,setLoadingRequest] = useState(false)
+    const [errorServer,setErrorServer] = useState("")
     const [errorRequest,setErrorRequest] = useState("")
     const [userData,setUserData] = useState({})
     const [loading,setLoading] = useState(false)
@@ -27,20 +30,34 @@ export default function UpdateAccountScreen({navigation}){
         setLoadingRequest(true)
         try {
             const {data} = await server.get(`/user/${user._id}`)
-            setUserData(data)
+            setUserData(data.result)
         } catch (error) {
-            setErrorRequest(error.response.data)
+            if(error.response.data?.isLogged===false) {
+                navigation.navigate("SessionOut")
+                return
+            }
+
+            setErrorRequest(error.response.data?.message)
         }
         setLoadingRequest(false)
     }
 
     const updateUserData = async () =>{
         setLoading(true)
+        setErrorServer("")
         try {
             await server.put(`/user/${user._id}`,userData)
             navigation.navigate("Account")
         } catch (error) {
-            console.log(error)
+            if(!error.response.data?.isLogged){
+                navigation.navigate("SessionOut")
+                return
+            }
+
+            if(error.response.data?.message){
+                setErrorServer(error.response.data?.message)
+            }else setErrorServer("Ocurrio un error en la peticion")
+    
         }
         setLoading(false)
     }
@@ -50,9 +67,7 @@ export default function UpdateAccountScreen({navigation}){
         getUserInfobyID()
     },[])
 
-    if(loadingRequest) return <View style={myStyles.requestContainer}>
-        <ActivityIndicator animating size={45}/>
-    </View>
+    if(loadingRequest) return <Loading/>
 
     if(errorRequest) return <View style={myStyles.requestContainer}>
         <Text style={myStyles.requestMessage}>{errorRequest}</Text>
@@ -87,28 +102,11 @@ export default function UpdateAccountScreen({navigation}){
                 icon="pencil"
             />
              <InputView 
-                nameField="userAddressStreet"
-                label="Tu Direccion"
+                nameField="userAddress"
+                label="Tu Direccion Completa"
                 editable={true}
                 handleData={handleData}
-                value={userData.userAddressStreet}
-                icon="pencil"
-            />
-            <InputView 
-                nameField="userAddressNumber"
-                label="Altura"
-                editable={true}
-                handleData={handleData}
-                value={userData.userAddressNumber}
-                icon="pencil"
-                typeInput='numeric'
-            />
-            <InputView 
-                nameField="userAddressBetwStreet"
-                label="Entre Calles"
-                editable={true}
-                handleData={handleData}
-                value={userData.userAddressBetwStreet}
+                value={userData.userAddress}
                 icon="pencil"
             />
             <InputView 
@@ -119,6 +117,8 @@ export default function UpdateAccountScreen({navigation}){
                 value={userData.userAddressExtraInfo}
                 icon="pencil"
             />
+
+            {errorServer && <Message msg={errorServer} type="error"/>}
 
             <View style={myStyles.btnContainer}>
                 <Button
@@ -167,8 +167,7 @@ const myStyles = StyleSheet.create({
     },
     btnConfirmUpdate:{
         padding:3,
-        backgroundColor:Colors.principal,
-        borderRadius:10,
+        backgroundColor:Colors.principalBtn,
         width:250
     }
 })

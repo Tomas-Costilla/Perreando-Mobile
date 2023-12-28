@@ -14,6 +14,7 @@ export default function SelectImagesScreen({ navigation, route }) {
   const [message, setMessage] = useState("");
   const [loadingResponse,setLoadingResponse] = useState(false)
   const [existHost,setExistHost] = useState(false)
+  const [errorServer,setErrorServer] = useState("")
 
   const pickImages = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -42,18 +43,21 @@ export default function SelectImagesScreen({ navigation, route }) {
       setMessage("Debes seleccionar imagenes para continuar")
       return
     }
-    navigation.navigate("CreateHost", { images: images })
+    navigation.navigate("SelectUbication", { images: images })
   }
 
   const deleteAllImages = () => setImages([]);
 
   const checkIfAnyHostCreated = async () =>{
     setLoadingResponse(true)
+    setErrorServer("")
         try {
-            const {data} = await server.get(`/host/check/${user._id}`)
-            if(data.result) setExistHost(true)
+            let response = await server.get(`/host/owner/${user._id}`)
+            if(Object.keys(response.data.data).length) setExistHost(true)           
         } catch (error) {
-           /*  setError(error.response.data) */
+          if(error.response.data?.isLogged===false) navigation.navigate("SessionOut")
+           if(error.response.data?.message) setErrorServer(error.response.data?.message)
+           else setErrorServer("Ocurrio un error en la peticion")
         }
       setLoadingResponse(false)
    }
@@ -68,69 +72,70 @@ export default function SelectImagesScreen({ navigation, route }) {
       <Text style={{fontSize:15}}>Ya tienes un hospedaje creado!</Text>
   </View>
 
-  return (
-    <View style={myStyles.container}>
-      <Text
-        style={{
-          textAlign: "center",
-          marginBottom: 10,
-          marginTop: 10,
-          fontSize: 16,
-        }}
-      >
-        sube las imagenes de tu hospedaje
-      </Text>
-        {images.length > 0 ? (
-          <View style={myStyles.imageContainer}>
-          {images.map((value, index) => (
-            <View style={myStyles.imageItemContainer} key={index}>
-              <Image source={{ uri: value.uri }} style={myStyles.imagesStyle} />
-            </View>
-          ))}
+  return <View style={myStyles.container}>
+    {errorServer ? <Message msg={errorServer} type="error"/>
+    : <>
+    <Text
+      style={{
+        textAlign: "center",
+        marginBottom: 10,
+        marginTop: 10,
+        fontSize: 16,
+      }}
+    >
+      sube las imagenes de tu hospedaje
+    </Text>
+      {images.length > 0 ? (
+        <View style={myStyles.imageContainer}>
+        {images.map((value, index) => (
+          <View style={myStyles.imageItemContainer} key={index}>
+            <Image source={{ uri: value.uri }} style={myStyles.imagesStyle} />
           </View>
-        ) : (
-          <Text style={{textAlign:"center"}}>
-            Aun no has seleccionado ninguna imagen
-          </Text>
-        )}
-
-      {images.length ? (
-        <View style={myStyles.btnActionContainer}>
-          <Button
-            mode="contained"
-            onPress={() => deleteAllImages()}
-            icon="delete"
-            style={myStyles.btnDelete}
-          >
-            Eliminar y volver a seleccionar
-          </Button>
-          <Button
-            mode="contained"
-            onPress={() =>
-              /* navigation.navigate("CreateHost", { images: images }) */
-              validateData()
-              }
-            icon="chevron-right"
-            style={myStyles.btnNext}
-          >
-            Continuar al proximo paso
-          </Button>
+        ))}
         </View>
       ) : (
-        <View style={{display:"flex",flexDirection:"row",justifyContent:"center",padding:10}}>
-            <Button
-            mode="contained"
-            onPress={pickImages}
-            style={myStyles.btnSelecTImage}
-            icon="image-outline"
-          >
-            Seleccionar de mi galeria
-          </Button>
-        </View>
+        <Text style={{textAlign:"center"}}>
+          Aun no has seleccionado ninguna imagen
+        </Text>
       )}
-      {message && <Message msg={message} type="warning" />}
-    </View>
-  );
+
+    {images.length ? (
+      <View style={myStyles.btnActionContainer}>
+        <Button
+          mode="outlined"
+          onPress={() => deleteAllImages()}
+          icon="delete"
+          labelStyle={{color:Colors.outlinedBtn}}
+          style={myStyles.btnDelete}
+        >
+          Eliminar y volver a seleccionar
+        </Button>
+        <Button
+          mode="contained"
+          onPress={() =>
+            /* navigation.navigate("CreateHost", { images: images }) */
+            validateData()
+            }
+          style={myStyles.btnNext}
+        >
+          Continuar al proximo paso
+        </Button>
+      </View>
+    ) : (
+      <View style={{display:"flex",flexDirection:"row",justifyContent:"center",padding:10}}>
+          <Button
+          mode="contained"
+          onPress={pickImages}
+          style={myStyles.btnSelecTImage}
+          icon="image-outline"
+        >
+          Seleccionar de mi galeria
+        </Button>
+      </View>
+    )}
+    {message && <Message msg={message} type="warning" />}
+  </>}
+  </View>
 }
 
 const myStyles = StyleSheet.create({
@@ -142,10 +147,11 @@ const myStyles = StyleSheet.create({
     justifyContent:"center"
   },
   container: {
-    flex: 1,
-    justifyContent: "space-evenly",
-    padding: 10,
-    backgroundColor: Colors.backgroundColor,
+   flex:1,
+   backgroundColor:Colors.backgroundColor,
+   padding:10,
+   justifyContent:"space-evenly",
+   alignItems:"center"
   },
   imageContainer: {
     display: "flex",
@@ -169,16 +175,13 @@ const myStyles = StyleSheet.create({
     gap: 10,
   },
   btnDelete: {
-    borderRadius: 10,
-    backgroundColor: Colors.principal,
     padding: 3,
-    width: 250,
+    width: 280,
   },
   btnNext: {
-    borderRadius: 10,
-    backgroundColor: Colors.principal,
+    backgroundColor: Colors.principalBtn,
     padding: 3,
-    width: 250,
+    width: 350,
   },
   titleNotImage: {
     marginTop: 10,
@@ -187,9 +190,8 @@ const myStyles = StyleSheet.create({
     textAlign:"center"
   },
   btnSelecTImage: {
-    borderRadius: 10,
-    backgroundColor: Colors.principal,
+    backgroundColor: Colors.principalBtn,
     padding: 3,
-    width: 250,
+    width: 300,
   },
 });

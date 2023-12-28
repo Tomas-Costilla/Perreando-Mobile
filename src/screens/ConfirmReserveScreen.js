@@ -6,14 +6,18 @@ import { Colors } from "../tools/constant";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { server } from "../api/server";
 import MiReserva from "../../assets/reserva.png"
+import Message from "../components/Message";
+import moment from "moment";
+import IconProperty from "../components/IconProperty";
 
 export default function ConfirmReserveScreen({route,navigation}) {
-  let {guestId,hostId} = route.params
+  let {guestId,hostId,hostPrice,petId,petName} = route.params
 
   const [dateFrom, setDateFrom] = useState(new Date());
   const [dateTo, setDateTo] = useState(new Date());
   const [openDateFrom, setOpenDateFrom] = useState(false);
   const [openDateTo, setOpenDateTo] = useState(false);
+  const [message,setMessage] = useState("")
   const [datesSelected, setDateSelected] = useState({
     datesSelectedFrom: "",
     dateSelectedTo: "",
@@ -22,11 +26,9 @@ export default function ConfirmReserveScreen({route,navigation}) {
     from: "",
     to: "",
   });
-  const [loadingServer,setLoadingServer] = useState(false)
-  const [messageServer,setMessageServer] = useState("")
-  const [userReserve,setUserReserve] = useState(false)
   const [loadingBtn,setLoadingBtn] = useState(false)
   const [errorMessage,setErrorMessage] = useState("")
+  const [totalBooking,setTotalBooking] = useState(0)
 
   const handleModalDateFrom = () => setOpenDateFrom(!openDateFrom);
   const handleModalDateTo = () => setOpenDateTo(!openDateTo);
@@ -39,11 +41,12 @@ export default function ConfirmReserveScreen({route,navigation}) {
     let day = currentDate.getDate();
     let month = currentDate.getMonth() + 1;
     let dateFromString = `${year}-${month}-${day}`;
-    setDatesUserView({...datesUserView,from: `${year}/${month}/${day}`})
+    setDatesUserView({...datesUserView,from: moment(currentDate).format("YYYY-MM-DD")})
     setDateSelected({ ...datesSelected, datesSelectedFrom: dateFromString });
   };
 
   const handleDateTo = (event, selectedDate) => {
+    /* setMessage("") */
     const currentDate = selectedDate;
     setOpenDateTo(false);
     setDateTo(currentDate);
@@ -51,10 +54,24 @@ export default function ConfirmReserveScreen({route,navigation}) {
     let day = currentDate.getDate();
     let month = currentDate.getMonth() + 1;
     let dateToString = `${year}-${month}-${day}`;
-    setDatesUserView({...datesUserView,to: `${year}/${month}/${day}`})
+    setDatesUserView({...datesUserView,to: moment(currentDate).format("YYYY-MM-DD")})
     setDateSelected({ ...datesSelected, dateSelectedTo: dateToString });
+    handleTotalBooking(selectedDate)
   };
 
+
+  const handleTotalBooking = (dateToString) =>{
+    let dateFromData = new Date(dateFrom)
+    let dateToData = new Date(dateToString)
+    let momentFrom = moment(dateFromData)
+    let momentTo = moment(dateToData)
+
+    let totalDays = momentTo.diff(momentFrom,'days', ' dias de diferencia') + 1
+    let totalBooking = hostPrice * totalDays
+    setTotalBooking(totalBooking)
+    setMessage(`Reservaras ${totalDays} dias por un total de $${totalBooking}`)
+
+  }
   
 
   const validateDates = () =>{
@@ -70,6 +87,16 @@ export default function ConfirmReserveScreen({route,navigation}) {
     let dateToDay = dateTo.getDate()
     let dateToYear = dateTo.getFullYear()
     let dateFromYear = dateFrom.getFullYear()
+
+    if(moment(dateFrom).isBefore(route.params.hostAvailableStartDate)){
+      setErrorMessage("La fecha de inicio debe ser apartir de la indicada por el anfitrion")
+      return
+    }
+
+    if(moment(dateTo).isAfter(route.params.hostAvailableStartEnd)){
+      setErrorMessage("La fecha de fin no puede ser mayor que la indicada por el anfitrion")
+      return
+    }
 
     if(dateFromYear > dateToYear){
       setErrorMessage("El año de la fecha inicio no puede ser menor que el año de fin")
@@ -94,111 +121,88 @@ export default function ConfirmReserveScreen({route,navigation}) {
       }
     }
 
-
-
-    /* if(dateFromYear > dateToYear){
-      setErrorMessage("El año de la fecha inicio no puede ser menor que el año de fin")
-      return
-    }else{
-      if(dateFromYear === dateToYear){
-        if(dateFromMonth > dateToMonth){
-          setErrorMessage("El mes de la fecha inicio no puede ser mayor que el mes de fin")
-          return
-        }else{
-          if(dateFromMonth === dateToMonth){
-            if(dateFromDay > dateToDay){
-              setErrorMessage("El dia de la fecha inicio no puede ser mayor que el dia de fin")
-              return
-            }else{
-              if(dateFromDay === dateToDay){
-                setErrorMessage("El dia de la fecha inicio no puede ser igual que el dia de fin")
-                return
-              }
-            }
-          }
-        }
-      }
-    } */
-
-
     createReserve()
   }
 
   const createReserve = async () =>{
     setLoadingBtn(true)
     setErrorMessage("")
+    let dateStart = moment(dateFrom).format("YYYY-MM-DD")
+    let dateEnd = moment(dateTo).format("YYYY-MM-DD")
     try {
-        let response = await server.post(`/booking`,{
+        await server.post(`/booking`,{
           bookingHostId: hostId,
           bookingGuestId:guestId,
-          bookingDateStart: datesSelected.datesSelectedFrom,
-          bookingDateEnd: datesSelected.dateSelectedTo,
-          bookingState:"Reservada"
+          bookingDateStart: dateStart,
+          bookingDateEnd: dateEnd,
+          bookingState:"Reservada",
+          bookingTotal:totalBooking,
+          bookingPetId: petId
         })
-        if(!response.data.result){
-          setLoadingBtn(false)
-          setErrorMessage(response.data.message)
-          return
-        }
-        navigation.popToTop()
+        navigation.navigate("Feed")
         navigation.jumpTo("AccountStack")
     } catch (error) {
-      setErrorMessage(error.response.data)
+      if(error.response.data?.isLogged===false) {
+          navigation.navigate("SessionOut")
+          return
+        }
+
+        if(error.response.data?.message) setErrorMessage(error.response.data?.message)
+        else setErrorMessage("Ocurrio un error en la peticion")
     }
     setLoadingBtn(false)
   }
 
   useEffect(()=>{
-   /*  checkifUserHaveReserve() */
+  
   },[])
 
-  if(loadingServer) return <View style={myStyles.serverContainer}>
-    <ActivityIndicator animating size={45}/>
-  </View>
-
-  if(userReserve) return <View style={myStyles.serverContainer}>
-    <Text style={{textAlign:"center",fontSize:15}}>{messageServer}</Text>
-    <Image source={MiReserva} style={myStyles.imageReserva}/>
-    <Button
-      mode="contained"
-      onPress={()=>navigation.navigate("GuestHost")}
-      style={myStyles.btnReserveUser}
-    >
-        Ver mi Reserva
-    </Button>
-  </View>
 
   return (
     <View style={myStyles.container}>
-      {/* <ScrollView> */}
-      <Text style={myStyles.title}>Selecciona la fecha de tu reserva</Text>
-      <Button
-        mode="outlined"
-        onPress={handleModalDateFrom}
-        style={myStyles.btnDatePicker}
-        labelStyle={{color:"#000000"}}
-        icon="calendar"
+      <View style={myStyles.selectDatesContainer}>
+        {/* <ScrollView> */}
+      <Text style={myStyles.title}>Selecciona la fecha de tu reserva para {petName}</Text>
+      <View>
+        <Text style={{textAlign:"center"}}>Fechas disponibles del anfitrion</Text>
+        <Text style={{textAlign:"center",marginTop:10}}>Desde {route.params.hostAvailableStartDate} hasta {route.params.hostAvailableStartEnd}</Text>
+      </View>
+      <Text style={myStyles.price}>El costo del alojamiento es ${hostPrice} / dia</Text>
+      <View style={myStyles.dateContainer}>
+        <Button
+          mode="outlined"
+          onPress={handleModalDateFrom}
+          style={myStyles.btnDatePicker}
+          labelStyle={{color:Colors.textColor}}
+          icon="calendar"
+          >
+          Fecha desde
+        </Button>
+        <Text>-</Text>
+        <Button
+          mode="outlined"
+          onPress={handleModalDateTo}
+          style={myStyles.btnDatePicker}
+          labelStyle={{color:"#000000"}}
+          icon="calendar"
         >
-        Fecha reserva desde
-      </Button>
+          Fecha hasta
+        </Button>
 
-        {datesSelected.datesSelectedFrom && (
-          <Text style={myStyles.titleDate}>Fecha desde seleccionado: {datesUserView.from}</Text>
-        )}
+          
+      </View>
 
-      <Button
-        mode="outlined"
-        onPress={handleModalDateTo}
-        style={myStyles.btnDatePicker}
-        labelStyle={{color:"#000000"}}
-        icon="calendar"
-      >
-        Fecha reserva hasta
-      </Button>
-
-      {datesSelected.dateSelectedTo && (
-        <Text style={myStyles.titleDate}>Fecha hasta seleccionado: {datesUserView.to}</Text>
+      <View style={myStyles.dateTextContainer}>  
+      {datesSelected.datesSelectedFrom && (
+            <Text style={myStyles.titleDate}>{datesUserView.from} inclusive</Text>
       )}
+        <Text>-</Text>
+        {datesSelected.dateSelectedTo && (
+          <Text style={myStyles.titleDate}>{datesUserView.to} inclusive</Text>
+        )}
+      </View>
+
+
       {openDateFrom && (
         <DateTimePicker
           testID="dateTimePicker"
@@ -219,7 +223,9 @@ export default function ConfirmReserveScreen({route,navigation}) {
         />
       )}
 
-      {errorMessage && <HelperText type="error">{errorMessage}</HelperText>}
+      {message && <Text style={{textAlign:"center"}}>{message}</Text>}
+
+      {errorMessage && <Message msg={errorMessage} type="error"/>}
 
       <View style={myStyles.btnReserve}>
         <Button 
@@ -227,11 +233,13 @@ export default function ConfirmReserveScreen({route,navigation}) {
           style={myStyles.btnActionReserve}
           loading={loadingBtn}
           onPress={validateDates}
+          icon="calendar-check"
         >Confirmar Reserva
         
         </Button>
       </View>
       {/* </ScrollView> */}
+      </View>
     </View>
   );
 }
@@ -249,18 +257,47 @@ const myStyles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: Colors.backgroundColor,
-    padding: 10,
-    justifyContent: "space-evenly",
-    alignItems:"center"
+    backgroundColor: Colors.backgroundGrey,
+    padding: 10
+  },
+  selectDatesContainer:{
+    padding:10,
+    borderRadius:10,
+    borderWidth:0.6,
+    borderColor:Colors.borderColor,
+    height:600,
+    display:"flex",
+    justifyContent:"space-evenly",
+    alignItems:"center",
+    flexDirection:"column"
   },
   title:{
     textAlign:"center",
     fontSize:16
   },
+  price:{
+    textAlign:"center",
+    fontWeight:"bold"
+  },
+  dateContainer:{
+    display:"flex",
+    justifyContent:"center",
+    flexDirection:"row",
+    alignItems:"center",
+    gap:5,
+    marginTop:10,
+    marginBottom:10
+  },
+  dateTextContainer:{
+    display:"flex",
+    flexDirection:"row",
+    justifyContent:"center",
+    alignItems:"center",
+    gap:10
+  },
   btnDatePicker: {
-    borderColor:"#000000",
-    borderRadius:10
+    borderRadius:5,
+    width:150
   },
   btnReserveUser:{
     backgroundColor:Colors.secondary,
@@ -277,12 +314,12 @@ const myStyles = StyleSheet.create({
     marginBottom: 10,
   },
   titleDate:{
-    textAlign:"center"
+    textAlign:"center",
+    fontWeight:"bold"
   },
   btnActionReserve:{
     width:300,
-    borderRadius:10,
-    backgroundColor:Colors.principal,
+    backgroundColor:Colors.principalBtn,
     padding:3
   }
 });

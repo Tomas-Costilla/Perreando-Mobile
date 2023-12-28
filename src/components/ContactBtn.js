@@ -4,7 +4,7 @@ import { Button } from "react-native-paper"
 import { Colors } from "../tools/constant"
 
 
-export default function ContactBtn({phone,message,textBtn,styleBtn,styleLabel}){
+export default function ContactBtn({phone,message,textBtn,styleBtn,styleLabel,icon}){
 
     const handleContactBtn = () =>{
         Linking.openURL(`https://wa.me/+54${phone}?text=${message}`)
@@ -12,13 +12,13 @@ export default function ContactBtn({phone,message,textBtn,styleBtn,styleLabel}){
 
     return <>
         <Button
-            mode="contained"
+            mode="outlined"
             onPress={handleContactBtn}
-            icon="account-box-outline"
-            labelStyle={styleLabel && styleLabel}
+            icon={icon ? icon : "account-box-outline"}
+            labelStyle={{color:Colors.textColor}}
             style={styleBtn ? styleBtn : myStyles.btnContactStyle}
         >
-            {!textBtn && "Contactar"}
+            {textBtn}
         </Button>
     </>
 }
@@ -30,8 +30,7 @@ const myStyles = StyleSheet.create({
     btnContactStyle:{
         width:150,
         /* marginBottom:, */
-        backgroundColor:Colors.secondary,
-        borderRadius:10,
+        /* backgroundColor:Colors.secondary, */
         padding:3
     }
 })

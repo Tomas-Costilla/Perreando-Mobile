@@ -19,6 +19,7 @@ import { Image } from "expo-image";
 import Message from "../components/Message";
 import * as ImagePicker from "expo-image-picker";
 import NoPhoto from "../../assets/nophoto.png";
+import Loading from "../components/Loading";
 
 const UploadImageModal = ({ visible, hideModal, uploadImage}) => {
   const [image, setImage] = useState("");
@@ -163,6 +164,7 @@ export default function ViewHostScreen({ navigation }) {
       );
       setHostData({ ...hostData, hostImages: response.data });
     } catch (error) {
+      if(error.response.data?.isLogged===false) navigation.navigate("SessionOut")
       setErrorImage("Ocurrio un error al agregar una imagen");
     }
     setDltImageModal(false);
@@ -179,6 +181,7 @@ export default function ViewHostScreen({ navigation }) {
       );
       setHostData({ ...hostData, hostImages: response.data });
     } catch (error) {
+      if(error.response.data?.isLogged===false) navigation.navigate("SessionOut")
       setErrorImage("Ocurrio un error al eliminar la imagen");
     }
     setDltImageModal(false);
@@ -188,8 +191,10 @@ export default function ViewHostScreen({ navigation }) {
     setLoading(true);
     try {
       let response = await server.get(`/host/owner/${user._id}`);
-      if (response.data) setHostData(response.data);
+      setHostData(response.data.data)
+      console.log(response.data)
     } catch (error) {
+      if(error.response.data?.isLogged===false) navigation.navigate("SessionOut")
       console.log(error);
     }
     setLoading(false);
@@ -199,12 +204,8 @@ export default function ViewHostScreen({ navigation }) {
     getOwnerHostbyID();
   }, []);
 
-  if (loading)
-    return (
-      <View style={myStyles.loadingContainer}>
-        <ActivityIndicator animating={true} size={40} />
-      </View>
-    );
+  if (loading) return <Loading />
+
 
   if (Object.keys(hostData).length === 0)
     return (
@@ -219,21 +220,36 @@ export default function ViewHostScreen({ navigation }) {
   return (
     <ScrollView style={myStyles.container}>
       <View style={myStyles.btnActionContainer}>
-        <Button
+        <IconButton 
+          icon="account-group-outline"
+          onPress={()=>navigation.navigate("ViewHostGuest", { hostId: hostData._id })}
+          iconColor={Colors.textColor}
+          size={25}
+        />
+        <IconButton 
+          icon="star-box-multiple-outline"
+          onPress={()=>navigation.navigate("ViewHostRating", { hostId: hostData._id })}
+          iconColor={Colors.textColor}
+          size={25}
+     
+        />
+        <IconButton
           icon="pencil"
           onPress={() =>
-            navigation.navigate("UpdateHostData", { hostDataId: user._id })
+            navigation.navigate("UpdateHostData", { hostData: hostData })
           }
-          compact
-          labelStyle={myStyles.btnActionEditStyles}
+          iconColor={Colors.textColor}
+          size={25}
+          
         />
-        <Button
-          icon="delete"
+        <IconButton
+          icon="delete-outline"
           onPress={() => handleDeleteModal()}
-          compact
-          labelStyle={myStyles.btnActionDltStyles}
+          iconColor={Colors.errorColor}
+          size={25}
         />
       </View>
+      <View style={myStyles.infoContainer}>
       <Text style={myStyles.title}>Datos de tu alojamiento</Text>
       <InputView
         label="Nombre descriptivo de tu alojamiento"
@@ -242,11 +258,18 @@ export default function ViewHostScreen({ navigation }) {
         icon="format-title"
       />
 
-      <InputView
-        label="La ubicacion es por defecto la de tus datos"
+      <InputView 
+        label="Tu Presentacion"
         editable={false}
-        value={hostData.hostOwnerId?.userUbication}
-        icon="map-marker-outline"
+        value={hostData.hostPresentation}
+        multiline={true}
+      />
+
+      <InputView 
+        label="Direccion"
+        editable={false}
+        value={hostData.hostCompleteAddress}
+        multiline={true}
       />
 
       <InputView
@@ -273,7 +296,7 @@ export default function ViewHostScreen({ navigation }) {
       />
 
       <InputView
-        label="Costo de estadia"
+        label="Costo de estadia por dia"
         editable={false}
         value={hostData.hostPrice}
         typeInput="numeric"
@@ -281,6 +304,21 @@ export default function ViewHostScreen({ navigation }) {
         inputStyles={myStyles.inputNumberStyle}
       />
 
+      <Text style={{marginTop:10,marginBottom:10}}>Disponibilidad</Text>
+      <View style={{display:"flex",flexDirection:"row",justifyContent:"flex-start",alignItems:"center",gap:5}}>
+        <InputView 
+          label="Desde"
+          editable={false}
+          value={hostData.hostAvailableStartDate}
+        />
+        <InputView 
+          label="Hasta"
+          editable={false}
+          value={hostData.hostAvailableStartEnd}
+        />
+      </View>
+
+      <Text style={{marginTop:10,marginBottom:10}}>Tus imagenes</Text>
       <View style={myStyles.hostImageContainer}>
         {hostData?.hostImages.length > 0 ? (
           hostData.hostImages.map((value, index) => (
@@ -298,7 +336,7 @@ export default function ViewHostScreen({ navigation }) {
                 }}
               >
                 <IconButton
-                  icon="delete"
+                  icon="delete-outline"
                   size={20}
                   iconColor="red"
                   onPress={() => handleDeleteImage(value.ImageName)}
@@ -319,28 +357,7 @@ export default function ViewHostScreen({ navigation }) {
 
     
 
-      <View style={myStyles.btnsViewGuest}>
-        <Button
-          mode="contained"
-          onPress={() =>
-            navigation.navigate("ViewHostGuest", { hostId: hostData._id })
-          }
-          style={myStyles.btnViewGuest}
-          icon="account-group"
-        >
-          Ver Huespedes
-        </Button>
-        <Button
-          mode="contained"
-          onPress={() =>
-            navigation.navigate("ViewHostRating", { hostId: hostData._id })
-          }
-          style={myStyles.btnRating}
-          icon="star"
-        >
-          Ver Calificaciones
-        </Button>
-      </View>
+    
 
       <DeleteHost
         navigation={navigation}
@@ -364,6 +381,7 @@ export default function ViewHostScreen({ navigation }) {
           </View>
         </Modal>
       </Portal>
+      </View>
     </ScrollView>
   );
 }
@@ -383,12 +401,20 @@ const myStyles = StyleSheet.create({
     gap: 10,
   },
   container: {
-    backgroundColor: Colors.backgroundColor,
+    backgroundColor: Colors.backgroundGrey,
     flex: 1,
     padding: 10,
     /* display:"flex",
         flexDirection:"column",
         justifyContent:"flex-start", */
+  },
+  infoContainer:{
+    borderWidth:0.6,
+    borderColor:Colors.borderColor,
+    borderRadius:10,
+    backgroundColor:Colors.backgroundColor,
+    padding:5,
+    marginBottom:20
   },
   imageStyle: {
     width: 300,
@@ -416,6 +442,12 @@ const myStyles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-end",
+    borderRadius:10,
+    borderWidth:0.6,
+    borderColor:Colors.borderColor,
+    padding:5,
+    backgroundColor:Colors.backgroundColor,
+    marginBottom:5
   },
   btnActionEditStyles: {
     textAlign: "center",
@@ -441,6 +473,7 @@ const myStyles = StyleSheet.create({
   },
   inputNumberStyle: {
     width: 150,
+    backgroundColor:Colors.backgroundColor,
   },
   btnViewGuest: {
     padding: 2,

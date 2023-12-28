@@ -6,13 +6,16 @@ import * as ImagePicker from 'expo-image-picker'
 import { server } from "../api/server"
 import { useSelector, useDispatch } from "react-redux"
 import {updateImageUser} from "../store/slices/userSlice"
+import Message from "../components/Message"
+import { useNavigation } from "@react-navigation/native"
 
-export default function UpdateImagePaw({navigation,route}){
+export default function UpdateImagePaw({route}){
 
     const user = useSelector(state=>state.user.user)
     const dispatch = useDispatch()
     const [loading,setLoading] = useState(false)
     const [errorMessage,setErrorMessage] = useState("")
+    const navigation = useNavigation()
     const [newImage,setNewImage] = useState({
         imageFile:null,
         imageUri:null
@@ -43,24 +46,29 @@ export default function UpdateImagePaw({navigation,route}){
 
     const handleUpdatePawImage = async () =>{
         const formData = new FormData();
-        formData.append("userPhoto", {
-        name: new Date() + "_userPhoto",
+        formData.append("petPhoto", {
+        name: new Date() + "_petPhoto",
         uri: newImage.imageUri,
         type: "image/jpg",
         });
         setLoading(true)
         setErrorMessage("")
         try {
-            let res = await server.put(`/user/${user._id}/image/${route.params.userImageName}/update`,formData,{
+            await server.put(`/pet/${route.params.petId}/${route.params.petImageName}`,formData,{
                 headers:{
                   Accept: 'application/json',
                   'Content-Type':'multipart/form-data'
                 }
               })
-              dispatch(updateImageUser(res?.data.newFileImageUri))
-              navigation.navigate("UpdatePawData",{reloading: true})
+              /* dispatch(updateImageUser(res?.data.newFileImageUri)) */
+              navigation.goBack()
         } catch (error) {
-            setErrorMessage(error.response.data)
+            if(error.response.data?.isLogged===false){
+                navigation.navigate("SessionOut")
+                return
+            }
+            if(error.response.data?.message) setErrorMessage(error.response.data?.message)
+            else setErrorMessage(error.response.data?.message)
         }
         setLoading(false)
     }
@@ -95,7 +103,7 @@ export default function UpdateImagePaw({navigation,route}){
             >
                 Confirmar cambio
             </Button>
-            {errorMessage && <HelperText type="error">{errorMessage}</HelperText>}
+            {errorMessage && <Message msg={errorMessage} type="error"/>}
         </View>
     
     </View>
@@ -134,13 +142,11 @@ const myStyles = StyleSheet.create({
         padding:1
     },
     btnConfirmStyle:{
-        backgroundColor:Colors.principal,
-        borderRadius:10,
+        backgroundColor:Colors.principalBtn,
         width:300,
         padding:3
     },
     btnConfirmDisabled:{
-        borderRadius:10,
         width:300,
         padding:3
     }

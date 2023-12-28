@@ -7,6 +7,8 @@ import { Colors, PROFILE_TYPES } from "../tools/constant"
 import DataView from "../components/DataView"
 import InputView from "../components/InputView"
 import {server} from "../api/server"
+import Message from "../components/Message"
+import Loading from "../components/Loading"
 
 
 const AccountDataScreen = ({navigation}) =>{
@@ -14,16 +16,17 @@ const AccountDataScreen = ({navigation}) =>{
     const {user} = useSelector(state=>state.user)
     const [loading,setLoading] = useState(false)
     const [userData,SetUserData] = useState({})
-
-    /* console.log(user); */
+    const [errorServer,setErrorServer] = useState("")
 
     const getUserInfobyID = async () =>{
         setLoading(true)
         try {
             const response = await server.get(`/user/${user._id}`)
-            SetUserData(response.data)
+            SetUserData(response.data.result)
         } catch (error) {
-            console.log(error);            
+            if(error.response.data?.isLogged===false) navigation.navigate("SessionOut")
+            if(error.response.data?.message) setErrorServer(error.response.data?.message)
+            else setErrorServer("Ocurrio un error en la peticion")          
         }
         setLoading(false)
     }
@@ -33,47 +36,31 @@ const AccountDataScreen = ({navigation}) =>{
     },[])
 
   
-    if(loading) return <View style={myStyles.loadingContainer}>
-        <ActivityIndicator animating={true} size={40}/>
-    </View>
+    if(loading) return <Loading />
 
     return <ScrollView style={myStyles.container}>
-        <Text style={myStyles.title}>Tus datos</Text>
-        <InputView editable={false} label="Tu nombre completo" value={userData.userFullName} icon="account" />
-        <InputView editable={false} label="Tu Email" value={userData.userEmail} icon="email" />
-        <InputView editable={false} label="Telefono" value={userData.userPhone} typeInput='numeric' icon="phone-outline"/>
-        <InputView editable={false} label="Localidad" value={userData.userUbication} icon="map-marker-outline"/>
-        <InputView editable={false} label="Tu direccion" value={userData.userAddressStreet} icon="map-marker-outline"/>
-        <InputView editable={false} label="Altura" value={userData.userAddressNumber} typeInput="numeric" icon="map-marker-outline"/>
-        <InputView editable={false} label="Entre Calles" value={userData.userAddressBetwStreet} icon="map-marker-outline"/>
-        <InputView editable={false} label="Informacion extra..." value={userData.userAddressExtraInfo} icon="information-outline"/>
-        <InputView editable={false} label="Tipo de perfil" value={userData.userProfile} icon="account-box" />
-        {/* <InputView editable={false} label="Tu nombre completo" value={userData.userGuestAnimalName} /> */}
-       {/*  {userData.userProfile === PROFILE_TYPES.ANFITRION
-            && <>
-                <Text>Pesos en "kg" que admites</Text>
-                <View style={myStyles.specification}>
-                    <InputView editable={false} label="Desde" value={userData.userHostAnimalWeightFrom} typeInput="numeric" inputStyles={myStyles.inputStyleHost}/>
-                    <InputView editable={false} label="Hasta" value={userData.userHostAnimalWeightTo} typeInput="numeric" inputStyles={myStyles.inputStyleHost}/>
-                </View>
-                <Text>Edad de animales que admites</Text>
-                <View style={myStyles.specification}>
-                    <InputView editable={false} label="Desde" value={userData.userHostAnimalAgeFrom} typeInput="numeric" inputStyles={myStyles.inputStyleHost}/>
-                    <InputView editable={false} label="Hasta" value={userData.userHostAnimalAgeTo} typeInput="numeric" inputStyles={myStyles.inputStyleHost}/>
-                </View>
-                <InputView editable={false} label="Tipo de alojamiento para..." value={userData.userHostType} icon="paw"/>
-        </>} */}
+        {errorServer ? <Message msg={errorServer} type="error"/>
+        : Object.keys(userData).length>0 && <>
+            <Text style={myStyles.title}>Tus datos</Text>
+            <InputView editable={false} label="Tu nombre completo" value={userData.userFullName} icon="account" />
+            <InputView editable={false} label="Tu Email" value={userData.userEmail} icon="email" />
+            <InputView editable={false} label="Telefono" value={userData.userPhone} typeInput='numeric' icon="phone-outline"/>
+            <InputView editable={false} label="Tu direccion" value={userData.userAddress} icon="map-marker-outline"/>
+            <InputView editable={false} label="Informacion extra..." value={userData.userAddressExtraInfo} icon="information-outline"/>
+            <InputView editable={false} label="Tipo de perfil" value={userData.userProfile} icon="account-box" />
+            
 
-        <View style={myStyles.btnContainer}>
-                <Button
-                    mode="contained"
-                    onPress={()=>navigation.navigate("UpdateAccount")}
-                    style={myStyles.btnUpdateData}
-                    icon="account"
-                >
-                    Modificar Datos
-                </Button>
-        </View>
+            <View style={myStyles.btnContainer}>
+                    <Button
+                        mode="outlined"
+                        onPress={()=>navigation.navigate("UpdateAccount")}
+                        labelStyle={myStyles.btnUpdateData}
+                        icon="account"
+                    >
+                        Modificar Datos
+                    </Button>
+            </View>
+        </>}
 
     </ScrollView>
 }
@@ -114,8 +101,8 @@ const myStyles = StyleSheet.create({
     },
     btnUpdateData:{
         padding:3,
-        backgroundColor:Colors.principal,
-        borderRadius:10,
+        backgroundColor:Colors.backgroundColor,
+        color:Colors.textColor,
         width:250
     }
 })
