@@ -11,9 +11,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function App() {
   return (
     <Provider store={store}>
-      <PaperProvider>
-          <Navigation/>
-      </PaperProvider>
+        <PaperProvider>
+            <Navigation/>
+        </PaperProvider>
     </Provider>
   );
 }

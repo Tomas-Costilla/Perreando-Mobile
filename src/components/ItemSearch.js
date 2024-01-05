@@ -35,7 +35,7 @@ export default function ItemSearch({data,navigation}){
             <View style={myStyles.infoContainer}>
                 <View style={myStyles.avatarContainer}>
                     <Avatar.Image size={35} source={{uri: data.imageUri}}/>
-                    <Text style={{color: "#000000",fontWeight:"bold",fontSize:13}}>{data.hostDescription}</Text>
+                    <Text style={{color: "#000000",fontWeight:"bold",fontSize:11}}>{data.hostDescription}</Text>
                 </View>
                 <View style={myStyles.ratingContainer}>
                     <Icon name="star" size={20} color="#FFFFFF"/>

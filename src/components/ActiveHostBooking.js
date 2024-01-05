@@ -19,13 +19,10 @@ export const ActiveHost = ({ storeUser /* , refreshData */}) => {
   const getHostByOwner = async () => {
     setLoading(true);
     setErrorServer("")
-    console.log(storeUser._id)
     try {
       let {data} = await server.get(`/host/status/${storeUser._id}`);
-      console.log(data)
       setHostData(data)
     } catch (error) {
-      console.log(error.response.data)
 
       if(error.response.data?.isLogged===false){
         navigation.navigate("SessionOut")

@@ -135,7 +135,7 @@ export default function ConfirmReserveScreen({route,navigation}) {
           bookingGuestId:guestId,
           bookingDateStart: dateStart,
           bookingDateEnd: dateEnd,
-          bookingState:"Reservada",
+          bookingState:"Pendiente aprobacion",
           bookingTotal:totalBooking,
           bookingPetId: petId
         })

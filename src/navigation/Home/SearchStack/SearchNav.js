@@ -5,6 +5,7 @@ import SearchResultScreen from "../../../screens/SearchResultScreen";
 import ViewGuestHost from "../../../screens/ViewGuestHost";
 import ViewCommentsScreen from "../../../screens/ViewCommentsScreen";
 import ConfirmReserveScreen from "../../../screens/ConfirmReserveScreen";
+import { Colors } from "../../../tools/constant";
 /* import SearchScreen from "../../../screens/SearchScreen";
  */
 const StackNavigation = createStackNavigator();
@@ -16,6 +17,9 @@ const SearchNav = () => {
         component={SearchHostScreen}
         options={{
           headerTitle: "Buscar hospedaje",
+          headerTitleAlign:"left",
+          headerStyle:{backgroundColor:Colors.principal},
+          headerTitleStyle:{color:"#FFFFFF"}
         }}
       />
 
@@ -32,6 +36,9 @@ const SearchNav = () => {
         component={SearchResultScreen}
         options={{
           headerTitle: "Resultados",
+          headerTitleAlign:"left",
+          headerStyle:{backgroundColor:Colors.principal},
+          headerTitleStyle:{color:"#FFFFFF"}
         }}
       />
 
@@ -40,6 +47,9 @@ const SearchNav = () => {
         component={ViewGuestHost}
         options={{
           headerTitle: " ",
+          headerTitleAlign:"left",
+          headerStyle:{backgroundColor:Colors.principal},
+          headerTitleStyle:{color:"#FFFFFF"}
         }}
       />
       <StackNavigation.Screen 

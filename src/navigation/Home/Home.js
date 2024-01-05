@@ -1,7 +1,7 @@
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs"
 import FeedNav from "./FeedStack/FeedNav";
 import SearchNav from "./SearchStack/SearchNav";
-import Icon from "react-native-vector-icons/FontAwesome"
+import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import { StyleSheet } from "react-native";
 import { Colors } from "../../tools/constant";
 import DrawerMenu from "../DrawerMenu/DrawerMenu";
@@ -16,11 +16,13 @@ const Home = () =>{
                 component={FeedNav}
                 options={{
                    /*  tabBarLabel:"Inicio", */
-                    tabBarIcon:()=> <Icon name="home" color={Colors.backgroundColor} size={26}/>,
+                    tabBarIcon:({focused})=> <Icon name={focused ? "home" : "home-outline"} color={focused ? Colors.backgroundColor : "#B8B8B8"} size={26}/>,
                     tabBarShowLabel:true,
                     tabBarLabel:"Inicio",
                     headerShown:false,
-                    tabBarLabelStyle:{color:"#FFFFFF",fontWeight:"bold"}
+                    /* tabBarLabelStyle:{color:"#FFFFFF",fontWeight:"bold"}, */
+                    tabBarActiveTintColor:Colors.backgroundColor,
+                    tabBarInactiveTintColor:"#B8B8B8"
                 }}
             />
             <Tabs.Screen 
@@ -28,22 +30,26 @@ const Home = () =>{
                 component={SearchNav}
                 options={{
                  /*    tabBarLabel:"Buscar", */
-                    tabBarIcon:()=> <Icon name="search" color={Colors.backgroundColor} size={26}/>,
+                    tabBarIcon:({focused})=> <Icon name="magnify" color={focused ? Colors.backgroundColor : "#B8B8B8"} size={26}/>,
                     tabBarShowLabel:true,
                     tabBarLabel:"Buscar",
                     headerShown:false,
-                    tabBarLabelStyle:{color:"#FFFFFF",fontWeight:"bold"}
+                    /* tabBarLabelStyle:{color:"#FFFFFF",fontWeight:"bold"}, */
+                    tabBarActiveTintColor:Colors.backgroundColor,
+                    tabBarInactiveTintColor:"#B8B8B8"
                 }} 
             />
             <Tabs.Screen 
                 name="AccountStack" 
                 component={DrawerMenu}
                 options={{
-                    tabBarIcon:()=> <Icon name="user" color={Colors.backgroundColor}  size={26}/>,
+                    tabBarIcon:({focused})=> <Icon name={focused ? "account-circle" : "account-circle-outline"}  color={focused ? Colors.backgroundColor : "#B8B8B8"}  size={26}/>,
                     tabBarShowLabel:true,
                     tabBarLabel:"Cuenta",
                     headerShown:false,
-                    tabBarLabelStyle:{color:"#FFFFFF",fontWeight:"bold"}
+                   /*  tabBarLabelStyle:{color:"#FFFFFF",fontWeight:"bold"}, */
+                    tabBarActiveTintColor:Colors.backgroundColor,
+                    tabBarInactiveTintColor:"#B8B8B8"
                 }} 
             />
 {/* 

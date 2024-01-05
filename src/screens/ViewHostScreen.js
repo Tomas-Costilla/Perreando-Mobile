@@ -8,6 +8,7 @@ import {
   IconButton,
   Portal,
   Modal,
+  Switch,
 } from "react-native-paper";
 import InputView from "../components/InputView";
 import { Colors } from "../tools/constant";
@@ -138,6 +139,9 @@ export default function ViewHostScreen({ navigation }) {
   const [dltImageModal, setDltImageModal] = useState(false);
   const [errorImage, setErrorImage] = useState("");
   const [uploadImageModal, setUploadImageModal] = useState(false);
+  const [switchData,setSwitchData] = useState(hostData?.hostIsActive)
+  const [loadingSwitchData,setLoadingSwithData] = useState(false)
+  /* console.log(hostData) */
 
   const handleUploadImageModal = () => setUploadImageModal(!uploadImageModal)
 
@@ -192,13 +196,32 @@ export default function ViewHostScreen({ navigation }) {
     try {
       let response = await server.get(`/host/owner/${user._id}`);
       setHostData(response.data.data)
-      console.log(response.data)
+      /* console.log(response.data) */
     } catch (error) {
       if(error.response.data?.isLogged===false) navigation.navigate("SessionOut")
-      console.log(error);
+     /*  console.log(error); */
     }
     setLoading(false);
   };
+
+  const changeHostState = async () =>{
+    /* setLoadingSwithData(true) */
+      setSwitchData(!switchData)
+     /*  setLoading(true) */
+    try {
+      await server.put(`/host/state/${hostData._id}`,{hostIsActive: switchData})
+      /* setHostData({...hostData,hostIsActive: switchData}) */
+      getOwnerHostbyID()
+    } catch (error) {
+      if(error.response.data?.message){
+        navigation.navigate("SessionOut")
+        return
+      }
+      setLoading(!switchData)
+    }
+   /*  setLoadingSwithData(false) */
+    /* setLoading(false) */
+  }
 
   useEffect(() => {
     getOwnerHostbyID();
@@ -219,6 +242,14 @@ export default function ViewHostScreen({ navigation }) {
 
   return (
     <ScrollView style={myStyles.container}>
+      <View style={myStyles.switchContainer}>
+          {hostData?.hostIsActive ? <Text>Desactivar publicacion</Text> : <Text>Activar publicacion</Text>}
+          <Switch 
+            value={hostData?.hostIsActive}
+            onValueChange={changeHostState}
+          />
+          {loadingSwitchData && <ActivityIndicator size={20} color={Colors.subColor}/>}
+        </View>
       <View style={myStyles.btnActionContainer}>
         <IconButton 
           icon="account-group-outline"
@@ -496,4 +527,13 @@ const myStyles = StyleSheet.create({
     gap: 10,
     flexWrap: "wrap",
   },
+  switchContainer:{
+      display:"flex",
+      justifyContent:"center",
+      flexDirection:"row",
+      alignItems:"center",
+      gap:5,
+      marginTop:10,
+      marginBottom:10
+  }
 });

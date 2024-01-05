@@ -38,6 +38,9 @@ import MyPetsScreen from "../../../screens/Pet/MyPetsScreen";
 import EditPetScreen from "../../../screens/Pet/EditPetScreen";
 import TermAndConditionsScreen from "../../../screens/TermAndConditionsScreen";
 import LikesScreen from "../../../screens/LikesScreen";
+import TrayHostScreen from "../../../screens/TrayHostScreen";
+import TrayHostDetailScreen from "../../../screens/TrayHostDetailScreen";
+import Notifications from "../../../components/Notifications";
 /* import SessionOutScreen from "../../../screens/SessionOutScreen";
  */
 const StackNavigation = createStackNavigator();
@@ -49,13 +52,16 @@ const AccountNav = () => {
         name="Account"
         component={AccountOptions}
         options={{
-          headerRight: () => (
+          headerLeft: () => (
             <IconButton
               icon="menu"
               size={30}
               iconColor="#FFFFFF"
               onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
             />
+          ),
+          headerRight: () => (
+            <Notifications />
           ),
           headerTitle: "Mi Cuenta",
           headerTitleStyle: { color: "#FFFFFF" },
@@ -413,6 +419,28 @@ const AccountNav = () => {
         }}
       />
 
+        <StackNavigation.Screen 
+          name="HostTray"
+          component={TrayHostScreen}
+          options={{
+            headerTitle: "Mi bandeja de solicitudes",
+            headerTitleStyle:{color:"#FFFFFF"},
+            headerTitleAlign:"left",
+            headerStyle:{backgroundColor:Colors.principal}
+          }}
+        />
+
+        <StackNavigation.Screen 
+          name="HostTrayDetail"
+          component={TrayHostDetailScreen}
+          options={{
+            headerTitle:"Detalle",
+            headerTitleStyle:{color: "#FFFFFF"},
+            headerTitleAlign:"left",
+            headerStyle:{backgroundColor: Colors.principal}
+          }}
+        
+        />
 
     </StackNavigation.Navigator>
   );

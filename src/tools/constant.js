@@ -13,6 +13,14 @@ export const Colors = {
     backgroundGrey:"#F5F5F5"
 }
 
+export const BOOKINGS_STATES = {
+    CONFIRMED: "Confirmada",
+    COMPLETED:"Finalizada",
+    PENDING_APPROVAL:"Pendiente aprobacion",
+    REJECTED:"Rechazada",
+    CANCELED:"Cancelada"
+}
+
 export const PROFILE_TYPES = {
     ANFITRION: "Anfitrion",
     HUESPED: "Huesped"

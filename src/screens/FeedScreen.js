@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import {View,StyleSheet, FlatList} from "react-native"
+import {View,StyleSheet, FlatList, RefreshControl} from "react-native"
 import { Divider, Text } from "react-native-paper"
 import { server } from "../api/server"
 import { Colors } from "../tools/constant"
@@ -16,7 +16,14 @@ const FeedScreen = ({navigation}) =>{
     const [errorServer,setErrorServer] = useState("")
     const [errorType,setErrorType] = useState("")
     const [data,setData] = useState([])
+    const [refresh,setRefresh] = useState(false)
     const isFocused = useIsFocused()
+
+    const onRefreshControl = () =>{
+        setRefresh(true)
+        loadHostResult()
+        setRefresh(false)
+    }
 
     const loadHostResult = async () =>{
         setLoading(true)
@@ -50,6 +57,7 @@ const FeedScreen = ({navigation}) =>{
         data={data}
         renderItem={({item}) => <ItemSearch data={item} navigation={navigation}/>}
         keyExtractor={item=>item._id}
+        refreshControl={<RefreshControl refreshing={refresh} onRefresh={onRefreshControl}/>}
     /> : <View style={myStyles.notData}>
             <Text>¡Aun no hay hospedajes!</Text>
             <LottieView source={require("../../assets/animations/notDataAnimation.json")} autoPlay loop style={{width:300,height:300}}/>

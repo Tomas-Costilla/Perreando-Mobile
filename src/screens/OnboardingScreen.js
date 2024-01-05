@@ -46,7 +46,7 @@ export default function OnboardingScreen(){
              }, */
              {
                  backgroundColor:"#FFFFFF",
-                 title:<Text style={myStyles.titleTermsCond}>Nuestros terminos y condiciones</Text>,
+                 title:"",
                  subtitle:<TermAndConditions doneFunction={handleDone}/>,
                  image: <></>
              }

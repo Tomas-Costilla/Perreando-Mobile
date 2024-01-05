@@ -52,8 +52,18 @@ export default function DrawerContent(props) {
               icon={()=><Icon name="home-outline" size={25}/>}
               onPress={() => navigation.navigate("ViewHostData")}
             />
+            <DrawerItem
+              label="Mi bandeja"
+              icon={()=><Icon name="mailbox-outline" size={25}/>}
+              onPress={() => navigation.navigate("HostTray")}
+            />
           </>
         )}
+        <DrawerItem
+            label="Mis notificaciones"
+            icon={()=><Icon name="bell-outline" size={25}/>}
+            /* onPress={() => navigation.navigate("Likes")} */
+        />
        {/*  <DrawerItem label="Opcion 3" onPress={() => console.log("Opcion 3")} /> */}
       </DrawerContentScrollView>
       <DrawerItem 

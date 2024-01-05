@@ -63,6 +63,7 @@ export default function CreateHostScreen({ navigation, route }) {
     hostCompleteAddress: "",
     hostAvailableStartDate: "",
     hostAvailableStartEnd: "",
+    hostIsActive:true
   });
 
   const handleHostData = (camp, value) =>{
@@ -211,6 +212,7 @@ export default function CreateHostScreen({ navigation, route }) {
     formData.append("hostCompleteAddress", hostData.hostCompleteAddress);
     formData.append("hostAvailableStartDate",hostData.hostAvailableStartDate)
     formData.append("hostAvailableStartEnd",hostData.hostAvailableStartEnd)
+    formData.append("hostIsActive",hostData.hostIsActive)
     images.forEach((value, index) => {
       formData.append("hostPhotos", {
         name: new Date() + "_hostPhotos",

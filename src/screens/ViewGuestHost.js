@@ -108,14 +108,14 @@ export default function ViewGuestHost({ navigation, route }) {
           <View style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center"}}>
           {isLike ? <IconButton icon="heart" size={30} onPress={handleDeleteLike} iconColor="#FF0000"/>
           : <IconButton icon="heart-outline" size={30} onPress={handleAddLike}/>}
-          <IconButton 
+         {/*  <IconButton 
             icon="message-outline"
             size={35}
-          />
+          /> */}
           </View>
         </View>
       <View style={myStyles.hostContainer}>
-        <ImageCarrousel images={hostData.hostImages} />
+        <ImageCarrousel images={hostData?.hostImages} />
 
         <View style={myStyles.userInfoContainer}>
           <IconProperty iconName="home" text={hostData.hostDescription} iconSize={25}/>

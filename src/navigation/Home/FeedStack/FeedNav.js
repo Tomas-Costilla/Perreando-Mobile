@@ -97,7 +97,7 @@ const FeedNav = () =>{
         name="ConfirmReserve"
         component={ConfirmReserveScreen}
         options={{
-            headerTitle:'Confirmar reserva',
+            headerTitle:'Solicitud de reserva',
             headerTitleStyle:{color:"#FFFFFF"},
           headerTitleAlign:"left",
           headerStyle:{backgroundColor:Colors.principal}

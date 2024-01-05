@@ -21,7 +21,7 @@ const Navigation = () => {
       ) : user.userFirstLogin ? (
         <OnboardingNav />
       ) : (
-        <SessionNav />
+        <SessionNav userProfile={user.userProfile}/>
       )}
     </NavigationContainer>
   );
